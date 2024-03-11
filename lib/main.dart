@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           color: Colors.grey, //<-- SEE HERE
         ),
       ),
-      title: 'Carpool_PNut',
+      title: 'Carpool_PNut_2',
       home: MainAdmin(),
     );
   }
