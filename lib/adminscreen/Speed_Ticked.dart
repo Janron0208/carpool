@@ -341,7 +341,7 @@ class _SpeedTickedState extends State<SpeedTicked> {
           Expanded(
               flex: 40,
               child: Text(
-                'รายการรถยนต์',
+                'รายการรถที่มีใบสั่ง',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
