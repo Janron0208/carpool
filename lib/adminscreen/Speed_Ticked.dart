@@ -69,7 +69,7 @@ class _SpeedTickedState extends State<SpeedTicked> {
     return Scaffold(
       body: Stack(
         children: [
-          MyStyle().BG_PinkPurple(context),
+          MyStyle().BG_Image(context, 'images/bg3.jpg'),
           SafeArea(
             child: Stack(
               children: [
