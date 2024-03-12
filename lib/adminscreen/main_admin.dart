@@ -1,7 +1,7 @@
 import 'package:carpool/adminscreen/account_list.dart';
 import 'package:carpool/adminscreen/account_verify.dart';
 import 'package:carpool/adminscreen/car_list.dart';
-import 'package:carpool/sharedscreen/reserve_page.dart';
+import 'package:carpool/sharedscreen/reserve_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -189,7 +189,7 @@ class _MainAdminState extends State<MainAdmin> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ReservePage(),
+                                          builder: (context) => ReserveMenu(),
                                         ));
                                   },
                                   child: Material(

@@ -46,6 +46,7 @@ class MyStyle {
   Color color3 = Color.fromARGB(255, 124, 140, 160);
   Color color4 = Color.fromARGB(255, 168, 178, 191);
   Color color5 = Color.fromARGB(255, 211, 217, 223);
+  Color color6 = Color.fromARGB(255, 255, 255, 255);
 
   MyStyle();
 }

@@ -22,7 +22,7 @@ class _TemplatePageState extends State<TemplatePage> {
     return Scaffold(
       body: Stack(
         children: [
-          MyStyle().BG_Image(context, 'bg2.jpg'),
+          MyStyle().BG_Color(context, MyStyle().color1),
           SafeArea(
             child: Stack(
               children: [
