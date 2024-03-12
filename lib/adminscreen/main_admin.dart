@@ -2,6 +2,7 @@ import 'package:carpool/adminscreen/Speed_Ticked.dart';
 import 'package:carpool/adminscreen/account_list.dart';
 import 'package:carpool/adminscreen/account_verify.dart';
 import 'package:carpool/adminscreen/car_list.dart';
+import 'package:carpool/sharedscreen/reserve_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -174,6 +175,39 @@ class _MainAdminState extends State<MainAdmin> {
                                         SizedBox(height: 10),
                                         Text(
                                           'ใบสั่ง',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  splashColor: Color.fromARGB(255, 69, 153, 48)
+                                      .withAlpha(30),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ReservePage(),
+                                        ));
+                                  },
+                                  child: Material(
+                                    color: Color.fromARGB(71, 255, 255, 255),
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.calendar_month_rounded,
+                                          size: 60,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          'จองรถ',
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: Colors.white),

@@ -1,13 +1,10 @@
 import 'dart:convert';
-import 'package:animate_do/animate_do.dart';
+import 'package:carpool/authen/register_page.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
-import 'package:dio/dio.dart';
+import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 import 'package:http/http.dart' as http;
 
@@ -25,15 +22,20 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body:  Stack(
+    return Scaffold(
+      body: Stack(
         children: [
           showContent(context),
-         showProcessing == 'no' ? Container() : Container(height: MediaQuery.of(context).size.height * 1,width: MediaQuery.of(context).size.width * 1,color: Color.fromARGB(139, 3, 3, 3),
-          child: Center(
-            child: CircularProgressIndicator()
-            // Image.asset('images/car_driving.gif',scale: 0.5),
-          ),)
+          showProcessing == 'no'
+              ? Container()
+              : Container(
+                  height: MediaQuery.of(context).size.height * 1,
+                  width: MediaQuery.of(context).size.width * 1,
+                  color: Color.fromARGB(139, 3, 3, 3),
+                  child: Center(child: CircularProgressIndicator()
+                      // Image.asset('images/car_driving.gif',scale: 0.5),
+                      ),
+                )
         ],
       ),
     );
@@ -119,8 +121,8 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Text(
                               'รหัสผ่าน',
-                              style:
-                                  TextStyle(color: Colors.grey[700], fontSize: 20),
+                              style: TextStyle(
+                                  color: Colors.grey[700], fontSize: 20),
                             ),
                           ],
                         ),
@@ -132,24 +134,41 @@ class _LoginPageState extends State<LoginPage> {
                           height: 50,
                           child: ElevatedButton(
                             style: ButtonStyle(
-    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-    backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
-    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-      RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0), // Adjust corner radius
-      ),
-    ),
-  ),
+                              foregroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.white),
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.grey),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      20.0), // Adjust corner radius
+                                ),
+                              ),
+                            ),
                             onPressed: () {
                               CheckNullText();
-                              
+
                               // print('$code , $password');
                             },
                             child: Text(
                               'เข้าสู่ระบบ',
-                              style: TextStyle(color: Colors.white, fontSize: 20),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
                             ),
                           ),
+                        ),
+                        SizedBox(height: 15),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegisterPage(),
+                                ));
+                          },
+                          child: MyStyle().showTextSC('สมัครสมาชิก', 18,
+                              const Color.fromARGB(255, 73, 73, 73)),
                         )
                       ],
                     ),
@@ -163,96 +182,86 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
   TextFormField showInputPassword() {
-    return TextFormField(obscureText: obscureText == 'show'  ? false : true,
-                      onChanged: (value) {
-                        setState(() {
-                          password = value.trim();
-                        });
-                      },
-                      onSaved: (val) => password = val,
-                      // obscureText: _obscureText,
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 112, 112, 112),
-                          fontSize: 20),
-                      decoration: InputDecoration(  
-                        suffixIcon: IconButton(
-                            icon: Icon(obscureText == 'show'  ? Icons.visibility_off : Icons.visibility),
-                            onPressed: () {
-                                 if (obscureText == 'show') {
-      setState(() {
-        obscureText = 'hide';
-        print(obscureText);
-      });
-    } else {
-      setState(() {
-        obscureText = 'show';
-        print(obscureText);
-      });
-    }
-                            }    ), 
-                        hintText: 'รหัสผ่าน',
-                        hintStyle: TextStyle(
-                            fontSize: 18.0,
-                            color: Color.fromARGB(255, 184, 184, 184)),
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        filled: true,
-                        fillColor: Color.fromARGB(255, 255, 255, 255),
-                      ),
-                    );
+    return TextFormField(
+      obscureText: obscureText == 'show' ? false : true,
+      onChanged: (value) {
+        setState(() {
+          password = value.trim();
+        });
+      },
+      onSaved: (val) => password = val,
+      // obscureText: _obscureText,
+      style: TextStyle(color: Color.fromARGB(255, 112, 112, 112), fontSize: 20),
+      decoration: InputDecoration(
+        suffixIcon: IconButton(
+            icon: Icon(obscureText == 'show'
+                ? Icons.visibility_off
+                : Icons.visibility),
+            onPressed: () {
+              if (obscureText == 'show') {
+                setState(() {
+                  obscureText = 'hide';
+                  print(obscureText);
+                });
+              } else {
+                setState(() {
+                  obscureText = 'show';
+                  print(obscureText);
+                });
+              }
+            }),
+        hintText: 'รหัสผ่าน',
+        hintStyle: TextStyle(
+            fontSize: 18.0, color: Color.fromARGB(255, 184, 184, 184)),
+        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        filled: true,
+        fillColor: Color.fromARGB(255, 255, 255, 255),
+      ),
+    );
   }
-
-
 
   TextFormField showInputCode() {
     return TextFormField(
-      
-                      onChanged: (value) {
-                        setState(() {
-                          accCode = value.trim();
-                        });
-                      },
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 112, 112, 112),
-                          fontSize: 20),
-                      decoration: InputDecoration(
-                       
-                        hintText: 'รหัสพนักงาน',
-                        hintStyle: TextStyle(
-                            fontSize: 18.0,
-                            color: Color.fromARGB(255, 184, 184, 184)),
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        filled: true,
-                        fillColor: Color.fromARGB(255, 255, 255, 255),
-                      ),
-                    );
+      onChanged: (value) {
+        setState(() {
+          accCode = value.trim();
+        });
+      },
+      style: TextStyle(color: Color.fromARGB(255, 112, 112, 112), fontSize: 20),
+      decoration: InputDecoration(
+        hintText: 'รหัสพนักงาน',
+        hintStyle: TextStyle(
+            fontSize: 18.0, color: Color.fromARGB(255, 184, 184, 184)),
+        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        filled: true,
+        fillColor: Color.fromARGB(255, 255, 255, 255),
+      ),
+    );
   }
 
   Container showLogoSVOA(BuildContext context) {
@@ -271,35 +280,25 @@ class _LoginPageState extends State<LoginPage> {
         password!.isEmpty) {
       MyPopup()
           .showError(context, 'กรุณากรอกข้อมูลให้ครบถ้วนก่อนทำการเข้าสู่ระบบ');
-          
     } else {
-       setState(() {
-              //  showProcessing = 'yes';
-           });
-      // SaltPassword();
-      // checkPass();
+      setState(() {
+        //  showProcessing = 'yes';
+      });
       checknullCode();
-   
     }
   }
 
-   List<dynamic> data = [];
-
-
-  
-
-
+  List<dynamic> data = [];
 
   void checknullCode() async {
-  
-    final url = await Uri.parse('${MyConstant().domain}/carpool/authen/getDataByCode.php');
+    final url = await Uri.parse(
+        '${MyConstant().domain}/carpool/authen/getDataByCode.php?accType=$accCode');
     http.Response response = await http.get(url);
 
     var data = json.decode(response.body);
 
     for (var item in data) {
-
-      String passData = item['Acc_Password'];
+      String passData = item['Acc_Code'];
 
       print(passData);
 
@@ -309,82 +308,76 @@ class _LoginPageState extends State<LoginPage> {
       // } else {
       //   print('มีข้อมูล');
       // }
-    // print('Acc_Code: ${item['Acc_Code']}');
-    // print('Acc_Name: ${item['Acc_Fullame']}');
-    // print('Acc_Email: ${item['Acc_Nickname']}');
-    // print('--------------------');
-  }
- 
-
-  
-}
-
-void checkPass() async {
-  var accPassword = '$password';
-
-  var response = await http.post(
-    Uri.parse('https://fancy-internally-slug.ngrok-free.app/carpool/authen/getUserByCode.php'),
-    body: {
-      'Acc_Code': accCode,
-      'Acc_Password': accPassword,
-    },
-  );
-
-  if (response.statusCode == 200) {
-    var data = jsonDecode(response.body);
-
-    if (data['success']) {
-      print('ตรงกัน');
-      checkType();
-    } else {
-      setState(() {
-               showProcessing = 'no';
-           });
-      print('ไม่ตรงกัน');
-      MyPopup().showToastError(context, '   รหัสผ่านไม่ถูกต้อง   ');
+      // print('Acc_Code: ${item['Acc_Code']}');
+      // print('Acc_Name: ${item['Acc_Fullame']}');
+      // print('Acc_Email: ${item['Acc_Nickname']}');
+      // print('--------------------');
     }
-  } else {
-    print('Error fetching data');
   }
-}
+
+  void checkPass() async {
+    var accPassword = '$password';
+
+    var response = await http.post(
+      Uri.parse(
+          'https://fancy-internally-slug.ngrok-free.app/carpool/authen/getUserByCode.php'),
+      body: {
+        'Acc_Code': accCode,
+        'Acc_Password': accPassword,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      if (data['success']) {
+        print('ตรงกัน');
+        checkType();
+      } else {
+        setState(() {
+          showProcessing = 'no';
+        });
+        print('ไม่ตรงกัน');
+        MyPopup().showToastError(context, '   รหัสผ่านไม่ถูกต้อง   ');
+      }
+    } else {
+      print('Error fetching data');
+    }
+  }
 
   void checkType() async {
-  var response = await http.get(
-    Uri.parse('https://fancy-internally-slug.ngrok-free.app/carpool/authen/checkTypeByCode.php?Acc_Code=$accCode'),
-  );
+    var response = await http.get(
+      Uri.parse(
+          'https://fancy-internally-slug.ngrok-free.app/carpool/authen/checkTypeByCode.php?Acc_Code=$accCode'),
+    );
 
-  if (response.statusCode == 200) {
-    var accType = response.body;
-  
-    // ตั้งค่าตัวแปร type
-    var type = accType;
+    if (response.statusCode == 200) {
+      var accType = response.body;
 
+      // ตั้งค่าตัวแปร type
+      var type = accType;
 
-    if (type == 'user') {
-            print('สวัสดีผู้ใช้งานทั่วไป ');
-            // routeTuService(MainStaff(), userModel);
-            MyPopup().showToast(context, 'เข้าสู่ระบบสำเร็จ');
-             setState(() {
-               showProcessing = 'no';
-           });
-          } else {
-            // routeTuService(MainAdmin(), userModel);
-            print('สวัสดีแอดมิน ');
-            MyPopup().showToast(context, 'เข้าสู่ระบบสำเร็จ');
-             setState(() {
-               showProcessing = 'no';
-           });
-          }
-
-  } else {
-    print('Error fetching data');
+      if (type == 'user') {
+        print('สวัสดีผู้ใช้งานทั่วไป ');
+        // routeTuService(MainStaff(), userModel);
+        MyPopup().showToast(context, 'เข้าสู่ระบบสำเร็จ');
+        setState(() {
+          showProcessing = 'no';
+        });
+      } else {
+        // routeTuService(MainAdmin(), userModel);
+        print('สวัสดีแอดมิน ');
+        MyPopup().showToast(context, 'เข้าสู่ระบบสำเร็จ');
+        setState(() {
+          showProcessing = 'no';
+        });
+      }
+    } else {
+      print('Error fetching data');
+    }
   }
-}
-
-  
 
   Future<Null> routeTuService(Widget myWidget) async {
-    
     SharedPreferences preferences = await SharedPreferences.getInstance();
     // preferences.setString(MyConstant().keyId, userModel.accID!);
 

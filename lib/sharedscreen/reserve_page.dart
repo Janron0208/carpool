@@ -2,14 +2,14 @@ import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
 
-class TemplatePage extends StatefulWidget {
-  const TemplatePage({super.key});
+class ReservePage extends StatefulWidget {
+  const ReservePage({super.key});
 
   @override
-  State<TemplatePage> createState() => _TemplatePageState();
+  State<ReservePage> createState() => _ReservePageState();
 }
 
-class _TemplatePageState extends State<TemplatePage> {
+class _ReservePageState extends State<ReservePage> {
   String? loaddata = 'no';
 
   @override
@@ -17,12 +17,33 @@ class _TemplatePageState extends State<TemplatePage> {
     super.initState();
   }
 
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 35, fontWeight: FontWeight.bold);
+
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          MyStyle().BG_Image(context, 'bg2.jpg'),
+          MyStyle().BG_Color(context, MyStyle().color1),
           SafeArea(
             child: Stack(
               children: [
@@ -34,14 +55,10 @@ class _TemplatePageState extends State<TemplatePage> {
                         child: Padding(
                             padding: const EdgeInsets.only(
                                 top: 60, left: 10, right: 10, bottom: 10),
-                            child: Material(
-                              borderRadius: BorderRadius.circular(20),
-                              elevation: 8,
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
-                                  children: [],
-                                ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Column(
+                                children: [],
                               ),
                             )),
                       ),
@@ -50,6 +67,21 @@ class _TemplatePageState extends State<TemplatePage> {
             ),
           )
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.car_crash),
+            label: 'จองด่วนวันนี้',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month),
+            label: 'จองล่วงหน้า',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: MyStyle().color1,
+        onTap: _onItemTapped,
       ),
     );
   }
@@ -71,7 +103,7 @@ class _TemplatePageState extends State<TemplatePage> {
           Expanded(
               flex: 3,
               child: Text(
-                'Text',
+                'จองรถ',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,

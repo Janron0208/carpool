@@ -1,16 +1,20 @@
+import 'dart:convert';
+
+import 'package:carpool/unity/my_style.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:http/http.dart' as http;
 
-class AccountAdd extends StatefulWidget {
-  const AccountAdd({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<AccountAdd> createState() => _AccountAddState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _AccountAddState extends State<AccountAdd> {
+class _RegisterPageState extends State<RegisterPage> {
   String? code, fullname, nickname, tel, line, password, type;
   String obscureText = 'hide';
 
@@ -24,7 +28,7 @@ class _AccountAddState extends State<AccountAdd> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 233, 233, 233),
       appBar: AppBar(
-        title: Text('เพิ่มรายชื่อ'),
+        title: Text('สมัครสมาชิก'),
       ),
       body: Container(
         child: Padding(
@@ -202,7 +206,7 @@ class _AccountAddState extends State<AccountAdd> {
         ),
         onPressed: () {
           // addAccountToDatabase(context);
-          insertData();
+          checkNullText();
         },
         child: Text(
           'เพิ่มรายชื่อ',
@@ -401,7 +405,150 @@ class _AccountAddState extends State<AccountAdd> {
     );
   }
 
-  Future<void> checkNullText() async {}
+  Future<void> checkNullText() async {
+    if (type == null ||
+        type!.isEmpty ||
+        code == null ||
+        code!.isEmpty ||
+        fullname == null ||
+        fullname!.isEmpty ||
+        nickname == null ||
+        nickname!.isEmpty ||
+        tel == null ||
+        tel!.isEmpty ||
+        line == null ||
+        line!.isEmpty ||
+        password == null ||
+        password!.isEmpty) {
+      MyPopup().showError(context, 'กรุณากรอกข้อมูลให้ครบถ้วน');
+    } else {
+      checkNullCode();
+    }
+  }
+
+  Future<void> checkNullCode() async {
+    // final url = await Uri.parse(
+    //     '${MyConstant().domain}/carpool/authen/getDataByCode.php?accType=$code');
+    var response = await http.post(
+      Uri.parse('${MyConstant().domain}/carpool/authen/getDataByCode.php'),
+      body: {
+        'Acc_Code': code,
+      },
+    );
+
+    print(response.contentLength);
+
+    try {
+      if (response.contentLength == 2) {
+        print('ใช้รหัสพนักงานนี้ได้ ');
+        askToConfirm();
+      } else {
+        MyPopup().showToastError(context, 'มีรหัสพนักงานในระบบแล้ว');
+        print('มีบัญนี้ในระบบแล้ว');
+      }
+    } catch (e) {}
+  }
+
+  Future<Null> askToConfirm() async {
+    showDialog(
+      context: context,
+      builder: (context) => Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Padding(
+          padding: EdgeInsets.all(60),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: Container(
+                    height: 130,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(220, 255, 255, 255),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
+                        )),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: MyStyle().showTextSC('ยืนยันการลงทะเบียน',
+                                  22, Color.fromARGB(255, 29, 29, 29))),
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                MyStyle().showTextSC(
+                                    'เมื่อทำการลงทะเบียนแล้วกรุณารอทางแอดมินอนุมัติสิทธิการเข้าใช้งาน',
+                                    14,
+                                    const Color.fromARGB(255, 66, 66, 66)),
+                              ],
+                            ),
+                          )),
+                          SizedBox(height: 10),
+                        ],
+                      ),
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 0.2),
+                child: Container(
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(220, 255, 255, 255),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30.0),
+                            bottomRight: Radius.circular(30.0),
+                          )),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text('ยืนยัน',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 72, 209, 72),
+                                      fontSize: 18,
+                                    )),
+                              ),
+                            ),
+                          ),
+                          VerticalDivider(),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text('ปิด',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 216, 71, 71),
+                                      fontSize: 18,
+                                    )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   Map<String?, String> data = {};
 
