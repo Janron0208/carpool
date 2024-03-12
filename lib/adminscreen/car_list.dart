@@ -69,7 +69,7 @@ class _CarListState extends State<CarList> {
     return Scaffold(
       body: Stack(
         children: [
-          MyStyle().BG_PinkPurple(context),
+          MyStyle().BG_Image(context, 'bg2.jpg'),
           SafeArea(
             child: Stack(
               children: [

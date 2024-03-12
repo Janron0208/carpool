@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       title: 'Carpool_PNut',
-      home: LoginPage(),
+      home: MainAdmin(),
     );
   }
 }

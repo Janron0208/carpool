@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 
 class MyStyle {
-  Container BG_PinkPurple(BuildContext context) {
+  Container BG_Image(BuildContext context, String string) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
       height: MediaQuery.of(context).size.height * 1,
       child: Image.asset(
-        'images/bg2.jpg',
+        'images/$string',
         fit: BoxFit.cover,
       ),
+    );
+  }
+
+  Container BG_Color(BuildContext context, Color color) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 1,
+      height: MediaQuery.of(context).size.height * 1,
+      color: color,
     );
   }
 
@@ -32,6 +40,12 @@ class MyStyle {
       style: TextStyle(fontSize: size, color: color),
     );
   }
+
+  Color color1 = Color.fromARGB(255, 37, 63, 96);
+  Color color2 = Color.fromARGB(255, 81, 101, 128);
+  Color color3 = Color.fromARGB(255, 124, 140, 160);
+  Color color4 = Color.fromARGB(255, 168, 178, 191);
+  Color color5 = Color.fromARGB(255, 211, 217, 223);
 
   MyStyle();
 }
