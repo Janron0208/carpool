@@ -1,3 +1,4 @@
+import 'package:carpool/adminscreen/Speed_Ticked.dart';
 import 'package:carpool/adminscreen/account_list.dart';
 import 'package:carpool/adminscreen/account_verify.dart';
 import 'package:carpool/adminscreen/car_list.dart';
@@ -155,7 +156,7 @@ class _MainAdminState extends State<MainAdmin> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => AccountList(),
+                                          builder: (context) => SpeedTicked(),
                                         ));
                                   },
                                   child: Material(
