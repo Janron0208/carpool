@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:carpool/adminscreen/Speed_Ticked_add.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:carpool/adminscreen/car_add.dart';
@@ -69,7 +71,7 @@ class _SpeedTickedState extends State<SpeedTicked> {
     return Scaffold(
       body: Stack(
         children: [
-          MyStyle().BG_Image(context, 'images/bg3.jpg'),
+          showBlackground(context),
           SafeArea(
             child: Stack(
               children: [
@@ -203,19 +205,19 @@ class _SpeedTickedState extends State<SpeedTicked> {
                                                                             .size
                                                                             .height *
                                                                         0.03,
-                                                                    color: const Color
+                                                                    color: Color
                                                                         .fromARGB(
-                                                                        255,
-                                                                        167,
-                                                                        216,
-                                                                        255),
+                                                                            255,
+                                                                            154,
+                                                                            210,
+                                                                            255),
                                                                     child:
                                                                         Center(
                                                                       child: Text(
                                                                           'ป้ายทะเบียน',
                                                                           style: TextStyle(
                                                                               fontSize: 14,
-                                                                              color: Color.fromARGB(255, 255, 255, 255))),
+                                                                              color: MyStyle().color1)),
                                                                     ),
                                                                   ),
                                                                 ],
@@ -274,6 +276,13 @@ class _SpeedTickedState extends State<SpeedTicked> {
                                                             onPressed: () {
                                                               print(
                                                                   '${carModels[index].carID!}');
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            Speedticked_Add(),
+                                                                  ));
                                                             },
                                                             icon: Icon(
                                                               Icons
@@ -339,32 +348,16 @@ class _SpeedTickedState extends State<SpeedTicked> {
                   icon: Icon(Icons.arrow_back_ios,
                       size: 30, color: Colors.white))),
           Expanded(
-              flex: 40,
+              flex: 3,
               child: Text(
-                'รายการรถที่มีใบสั่ง',
+                'รายการใบสั่งทั้งหมด',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
                 ),
               )),
-          // Expanded(
-          //   flex: 1,
-          //   child: IconButton(
-          //     onPressed: () {
-          //       MaterialPageRoute route =
-          //           MaterialPageRoute(builder: (context) => CarAdd());
-          //       Navigator.push(context, route).then((value) {
-          //         carModels.clear();
-          //         loadAllCar();
-          //         setState(() {
-          //           loaddata = 'yes';
-          //         });
-          //       });
-          //     },
-          //     icon: Icon(Icons.add_circle, size: 30, color: Colors.white),
-          //   ),
-          // ),
+          Expanded(flex: 1, child: Container()),
         ],
       ),
     );
