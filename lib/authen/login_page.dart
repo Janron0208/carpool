@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:carpool/authen/register_page.dart';
+import 'package:carpool/unity/my_api.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
@@ -17,7 +20,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String? accCode, password;
-  String obscureText = 'show';
+  String obscureText = 'hide';
   String showProcessing = 'no';
 
   @override
@@ -45,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("images/bg1.png"),
+          image: AssetImage("images/bg2.jpg"),
           fit: BoxFit.cover,
         ),
       ),
@@ -69,14 +72,11 @@ class _LoginPageState extends State<LoginPage> {
               //   ),
               // ),
               showLogoSVOA(context),
-              SizedBox(height: 20),
-              Text(
-                'เข้าสู่ระบบ',
-                style: TextStyle(
-                  color: Color(0xFFA5E28D),
-                  fontSize: 25,
-                ),
-              ),
+              SizedBox(height: 1),
+              MyStyle().showTextSCW(
+                  'Carpool', 70, FontWeight.bold, MyStyle().color1),
+              MyStyle().showTextSC(
+                  'แอปพลิเคชันการจองรถยนต์บริษัท', 15, MyStyle().color1),
               SizedBox(height: 35),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -88,14 +88,14 @@ class _LoginPageState extends State<LoginPage> {
                       : MediaQuery.of(context).size.width,
                   height: 390,
                   decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromARGB(255, 224, 224, 224),
-                        blurRadius: 1,
-                        offset: Offset(3, 5), // Shadow position
-                      ),
-                    ],
-                    color: Color.fromARGB(87, 255, 255, 255),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: Color.fromARGB(255, 224, 224, 224),
+                    //     blurRadius: 1,
+                    //     offset: Offset(3, 5), // Shadow position
+                    //   ),
+                    // ],
+                    color: Color.fromARGB(92, 255, 255, 255),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Padding(
@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                             Text(
                               'รหัสพนักงาน',
                               style: TextStyle(
-                                color: Colors.grey[700],
+                                color: MyStyle().color1,
                                 fontSize: 20,
                               ),
                             ),
@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                             Text(
                               'รหัสผ่าน',
                               style: TextStyle(
-                                  color: Colors.grey[700], fontSize: 20),
+                                  color: MyStyle().color1, fontSize: 20),
                             ),
                           ],
                         ),
@@ -136,8 +136,8 @@ class _LoginPageState extends State<LoginPage> {
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   Colors.white),
-                              backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.grey),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  MyStyle().color1),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -161,14 +161,11 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: 15),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RegisterPage(),
-                                ));
+                            MyApi().NavigatorPushAnim(context,
+                                PageTransitionType.fade, RegisterPage());
                           },
-                          child: MyStyle().showTextSC('สมัครสมาชิก', 18,
-                              const Color.fromARGB(255, 73, 73, 73)),
+                          child: MyStyle()
+                              .showTextSC('สมัครสมาชิก', 18, MyStyle().color1),
                         )
                       ],
                     ),
@@ -228,7 +225,7 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(10.0),
         ),
         filled: true,
-        fillColor: Color.fromARGB(255, 255, 255, 255),
+        fillColor: Colors.grey[200],
       ),
     );
   }
@@ -259,14 +256,14 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(10.0),
         ),
         filled: true,
-        fillColor: Color.fromARGB(255, 255, 255, 255),
+        fillColor: Colors.grey[200],
       ),
     );
   }
 
   Container showLogoSVOA(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.7,
+      width: MediaQuery.of(context).size.width * 0.3,
       child: Image.asset('images/svoa_logo_nobg.png'),
     );
   }

@@ -164,8 +164,8 @@ class MyPopup {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-                height: 70,
-                width: 70,
+                height: 120,
+                width: 120,
                 child: Image.asset('images/loading1.gif')),
             Container(
               height: 35,

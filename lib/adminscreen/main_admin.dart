@@ -3,8 +3,10 @@ import 'package:carpool/adminscreen/account_list.dart';
 import 'package:carpool/adminscreen/account_verify.dart';
 import 'package:carpool/adminscreen/car_list.dart';
 import 'package:carpool/sharedscreen/reserve_menu.dart';
+import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:page_transition/page_transition.dart';
 
 class MainAdmin extends StatefulWidget {
   const MainAdmin({super.key});
@@ -36,7 +38,7 @@ class _MainAdminState extends State<MainAdmin> {
                             Text('ยินดีต้อนรับ Admin',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 35,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.bold)),
                           ],
                         ),
@@ -46,7 +48,6 @@ class _MainAdminState extends State<MainAdmin> {
                           height: MediaQuery.of(context).size.height * 0.7,
                           child: GridView.count(
                               primary: false,
-                              // padding: const EdgeInsets.all(15),
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
                               crossAxisCount: 2,
@@ -55,11 +56,8 @@ class _MainAdminState extends State<MainAdmin> {
                                   splashColor: Color.fromARGB(255, 69, 153, 48)
                                       .withAlpha(30),
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AccountList(),
-                                        ));
+                                    MyApi().NavigatorPushAnim(context,
+                                        PageTransitionType.fade, AccountList());
                                   },
                                   child: Material(
                                     color: Color.fromARGB(71, 255, 255, 255),
@@ -77,7 +75,7 @@ class _MainAdminState extends State<MainAdmin> {
                                         Text(
                                           'รายชื่อผู้ใช้ระบบ',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 18,
                                               color: Colors.white),
                                         )
                                       ],
@@ -88,11 +86,8 @@ class _MainAdminState extends State<MainAdmin> {
                                   splashColor: Color.fromARGB(255, 69, 153, 48)
                                       .withAlpha(30),
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => CarList(),
-                                        ));
+                                    MyApi().NavigatorPushAnim(context,
+                                        PageTransitionType.fade, CarList());
                                   },
                                   child: Material(
                                     color: Color.fromARGB(71, 255, 255, 255),
@@ -121,11 +116,10 @@ class _MainAdminState extends State<MainAdmin> {
                                   splashColor: Color.fromARGB(255, 69, 153, 48)
                                       .withAlpha(30),
                                   onTap: () {
-                                    Navigator.push(
+                                    MyApi().NavigatorPushAnim(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AccountVerify(),
-                                        ));
+                                        PageTransitionType.fade,
+                                        AccountVerify());
                                   },
                                   child: Material(
                                     color: Color.fromARGB(71, 255, 255, 255),
@@ -154,11 +148,8 @@ class _MainAdminState extends State<MainAdmin> {
                                   splashColor: Color.fromARGB(255, 69, 153, 48)
                                       .withAlpha(30),
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => SpeedTicked(),
-                                        ));
+                                    MyApi().NavigatorPushAnim(context,
+                                        PageTransitionType.fade, SpeedTicked());
                                   },
                                   child: Material(
                                     color: Color.fromARGB(71, 255, 255, 255),
@@ -187,11 +178,8 @@ class _MainAdminState extends State<MainAdmin> {
                                   splashColor: Color.fromARGB(255, 69, 153, 48)
                                       .withAlpha(30),
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ReserveMenu(),
-                                        ));
+                                    MyApi().NavigatorPushAnim(context,
+                                        PageTransitionType.fade, ReserveMenu());
                                   },
                                   child: Material(
                                     color: Color.fromARGB(71, 255, 255, 255),

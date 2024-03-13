@@ -25,10 +25,6 @@ class _ReserveMenuState extends State<ReserveMenu> {
 
   List<DateTime?> _rangeDatePickerValueWithDefaultValue = [
     DateTime.now(),
-    // DateTime.now().add(const Duration(days: 5)),
-    // DateTime.now(),
-    // DateTime(1999, 5, 6),
-    // DateTime(1999, 5, 21),
   ];
 
   @override
@@ -78,7 +74,7 @@ class _ReserveMenuState extends State<ReserveMenu> {
     return Scaffold(
       body: Stack(
         children: [
-          MyStyle().BG_Color(context, MyStyle().color1),
+          MyStyle().BG_Image(context, 'bg2.jpg'),
           SafeArea(
             child: Stack(
               children: [
@@ -494,42 +490,44 @@ class _ReserveMenuState extends State<ReserveMenu> {
     );
   }
 
-  List<DateTime> dayReserve = [];
   Future<Null> checkCountDay() async {
-    String startDate = chooseDay[0];
-    String endDate = chooseDay[1];
-    print(startDate);
-    print(endDate);
-    print('index = ${chooseDay}');
+    // String startDate = chooseDay[0].substring(0, 4) +
+    //     chooseDay[0].substring(5, 7) +
+    //     chooseDay[0].substring(8, 10);
+    // String endDate = chooseDay[1].substring(0, 4) +
+    //     chooseDay[1].substring(5, 7) +
+    //     chooseDay[1].substring(8, 10);
 
     if (chooseDay[1] == 'null') {
       print('เลือก 1 วัน');
     } else {
       print('เลือกหลายวัน');
-      DateTime startDateTime = DateTime.parse(startDate);
-      DateTime endDateTime = DateTime.parse(endDate);
 
-// คำนวณจำนวนวัน
-      int totalDays = endDateTime.difference(startDateTime).inDays + 1;
+      // DateTime startDateTime = DateTime.parse(startDate);
+      // DateTime endDateTime = DateTime.parse(endDate);
 
-// สร้าง List เก็บวันที่
+// // คำนวณจำนวนวัน
+//       int totalDays = endDateTime.difference(startDateTime).inDays + 1;
 
-      for (int i = 0; i < totalDays; i++) {
-        setState(() {
-          dayReserve.add(startDateTime.add(Duration(days: i)));
-        });
-      }
+// // สร้าง List เก็บวันที่
+//       dayReserve.clear();
+//       for (int i = 0; i < totalDays; i++) {
+//         setState(() {
+//           dayReserve.add(startDateTime.add(Duration(days: i)));
+//         });
+//       }
 
-// แสดงรายการวันที่
-      for (DateTime dayA in dayReserve) {
-        print(dayA.toIso8601String().toString().split('T00:00:00.000')[0]);
-      }
-      print(dayReserve);
+// // แสดงรายการวันที่
+//       for (DateTime dayA in dayReserve) {
+//         print(dayA.toIso8601String().toString().split('T00:00:00.000')[0]);
+//       }
+//       print(dayReserve);
+//     }
+
+      // String startDate = '13032024' //คือวันที่ 13/03/2024
+      //   String endDate = '20032024'  // คือวันที่ 20/03/2024
+
+      //  Dart ทำการนับวันที่  startDate ถึง endDate ว่ามีกี่วัน และนำมา for และนำมาใส่ใน List ชื่อว่า dayReserve
     }
-
-    // String startDate = '13032024' //คือวันที่ 13/03/2024
-    //   String endDate = '20032024'  // คือวันที่ 20/03/2024
-
-    //  Dart ทำการนับวันที่  startDate ถึง endDate ว่ามีกี่วัน และนำมา for และนำมาใส่ใน List ชื่อว่า dayReserve
   }
 }

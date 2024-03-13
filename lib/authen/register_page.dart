@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
@@ -26,86 +27,152 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 233, 233, 233),
-      appBar: AppBar(
-        title: Text('สมัครสมาชิก'),
-      ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Material(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            elevation: 8,
-            shadowColor: const Color.fromARGB(255, 163, 163, 163),
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: SingleChildScrollView(
-                child: Container(
+      body: Stack(
+        children: [
+          MyStyle().BG_Image(context, 'bg2.jpg'),
+          SafeArea(
+            child: Stack(
+              children: [
+                Container(
                   width: MediaQuery.of(context).size.width * 1,
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text('รหัสพนักงาน', style: TextStyle(fontSize: 16)),
-                        ],
-                      ),
-                      SizedBox(height: 3),
-                      buildCode(context),
-                      SizedBox(height: 15),
-                      Row(
-                        children: [
-                          Text('ชื่อ-นามสกุล', style: TextStyle(fontSize: 16)),
-                        ],
-                      ),
-                      SizedBox(height: 3),
-                      buildFullname(),
-                      SizedBox(height: 15),
-                      Row(
-                        children: [
-                          Text('ชื่อเล่น', style: TextStyle(fontSize: 16)),
-                        ],
-                      ),
-                      SizedBox(height: 3),
-                      buildNickname(context),
-                      SizedBox(height: 15),
-                      Row(
-                        children: [
-                          Text('เบอร์โทรศัพท์', style: TextStyle(fontSize: 16)),
-                        ],
-                      ),
-                      SizedBox(height: 3),
-                      buildTel(),
-                      SizedBox(height: 15),
-                      Row(
-                        children: [
-                          Text('Line ID', style: TextStyle(fontSize: 16)),
-                        ],
-                      ),
-                      SizedBox(height: 3),
-                      buildLine(),
-                      SizedBox(height: 15),
-                      Row(
-                        children: [
-                          Text('รหัสผ่าน', style: TextStyle(fontSize: 16)),
-                        ],
-                      ),
-                      SizedBox(height: 3),
-                      buildPassword(),
-                      SizedBox(height: 15),
-                      buildType(),
-                      Spacer(),
-                      buildAddAccBTN(context),
-                      SizedBox(height: 15),
-                    ],
+                  height: MediaQuery.of(context).size.height * 1,
+                  child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 60, left: 10, right: 10, bottom: 10),
+                      child: Material(
+                        color: Color.fromARGB(181, 255, 255, 255),
+                        borderRadius: BorderRadius.circular(20),
+                        elevation: 8,
+                        child: SingleChildScrollView(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: MediaQuery.of(context).size.height * 1,
+                            child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: showContent(context)),
+                          ),
+                        ),
+                      )),
+                ),
+                showheadBar(context),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(13),
+                    child: Container(
+                      width: 80,
+                      height: 70,
+                      child: FloatingActionButton(
+                          onPressed: () {},
+                          backgroundColor: MyStyle().color1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.save_alt,
+                                color: MyStyle().color6,
+                              ),
+                              MyStyle()
+                                  .showTextSC('ยืนยัน', 18, MyStyle().color6),
+                            ],
+                          )),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ),
+          )
+        ],
       ),
+    );
+  }
+
+  Container showheadBar(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 1,
+      height: 50,
+      child: Row(
+        children: [
+          Expanded(
+              flex: 1,
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back_ios,
+                      size: 30, color: Colors.white))),
+          Expanded(
+              flex: 3,
+              child: Text(
+                'สมัครสมาชิก',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+              )),
+          Expanded(flex: 1, child: Container()),
+        ],
+      ),
+    );
+  }
+
+  Column showContent(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text('รหัสพนักงาน', style: TextStyle(fontSize: 16)),
+          ],
+        ),
+        SizedBox(height: 3),
+        buildCode(context),
+        SizedBox(height: 15),
+        Row(
+          children: [
+            Text('ชื่อ-นามสกุล', style: TextStyle(fontSize: 16)),
+          ],
+        ),
+        SizedBox(height: 3),
+        buildFullname(),
+        SizedBox(height: 15),
+        Row(
+          children: [
+            Text('ชื่อเล่น', style: TextStyle(fontSize: 16)),
+          ],
+        ),
+        SizedBox(height: 3),
+        buildNickname(context),
+        SizedBox(height: 15),
+        Row(
+          children: [
+            Text('เบอร์โทรศัพท์', style: TextStyle(fontSize: 16)),
+          ],
+        ),
+        SizedBox(height: 3),
+        buildTel(),
+        SizedBox(height: 15),
+        Row(
+          children: [
+            Text('Line ID', style: TextStyle(fontSize: 16)),
+          ],
+        ),
+        SizedBox(height: 3),
+        buildLine(),
+        SizedBox(height: 15),
+        Row(
+          children: [
+            Text('รหัสผ่าน', style: TextStyle(fontSize: 16)),
+          ],
+        ),
+        SizedBox(height: 3),
+        buildPassword(),
+        SizedBox(height: 15),
+        buildType(),
+        // Spacer(),
+        // buildAddAccBTN(context),
+        // SizedBox(height: 15),
+      ],
     );
   }
 
