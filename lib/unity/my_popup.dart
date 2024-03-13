@@ -49,9 +49,7 @@ class MyPopup {
   showProcessing(BuildContext context) {
     Scaffold alert = Scaffold(
       backgroundColor: Color.fromARGB(0, 255, 193, 7),
-      body: Container(
-        
-      ),
+      body: Container(),
     );
     showDialog(
       barrierDismissible: false,
@@ -182,7 +180,6 @@ class MyPopup {
       ),
     );
   }
-
 
   MyPopup();
 }
