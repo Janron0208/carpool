@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:carpool/adminscreen/account_detail.dart';
 import 'package:carpool/models/user_model.dart';
 import 'package:carpool/unity/my_constant.dart';
-import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 
 class AccountVerify extends StatefulWidget {

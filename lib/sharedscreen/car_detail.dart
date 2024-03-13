@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:carpool/models/car_model.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
@@ -22,7 +21,8 @@ class CarDetail extends StatefulWidget {
 class _CarDetailState extends State<CarDetail> {
   String? loaddata = 'yes';
   List<CarModel> carModels = [];
-
+  List<String> datas = [];
+  String? mileNumber;
   @override
   void initState() {
     loadAllCar();
@@ -35,9 +35,15 @@ class _CarDetailState extends State<CarDetail> {
         '${MyConstant().domain}/carpool/car/getCarLikeCarID.php?Car_ID=${widget.carID}');
 
     http.Response response = await http.get(url);
-
     var data = json.decode(response.body);
-
+    print(data[0]['Mile_Number']);
+    setState(() {
+      mileNumber = data[0]['Mile_Number'];
+    });
+    // print(object)
+    // setState(() {
+    //   datas.add(data);
+    // });
     for (var item in data) {
       CarModel carModel = CarModel.fromJson(item);
       setState(() {
@@ -164,11 +170,20 @@ class _CarDetailState extends State<CarDetail> {
                                                 MyStyle().color1)),
                                         Expanded(
                                             flex: 4,
-                                            child: MyStyle().showTextSCW(
-                                                '${carModels[0]}',
-                                                16,
-                                                FontWeight.normal,
-                                                MyStyle().color3))
+                                            child: Row(
+                                              children: [
+                                                MyStyle().showTextNumberSCW(
+                                                    '$mileNumber',
+                                                    16,
+                                                    MyStyle().color3,
+                                                    FontWeight.normal),
+                                                MyStyle().showTextSCW(
+                                                    ' กิโลเมตร',
+                                                    16,
+                                                    FontWeight.normal,
+                                                    MyStyle().color3)
+                                              ],
+                                            ))
                                       ],
                                     ),
                                     Divider()
