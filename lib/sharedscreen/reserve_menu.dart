@@ -94,25 +94,25 @@ class _ReserveMenuState extends State<ReserveMenu> {
                               child: headBarText != 'ใช้งานวันนี้'
                                   ? Column(
                                       children: [
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              1,
-                                          height: 50,
-                                          child: Material(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              child: Center(
-                                                child: MyStyle().showTextSCW(
-                                                    chooseDay[1] == 'null'
-                                                        ? 'เลือกวันที่ : ${chooseDay[0]}'
-                                                        : '${chooseDay[0]} - ${chooseDay[1]}',
-                                                    14,
-                                                    FontWeight.normal,
-                                                    MyStyle().color2),
-                                              )),
-                                        ),
+                                        // Container(
+                                        //   width: MediaQuery.of(context)
+                                        //           .size
+                                        //           .width *
+                                        //       1,
+                                        //   height: 50,
+                                        //   child: Material(
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(15),
+                                        //       child: Center(
+                                        //         child: MyStyle().showTextSCW(
+                                        //             chooseDay[1] == 'null'
+                                        //                 ? 'เลือกวันที่ : ${chooseDay[0]}'
+                                        //                 : '${chooseDay[0]} - ${chooseDay[1]}',
+                                        //             14,
+                                        //             FontWeight.normal,
+                                        //             MyStyle().color2),
+                                        //       )),
+                                        // ),
                                         SizedBox(height: 10),
                                         Material(
                                           shadowColor: Colors.white,
@@ -167,7 +167,7 @@ class _ReserveMenuState extends State<ReserveMenu> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month),
-            label: 'จองหลายวัน',
+            label: 'จองรถล่วงหน้า',
           ),
         ],
         currentIndex: _selectedIndex,
@@ -182,7 +182,7 @@ class _ReserveMenuState extends State<ReserveMenu> {
               checkheadBarText();
               loaddata = 'yes';
             } else {
-              headBarText = 'จองล่วงหน้าหลายวัน';
+              headBarText = 'จองรถล่วงหน้า';
             }
           });
         },
@@ -217,11 +217,10 @@ class _ReserveMenuState extends State<ReserveMenu> {
             });
           },
         ),
-        const SizedBox(height: 10),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(width: 10),
+            // SizedBox(width: 10),
             Text(
               _getValueText(
                 config.calendarType,
@@ -230,7 +229,6 @@ class _ReserveMenuState extends State<ReserveMenu> {
             ),
           ],
         ),
-        // const SizedBox(height: 25),
       ],
     );
   }
@@ -258,10 +256,11 @@ class _ReserveMenuState extends State<ReserveMenu> {
 
     if (datePickerType == CalendarDatePicker2Type.range) {
       if (values.isNotEmpty) {
-        String startDate = values[0].toString().split(' ')[0];
-        final endDate = values.length > 1
-            ? values[1].toString().replaceAll('00:00:00.000', '')
-            : 'null';
+        String startDate = values[0].toString().split(
+              ' ',
+            )[0];
+        String endDate =
+            values.length > 1 ? values[1].toString().split(' ')[0] : 'null';
         valueText = '';
         setState(() {
           chooseDay.clear();
@@ -495,8 +494,8 @@ class _ReserveMenuState extends State<ReserveMenu> {
     );
   }
 
+  List<DateTime> dayReserve = [];
   Future<Null> checkCountDay() async {
-    // print(chooseDay);
     String startDate = chooseDay[0];
     String endDate = chooseDay[1];
     print(startDate);
@@ -507,6 +506,30 @@ class _ReserveMenuState extends State<ReserveMenu> {
       print('เลือก 1 วัน');
     } else {
       print('เลือกหลายวัน');
+      DateTime startDateTime = DateTime.parse(startDate);
+      DateTime endDateTime = DateTime.parse(endDate);
+
+// คำนวณจำนวนวัน
+      int totalDays = endDateTime.difference(startDateTime).inDays + 1;
+
+// สร้าง List เก็บวันที่
+
+      for (int i = 0; i < totalDays; i++) {
+        setState(() {
+          dayReserve.add(startDateTime.add(Duration(days: i)));
+        });
+      }
+
+// แสดงรายการวันที่
+      for (DateTime dayA in dayReserve) {
+        print(dayA.toIso8601String().toString().split('T00:00:00.000')[0]);
+      }
+      print(dayReserve);
     }
+
+    // String startDate = '13032024' //คือวันที่ 13/03/2024
+    //   String endDate = '20032024'  // คือวันที่ 20/03/2024
+
+    //  Dart ทำการนับวันที่  startDate ถึง endDate ว่ามีกี่วัน และนำมา for และนำมาใส่ใน List ชื่อว่า dayReserve
   }
 }
