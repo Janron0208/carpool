@@ -22,7 +22,7 @@ class ReserveMenu extends StatefulWidget {
 
 class _ReserveMenuState extends State<ReserveMenu> {
   String? loaddata = 'yes';
-  String? headBarText = 'ใช้งานวันนี้';
+  String? headBarText = 'พร้อมใช้งานวันนี้';
   List<CarModel> carModels = [];
   List<String> chooseDay = [];
 
@@ -37,7 +37,7 @@ class _ReserveMenuState extends State<ReserveMenu> {
   }
 
   void checkheadBarText() async {
-    if (headBarText == 'ใช้งานวันนี้') {
+    if (headBarText == 'พร้อมใช้งานวันนี้') {
       loadCarStatusByReady();
     } else {}
   }
@@ -90,67 +90,8 @@ class _ReserveMenuState extends State<ReserveMenu> {
                             padding: const EdgeInsets.only(
                                 top: 60, left: 15, right: 15, bottom: 1),
                             child: SingleChildScrollView(
-                              child: headBarText != 'ใช้งานวันนี้'
-                                  ? Column(
-                                      children: [
-                                        // Container(
-                                        //   width: MediaQuery.of(context)
-                                        //           .size
-                                        //           .width *
-                                        //       1,
-                                        //   height: 50,
-                                        //   child: Material(
-                                        //       borderRadius:
-                                        //           BorderRadius.circular(15),
-                                        //       child: Center(
-                                        //         child: MyStyle().showTextSCW(
-                                        //             chooseDay[1] == 'null'
-                                        //                 ? 'เลือกวันที่ : ${chooseDay[0]}'
-                                        //                 : '${chooseDay[0]} - ${chooseDay[1]}',
-                                        //             14,
-                                        //             FontWeight.normal,
-                                        //             MyStyle().color2),
-                                        //       )),
-                                        // ),
-                                        SizedBox(height: 10),
-                                        Material(
-                                          color: Colors.white,
-                                          shadowColor: Colors.white,
-                                          elevation: 3,
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child:
-                                              _buildDefaultRangeDatePickerWithValue(),
-                                        ),
-                                        SizedBox(height: 30),
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.6,
-                                          height: 50,
-                                          child: ElevatedButton.icon(
-                                            label: Text(
-                                              'ค้นหารถที่ว่าง',
-                                              style: TextStyle(
-                                                  color: MyStyle().color1,
-                                                  fontSize: 20),
-                                            ),
-                                            icon: Icon(Icons.search_rounded,
-                                                color: MyStyle().color1),
-                                            onPressed: () {
-                                              checkCountDay();
-                                              MyApi().NavigatorPushAnim(
-                                                  context,
-                                                  PageTransitionType.fade,
-                                                  ReserveAdd());
-
-                                              // print('$code , $password');
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    )
+                              child: headBarText != 'พร้อมใช้งานวันนี้'
+                                  ? showcalendarchooseday(context)
                                   : showContentUseToday(),
                             )),
                       ),
@@ -181,7 +122,7 @@ class _ReserveMenuState extends State<ReserveMenu> {
           print(value);
           setState(() {
             if (value == 0) {
-              headBarText = 'ใช้งานวันนี้';
+              headBarText = 'พร้อมใช้งานวันนี้';
               carModels.clear();
               checkheadBarText();
               loaddata = 'yes';
@@ -191,6 +132,40 @@ class _ReserveMenuState extends State<ReserveMenu> {
           });
         },
       ),
+    );
+  }
+
+  Column showcalendarchooseday(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 10),
+        Material(
+          color: Colors.white,
+          shadowColor: Colors.white,
+          elevation: 3,
+          borderRadius: BorderRadius.circular(20),
+          child: _buildDefaultRangeDatePickerWithValue(),
+        ),
+        SizedBox(height: 30),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.6,
+          height: 50,
+          child: ElevatedButton.icon(
+            label: Text(
+              'ค้นหารถที่ว่าง',
+              style: TextStyle(color: MyStyle().color1, fontSize: 20),
+            ),
+            icon: Icon(Icons.search_rounded, color: MyStyle().color1),
+            onPressed: () {
+              checkCountDay();
+              MyApi().NavigatorPushAnim(
+                  context, PageTransitionType.fade, ReserveAdd());
+
+              // print('$code , $password');
+            },
+          ),
+        ),
+      ],
     );
   }
 

@@ -17,12 +17,12 @@ class MainAdmin extends StatefulWidget {
 }
 
 class _MainAdminState extends State<MainAdmin> {
-  
   @override
   void initState() {
     getData();
     super.initState();
   }
+
   String nickname = ' ';
   Future<Null> getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -67,6 +67,66 @@ class _MainAdminState extends State<MainAdmin> {
                               mainAxisSpacing: 10,
                               crossAxisCount: 2,
                               children: <Widget>[
+                                InkWell(
+                                  splashColor: Color.fromARGB(255, 69, 153, 48)
+                                      .withAlpha(30),
+                                  onTap: () {
+                                    MyApi().NavigatorPushAnim(context,
+                                        PageTransitionType.fade, ReserveMenu());
+                                  },
+                                  child: Material(
+                                    color: Color.fromARGB(71, 255, 255, 255),
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.calendar_month_rounded,
+                                          size: 60,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          'จองรถ',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  splashColor: Color.fromARGB(255, 69, 153, 48)
+                                      .withAlpha(30),
+                                  onTap: () {
+                                    MyApi().NavigatorPushAnim(context,
+                                        PageTransitionType.fade, ReserveMenu());
+                                  },
+                                  child: Material(
+                                    color: Color.fromARGB(71, 255, 255, 255),
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.car_rental_rounded,
+                                          size: 60,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          'กำลังใช้งาน',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
                                 InkWell(
                                   splashColor: Color.fromARGB(255, 69, 153, 48)
                                       .withAlpha(30),
@@ -181,36 +241,6 @@ class _MainAdminState extends State<MainAdmin> {
                                         SizedBox(height: 10),
                                         Text(
                                           'ใบสั่ง',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  splashColor: Color.fromARGB(255, 69, 153, 48)
-                                      .withAlpha(30),
-                                  onTap: () {
-                                    MyApi().NavigatorPushAnim(context,
-                                        PageTransitionType.fade, ReserveMenu());
-                                  },
-                                  child: Material(
-                                    color: Color.fromARGB(71, 255, 255, 255),
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.calendar_month_rounded,
-                                          size: 60,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          'จองรถ',
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: Colors.white),
