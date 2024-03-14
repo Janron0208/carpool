@@ -184,7 +184,7 @@ class _AccountDetailState extends State<AccountDetail> {
                                                       ))),
                                                   onPressed: () {
                                                     setState(() {
-                                                      status = 'Authorized';
+                                                      status = 'Actived';
                                                       askToConfirmPass();
                                                     });
                                                   },
@@ -306,7 +306,7 @@ class _AccountDetailState extends State<AccountDetail> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                              status == 'Authorized'
+                              status == 'Actived'
                                   ? "ยืนยันการอนุมัติ!!"
                                   : "ยืนยันไม่ผ่าน!!",
                               style: TextStyle(

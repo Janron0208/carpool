@@ -46,20 +46,6 @@ class MyPopup {
     );
   }
 
-  showProcessing(BuildContext context) {
-    Scaffold alert = Scaffold(
-      backgroundColor: Color.fromARGB(0, 255, 193, 7),
-      body: Container(),
-    );
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   showError(BuildContext context, String? string) {
     Scaffold alert = Scaffold(
       backgroundColor: Color.fromARGB(59, 0, 0, 0),
@@ -180,6 +166,15 @@ class MyPopup {
       ),
     );
   }
+
+  Center showProcessing() {
+    return Center(
+      child: Container(
+          height: 120, width: 120, child: Image.asset('images/loading1.gif')),
+    );
+  }
+
+  
 
   MyPopup();
 }

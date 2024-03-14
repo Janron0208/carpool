@@ -63,7 +63,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       width: 80,
                       height: 70,
                       child: FloatingActionButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            checkNullText();
+                          },
                           backgroundColor: MyStyle().color1,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -252,32 +254,6 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           filled: true,
           fillColor: Color.fromARGB(255, 241, 241, 241),
-        ),
-      ),
-    );
-  }
-
-  Container buildAddAccBTN(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: 50,
-      child: ElevatedButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0), // Adjust corner radius
-            ),
-          ),
-        ),
-        onPressed: () {
-          // addAccountToDatabase(context);
-          checkNullText();
-        },
-        child: Text(
-          'เพิ่มรายชื่อ',
-          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
     );
@@ -472,7 +448,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Future<void> checkNullText() async {
+  Future<Null> checkNullText() async {
     if (type == null ||
         type!.isEmpty ||
         code == null ||
@@ -494,26 +470,29 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> checkNullCode() async {
-    // final url = await Uri.parse(
-    //     '${MyConstant().domain}/carpool/authen/getDataByCode.php?accType=$code');
-    var response = await http.post(
-      Uri.parse('${MyConstant().domain}/carpool/authen/getDataByCode.php'),
-      body: {
-        'Acc_Code': code,
-      },
+    final url = await Uri.parse(
+      '${MyConstant().domain}/carpool/authen/getUserByCode.php?Acc_Code=$code',
     );
 
-    print(response.contentLength);
+    http.Response response = await http.get(url);
 
-    try {
-      if (response.contentLength == 2) {
-        print('ใช้รหัสพนักงานนี้ได้ ');
+    if (response.body == '[]') {
+      setState(() {
         askToConfirm();
-      } else {
-        MyPopup().showToastError(context, 'มีรหัสพนักงานในระบบแล้ว');
-        print('มีบัญนี้ในระบบแล้ว');
-      }
-    } catch (e) {}
+      });
+    } else {
+      MyPopup().showToastError(context, 'มีรหัสพนักงานนี้ในระบบแล้ว');
+    }
+
+    // try {
+    //   if (response.contentLength == 2) {
+    //     print('ใช้รหัสพนักงานนี้ได้ ');
+    //     askToConfirm();
+    //   } else {
+    //     MyPopup().showToastError(context, 'มีรหัสพนักงานในระบบแล้ว');
+    //     print('มีบัญนี้ในระบบแล้ว');
+    //   }
+    // } catch (e) {}
   }
 
   Future<Null> askToConfirm() async {
@@ -528,34 +507,27 @@ class _RegisterPageState extends State<RegisterPage> {
             children: [
               Container(
                 child: Container(
-                    height: 130,
+                    height: 150,
                     decoration: BoxDecoration(
                         color: Color.fromARGB(220, 255, 255, 255),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30.0),
                           topRight: Radius.circular(30.0),
                         )),
-                    child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                              child: MyStyle().showTextSC('ยืนยันการลงทะเบียน',
-                                  22, Color.fromARGB(255, 29, 29, 29))),
-                          Expanded(
-                              child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                MyStyle().showTextSC(
-                                    'เมื่อทำการลงทะเบียนแล้วกรุณารอทางแอดมินอนุมัติสิทธิการเข้าใช้งาน',
-                                    14,
-                                    const Color.fromARGB(255, 66, 66, 66)),
-                              ],
-                            ),
-                          )),
-                          SizedBox(height: 10),
+                          MyStyle().showTextSC('ยืนยันการลงทะเบียน', 23,
+                              Color.fromARGB(255, 29, 29, 29)),
+                          SizedBox(height: 20),
+                          Center(
+                            child: MyStyle().showTextSC(
+                                'เมื่อทำการลงทะเบียนแล้วกรุณารอทางแอดมินอนุมัติสิทธิการเข้าใช้งาน',
+                                15,
+                                const Color.fromARGB(255, 66, 66, 66)),
+                          ),
                         ],
                       ),
                     )),
@@ -577,6 +549,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: [
                           InkWell(
                             onTap: () {
+                              insertData();
                               Navigator.pop(context);
                             },
                             child: Container(
@@ -638,6 +611,8 @@ class _RegisterPageState extends State<RegisterPage> {
     if (response.statusCode == 200) {
       // Success
       print('Success');
+      Navigator.pop(context);
+      MyPopup().showToast(context, 'สมัครสมาชิกสำเร็จ');
     } else {
       // Error
       print('Error');

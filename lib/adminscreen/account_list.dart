@@ -18,16 +18,16 @@ class AccountList extends StatefulWidget {
 class _AccountListState extends State<AccountList> {
   String? loaddata = 'yes';
   List<UserModel> userModels = [];
-  String accStatus = 'Authorized';
+  String accStatus = 'Actived';
   String formpage = 'Acclist';
 
   @override
   void initState() {
-    loadUserTypeAuthorized();
+    loadUserTypeActived();
     super.initState();
   }
 
-  void loadUserTypeAuthorized() async {
+  void loadUserTypeActived() async {
     final url = await Uri.parse(
       '${MyConstant().domain}/carpool/authen/getUserByStatus.php?Acc_Status=$accStatus',
     );

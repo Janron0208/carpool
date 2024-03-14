@@ -1,7 +1,9 @@
 import 'dart:convert';
+
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:carpool/sharedscreen/car_detail.dart';
-import 'package:flutter/widgets.dart';
+import 'package:carpool/sharedscreen/reserve_add.dart';
+import 'package:carpool/unity/my_api.dart';
 import 'package:http/http.dart' as http;
 import 'package:carpool/models/car_model.dart';
 import 'package:carpool/unity/my_constant.dart';
@@ -9,6 +11,7 @@ import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ReserveMenu extends StatefulWidget {
   const ReserveMenu({super.key});
@@ -111,6 +114,7 @@ class _ReserveMenuState extends State<ReserveMenu> {
                                         // ),
                                         SizedBox(height: 10),
                                         Material(
+                                          color: Colors.white,
                                           shadowColor: Colors.white,
                                           elevation: 3,
                                           borderRadius:
@@ -118,7 +122,7 @@ class _ReserveMenuState extends State<ReserveMenu> {
                                           child:
                                               _buildDefaultRangeDatePickerWithValue(),
                                         ),
-                                        SizedBox(height: 10),
+                                        SizedBox(height: 30),
                                         Container(
                                           width: MediaQuery.of(context)
                                                   .size
@@ -136,6 +140,10 @@ class _ReserveMenuState extends State<ReserveMenu> {
                                                 color: MyStyle().color1),
                                             onPressed: () {
                                               checkCountDay();
+                                              MyApi().NavigatorPushAnim(
+                                                  context,
+                                                  PageTransitionType.fade,
+                                                  ReserveAdd());
 
                                               // print('$code , $password');
                                             },
@@ -283,7 +291,7 @@ class _ReserveMenuState extends State<ReserveMenu> {
               width: MediaQuery.of(context).size.width * 1,
               height: MediaQuery.of(context).size.height * 0.15,
               child: Material(
-                color: MyStyle().color6,
+                color: Color.fromARGB(125, 255, 255, 255),
                 borderRadius: BorderRadius.circular(15),
                 clipBehavior: Clip.hardEdge,
                 child: InkWell(

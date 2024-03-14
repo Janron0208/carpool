@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:carpool/adminscreen/main_admin.dart';
 import 'package:carpool/authen/register_page.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
+import 'package:carpool/userscreen/main_user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,7 +22,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String? accCode, password;
   String obscureText = 'hide';
-  String showProcessing = 'no';
+  String processing = 'no';
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +30,13 @@ class _LoginPageState extends State<LoginPage> {
       body: Stack(
         children: [
           showContent(context),
-          showProcessing == 'no'
+          processing == 'no'
               ? Container()
               : Container(
                   height: MediaQuery.of(context).size.height * 1,
                   width: MediaQuery.of(context).size.width * 1,
-                  color: Color.fromARGB(139, 3, 3, 3),
-                  child: Center(child: CircularProgressIndicator()
-                      // Image.asset('images/car_driving.gif',scale: 0.5),
-                      ),
+                  color: Color.fromARGB(132, 255, 255, 255),
+                  child: MyPopup().showProcessing(),
                 )
         ],
       ),
@@ -232,6 +231,7 @@ class _LoginPageState extends State<LoginPage> {
 
   TextFormField showInputCode() {
     return TextFormField(
+      keyboardType: TextInputType.number,
       onChanged: (value) {
         setState(() {
           accCode = value.trim();
@@ -279,7 +279,7 @@ class _LoginPageState extends State<LoginPage> {
           .showError(context, 'กรุณากรอกข้อมูลให้ครบถ้วนก่อนทำการเข้าสู่ระบบ');
     } else {
       setState(() {
-        //  showProcessing = 'yes';
+        processing = 'yes';
       });
       checknullCode();
     }
@@ -289,94 +289,104 @@ class _LoginPageState extends State<LoginPage> {
 
   void checknullCode() async {
     final url = await Uri.parse(
-        '${MyConstant().domain}/carpool/authen/getDataByCode.php?accType=$accCode');
+      '${MyConstant().domain}/carpool/authen/getUserByCode.php?Acc_Code=$accCode',
+    );
+
     http.Response response = await http.get(url);
 
     var data = json.decode(response.body);
+    // print(response.body);
 
-    for (var item in data) {
-      String passData = item['Acc_Code'];
-
-      print(passData);
-
-      // print('Password : ${item['Acc_Password']}');
-      // if (item['Acc_Password'] == null) {
-      //   print('ไม่มีข้อมูล');
-      // } else {
-      //   print('มีข้อมูล');
-      // }
-      // print('Acc_Code: ${item['Acc_Code']}');
-      // print('Acc_Name: ${item['Acc_Fullame']}');
-      // print('Acc_Email: ${item['Acc_Nickname']}');
-      // print('--------------------');
+    if (response.body == '[]') {
+      setState(() {
+        processing = 'no';
+        MyPopup().showToastError(context, 'ไม่มีรหัสพนักงานนี้ในระบบ');
+      });
+    } else {
+      checkPass();
     }
   }
 
   void checkPass() async {
-    var accPassword = '$password';
+    // เตรียม URL สำหรับการส่งค่าไปยัง PHP
+    var url =
+        Uri.parse('${MyConstant().domain}/carpool/authen/loginAction.php');
 
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
     var response = await http.post(
-      Uri.parse(
-          'https://fancy-internally-slug.ngrok-free.app/carpool/authen/getUserByCode.php'),
-      body: {
-        'Acc_Code': accCode,
-        'Acc_Password': accPassword,
-      },
+      url,
+      body: {'accCode': accCode, 'inputPassword': password},
     );
 
+    // ตรวจสอบสถานะการตอบกลับ
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-
-      if (data['success']) {
-        print('ตรงกัน');
+      // การส่งข้อมูลสำเร็จ
+      // ตรวจสอบค่า response.body ว่า true หรือ false
+      if (response.body == 'true') {
+        // ตรงกัน
+        print('Login successful!');
         checkType();
       } else {
+        // ไม่ตรงกัน
         setState(() {
-          showProcessing = 'no';
+          processing = 'no';
+          print('Login failed!');
+          MyPopup().showToastError(context, 'รหัสผ่านผิดพลาด');
         });
-        print('ไม่ตรงกัน');
-        MyPopup().showToastError(context, '   รหัสผ่านไม่ถูกต้อง   ');
       }
     } else {
-      print('Error fetching data');
+      // เกิดข้อผิดพลาด
+      // แสดงข้อความแจ้งเตือน
     }
   }
 
   void checkType() async {
-    var response = await http.get(
-      Uri.parse(
-          'https://fancy-internally-slug.ngrok-free.app/carpool/authen/checkTypeByCode.php?Acc_Code=$accCode'),
+    final url = await Uri.parse(
+      '${MyConstant().domain}/carpool/authen/getUserByCode.php?Acc_Code=$accCode',
     );
 
-    if (response.statusCode == 200) {
-      var accType = response.body;
+    http.Response response = await http.get(url);
 
-      // ตั้งค่าตัวแปร type
-      var type = accType;
+    var data = json.decode(response.body);
 
-      if (type == 'user') {
+    if (data[0]['Acc_Status'] == 'Actived') {
+      if (data[0]['Acc_Type'] == 'user') {
         print('สวัสดีผู้ใช้งานทั่วไป ');
-        // routeTuService(MainStaff(), userModel);
+        routeTuService(MainUser(), data);
         MyPopup().showToast(context, 'เข้าสู่ระบบสำเร็จ');
         setState(() {
-          showProcessing = 'no';
+          processing = 'no';
         });
       } else {
-        // routeTuService(MainAdmin(), userModel);
+        routeTuService(MainAdmin(), data);
         print('สวัสดีแอดมิน ');
         MyPopup().showToast(context, 'เข้าสู่ระบบสำเร็จ');
         setState(() {
-          showProcessing = 'no';
+          processing = 'no';
         });
       }
+    } else if (data[0]['Acc_Status'] == 'Pending') {
+      setState(() {
+        processing = 'no';
+        MyPopup().showToast(context, 'กรุณารอผลการอนุมัติ');
+      });
     } else {
-      print('Error fetching data');
+      setState(() {
+        processing = 'no';
+        MyPopup().showError(context, 'คุณไม่ผ่านการอนุมัติกรุณาติดต่อแอดมิน');
+      });
     }
   }
 
-  Future<Null> routeTuService(Widget myWidget) async {
+  Future<Null> routeTuService(Widget myWidget, dynamic data) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    // preferences.setString(MyConstant().keyId, userModel.accID!);
+    preferences.setString(MyConstant().keyId, data[0]['Acc_ID']);
+    preferences.setString(MyConstant().keyType, data[0]['Acc_Type']);
+    preferences.setString(MyConstant().keyCode, data[0]['Acc_Code']);
+    preferences.setString(MyConstant().keyFullname, data[0]['Acc_Fullname']);
+    preferences.setString(MyConstant().keyNickname, data[0]['Acc_Nickname']);
+    preferences.setString(MyConstant().keyTel, data[0]['Acc_Tel']);
+    preferences.setString(MyConstant().keyLine, data[0]['Acc_Line']);
 
     MaterialPageRoute route = MaterialPageRoute(
       builder: (context) => myWidget,

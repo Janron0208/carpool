@@ -7,6 +7,7 @@ import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainAdmin extends StatefulWidget {
   const MainAdmin({super.key});
@@ -16,6 +17,20 @@ class MainAdmin extends StatefulWidget {
 }
 
 class _MainAdminState extends State<MainAdmin> {
+  
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+  String nickname = ' ';
+  Future<Null> getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      nickname = preferences.getString('Acc_Nickname')!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +50,7 @@ class _MainAdminState extends State<MainAdmin> {
                       children: [
                         Row(
                           children: [
-                            Text('ยินดีต้อนรับ Admin',
+                            Text('ยินดีต้อนรับ $nickname',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 30,
@@ -239,7 +254,9 @@ class _MainAdminState extends State<MainAdmin> {
           Expanded(
               flex: 1,
               child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    MyApi().askToLogout(context);
+                  },
                   icon: Icon(
                     Icons.power_settings_new_rounded,
                     size: 30,
