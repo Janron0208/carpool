@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:carpool/adminscreen/main_admin.dart';
+import 'package:carpool/adminscreen/main_page.dart';
 import 'package:carpool/authen/register_page.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:carpool/unity/my_constant.dart';
@@ -352,13 +352,13 @@ class _LoginPageState extends State<LoginPage> {
     if (data[0]['Acc_Status'] == 'Actived') {
       if (data[0]['Acc_Type'] == 'user') {
         print('สวัสดีผู้ใช้งานทั่วไป ');
-        routeTuService(MainUser(), data);
+        routeTuService(MainPage(), data);
         MyPopup().showToast(context, 'เข้าสู่ระบบสำเร็จ');
         setState(() {
           processing = 'no';
         });
       } else {
-        routeTuService(MainAdmin(), data);
+        routeTuService(MainPage(), data);
         print('สวัสดีแอดมิน ');
         MyPopup().showToast(context, 'เข้าสู่ระบบสำเร็จ');
         setState(() {

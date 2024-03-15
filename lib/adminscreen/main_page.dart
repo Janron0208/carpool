@@ -5,18 +5,17 @@ import 'package:carpool/adminscreen/car_list.dart';
 import 'package:carpool/sharedscreen/reserve_menu.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MainAdmin extends StatefulWidget {
-  const MainAdmin({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<MainAdmin> createState() => _MainAdminState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _MainAdminState extends State<MainAdmin> {
+class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     getData();

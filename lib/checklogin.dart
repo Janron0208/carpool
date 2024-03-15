@@ -1,4 +1,4 @@
-import 'package:carpool/adminscreen/main_admin.dart';
+import 'package:carpool/adminscreen/main_page.dart';
 import 'package:carpool/authen/login_page.dart';
 import 'package:carpool/userscreen/main_user.dart';
 import 'package:flutter/material.dart';
@@ -41,9 +41,9 @@ class _CheckloginState extends State<Checklogin> {
 
       if (typeLogin != null && typeLogin.isNotEmpty) {
         if (typeLogin == 'user') {
-          routeToService(MainUser());
+          routeToService(MainPage());
         } else {
-          routeToService(MainAdmin());
+          routeToService(MainPage());
         }
       }
     } catch (e) {}
