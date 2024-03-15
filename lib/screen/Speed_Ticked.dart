@@ -1,22 +1,24 @@
 import 'dart:convert';
 
+import 'package:carpool/screen/Speed_Ticked_add.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:carpool/adminscreen/car_add.dart';
+import 'package:carpool/screen/car_add.dart';
 import 'package:carpool/models/car_model.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 
-class CarList extends StatefulWidget {
-  const CarList({super.key});
+class SpeedTicked extends StatefulWidget {
+  const SpeedTicked({super.key});
 
   @override
-  State<CarList> createState() => _CarListState();
+  State<SpeedTicked> createState() => _SpeedTickedState();
 }
 
-class _CarListState extends State<CarList> {
+class _SpeedTickedState extends State<SpeedTicked> {
   List<CarModel> carModels = [];
   String? loaddata = 'yes';
   Map<String, String> data = {};
@@ -69,7 +71,7 @@ class _CarListState extends State<CarList> {
     return Scaffold(
       body: Stack(
         children: [
-          MyStyle().BG_Image(context, 'bg2.jpg'),
+          showBlackground(context),
           SafeArea(
             child: Stack(
               children: [
@@ -86,7 +88,7 @@ class _CarListState extends State<CarList> {
                                   physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   padding: const EdgeInsets.all(8),
-                                  itemCount: carModels.length,
+                                  itemCount: 11,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Padding(
@@ -203,19 +205,19 @@ class _CarListState extends State<CarList> {
                                                                             .size
                                                                             .height *
                                                                         0.03,
-                                                                    color: const Color
+                                                                    color: Color
                                                                         .fromARGB(
-                                                                        255,
-                                                                        167,
-                                                                        216,
-                                                                        255),
+                                                                            255,
+                                                                            154,
+                                                                            210,
+                                                                            255),
                                                                     child:
                                                                         Center(
                                                                       child: Text(
                                                                           'ป้ายทะเบียน',
                                                                           style: TextStyle(
                                                                               fontSize: 14,
-                                                                              color: Color.fromARGB(255, 255, 255, 255))),
+                                                                              color: MyStyle().color1)),
                                                                     ),
                                                                   ),
                                                                 ],
@@ -274,6 +276,13 @@ class _CarListState extends State<CarList> {
                                                             onPressed: () {
                                                               print(
                                                                   '${carModels[index].carID!}');
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            Speedticked_Add(),
+                                                                  ));
                                                             },
                                                             icon: Icon(
                                                               Icons
@@ -341,28 +350,14 @@ class _CarListState extends State<CarList> {
           Expanded(
               flex: 3,
               child: Text(
-                'รายการรถยนต์',
+                'รายการใบสั่งทั้งหมด',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
                 ),
               )),
-          Expanded(
-              flex: 1,
-              child: IconButton(
-                  onPressed: () {
-                    MaterialPageRoute route =
-                        MaterialPageRoute(builder: (context) => CarAdd());
-                    Navigator.push(context, route).then((value) {
-                      carModels.clear();
-                      loadAllCar();
-                      setState(() {
-                        loaddata = 'yes';
-                      });
-                    });
-                  },
-                  icon: Icon(Icons.add_circle, size: 30, color: Colors.white))),
+          Expanded(flex: 1, child: Container()),
         ],
       ),
     );

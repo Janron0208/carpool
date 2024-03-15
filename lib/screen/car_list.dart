@@ -1,24 +1,22 @@
 import 'dart:convert';
 
-import 'package:carpool/adminscreen/Speed_Ticked_add.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:carpool/adminscreen/car_add.dart';
+import 'package:carpool/screen/car_add.dart';
 import 'package:carpool/models/car_model.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 
-class SpeedTicked extends StatefulWidget {
-  const SpeedTicked({super.key});
+class CarList extends StatefulWidget {
+  const CarList({super.key});
 
   @override
-  State<SpeedTicked> createState() => _SpeedTickedState();
+  State<CarList> createState() => _CarListState();
 }
 
-class _SpeedTickedState extends State<SpeedTicked> {
+class _CarListState extends State<CarList> {
   List<CarModel> carModels = [];
   String? loaddata = 'yes';
   Map<String, String> data = {};
@@ -71,7 +69,7 @@ class _SpeedTickedState extends State<SpeedTicked> {
     return Scaffold(
       body: Stack(
         children: [
-          showBlackground(context),
+          MyStyle().BG_Image(context, 'bg2.jpg'),
           SafeArea(
             child: Stack(
               children: [
@@ -88,7 +86,7 @@ class _SpeedTickedState extends State<SpeedTicked> {
                                   physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   padding: const EdgeInsets.all(8),
-                                  itemCount: 11,
+                                  itemCount: carModels.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Padding(
@@ -205,19 +203,19 @@ class _SpeedTickedState extends State<SpeedTicked> {
                                                                             .size
                                                                             .height *
                                                                         0.03,
-                                                                    color: Color
+                                                                    color: const Color
                                                                         .fromARGB(
-                                                                            255,
-                                                                            154,
-                                                                            210,
-                                                                            255),
+                                                                        255,
+                                                                        167,
+                                                                        216,
+                                                                        255),
                                                                     child:
                                                                         Center(
                                                                       child: Text(
                                                                           'ป้ายทะเบียน',
                                                                           style: TextStyle(
                                                                               fontSize: 14,
-                                                                              color: MyStyle().color1)),
+                                                                              color: Color.fromARGB(255, 255, 255, 255))),
                                                                     ),
                                                                   ),
                                                                 ],
@@ -276,13 +274,6 @@ class _SpeedTickedState extends State<SpeedTicked> {
                                                             onPressed: () {
                                                               print(
                                                                   '${carModels[index].carID!}');
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            Speedticked_Add(),
-                                                                  ));
                                                             },
                                                             icon: Icon(
                                                               Icons
@@ -350,14 +341,28 @@ class _SpeedTickedState extends State<SpeedTicked> {
           Expanded(
               flex: 3,
               child: Text(
-                'รายการใบสั่งทั้งหมด',
+                'รายการรถยนต์',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
                 ),
               )),
-          Expanded(flex: 1, child: Container()),
+          Expanded(
+              flex: 1,
+              child: IconButton(
+                  onPressed: () {
+                    MaterialPageRoute route =
+                        MaterialPageRoute(builder: (context) => CarAdd());
+                    Navigator.push(context, route).then((value) {
+                      carModels.clear();
+                      loadAllCar();
+                      setState(() {
+                        loaddata = 'yes';
+                      });
+                    });
+                  },
+                  icon: Icon(Icons.add_circle, size: 30, color: Colors.white))),
         ],
       ),
     );

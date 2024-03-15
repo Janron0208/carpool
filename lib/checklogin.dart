@@ -1,6 +1,5 @@
-import 'package:carpool/adminscreen/main_page.dart';
+import 'package:carpool/screen/main_page.dart';
 import 'package:carpool/authen/login_page.dart';
-import 'package:carpool/userscreen/main_user.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,8 +1,8 @@
-import 'package:carpool/adminscreen/Speed_Ticked.dart';
-import 'package:carpool/adminscreen/account_list.dart';
-import 'package:carpool/adminscreen/account_verify.dart';
-import 'package:carpool/adminscreen/car_list.dart';
-import 'package:carpool/sharedscreen/reserve_menu.dart';
+import 'package:carpool/screen/Speed_Ticked.dart';
+import 'package:carpool/screen/account_list.dart';
+import 'package:carpool/screen/account_verify.dart';
+import 'package:carpool/screen/car_list.dart';
+import 'package:carpool/screen/reserve_chooseday.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -70,8 +70,10 @@ class _MainPageState extends State<MainPage> {
                                   splashColor: Color.fromARGB(255, 69, 153, 48)
                                       .withAlpha(30),
                                   onTap: () {
-                                    MyApi().NavigatorPushAnim(context,
-                                        PageTransitionType.fade, ReserveMenu());
+                                    MyApi().NavigatorPushAnim(
+                                        context,
+                                        PageTransitionType.fade,
+                                        ReserveChooseDay());
                                   },
                                   child: Material(
                                     color: Color.fromARGB(71, 255, 255, 255),
@@ -100,8 +102,10 @@ class _MainPageState extends State<MainPage> {
                                   splashColor: Color.fromARGB(255, 69, 153, 48)
                                       .withAlpha(30),
                                   onTap: () {
-                                    MyApi().NavigatorPushAnim(context,
-                                        PageTransitionType.fade, ReserveMenu());
+                                    MyApi().NavigatorPushAnim(
+                                        context,
+                                        PageTransitionType.fade,
+                                        ReserveChooseDay());
                                   },
                                   child: Material(
                                     color: Color.fromARGB(71, 255, 255, 255),

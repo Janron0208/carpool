@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:carpool/adminscreen/account_detail.dart';
+import 'package:carpool/screen/account_detail.dart';
 import 'package:carpool/models/user_model.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_style.dart';

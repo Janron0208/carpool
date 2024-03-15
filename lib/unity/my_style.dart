@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class MyStyle {
   Container BG_Image(BuildContext context, String string) {
@@ -115,6 +116,45 @@ class MyStyle {
       formatAmount(),
       style: TextStyle(fontSize: size, color: color, fontWeight: weight),
     );
+  }
+
+  String dateTypeDDMMYYYY(String? text) {
+    String changeDateTypeOne() {
+      // แปลง String เป็น DateTime
+      var dateTime = DateFormat('yyyy-MM-dd').parse(text!);
+      // รูปแบบวันที่ใหม่
+      var formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+
+      return formattedDate;
+    }
+
+    return changeDateTypeOne();
+  }
+
+  String dateTypeYYYYMMDD(String? text) {
+    String changeDateTypeOne() {
+      // แปลง String เป็น DateTime
+      var dateTime = DateFormat('yyyy-MM-dd').parse(text!);
+      // รูปแบบวันที่ใหม่
+      var formattedDate = DateFormat('yyyyMMdd').format(dateTime);
+
+      return formattedDate;
+    }
+
+    return changeDateTypeOne();
+  }
+
+  String dateTypeddmmyyyy(String? text) {
+    String changeDateTypeOne() {
+      // แปลง String เป็น DateTime
+      var dateTime = DateFormat('yyyyMMdd').parse(text!);
+      // รูปแบบวันที่ใหม่
+      var formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+
+      return formattedDate;
+    }
+
+    return changeDateTypeOne();
   }
 
   Color color1 = Color.fromARGB(255, 37, 63, 96);

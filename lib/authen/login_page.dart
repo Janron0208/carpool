@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'package:carpool/adminscreen/main_page.dart';
+import 'package:carpool/screen/main_page.dart';
 import 'package:carpool/authen/register_page.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
-import 'package:carpool/userscreen/main_user.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -294,7 +293,7 @@ class _LoginPageState extends State<LoginPage> {
 
     http.Response response = await http.get(url);
 
-    var data = json.decode(response.body);
+
     // print(response.body);
 
     if (response.body == '[]') {
