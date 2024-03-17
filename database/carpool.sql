@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2024 at 11:07 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Mar 17, 2024 at 06:06 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -52,7 +52,7 @@ INSERT INTO `account_tb` (`Acc_ID`, `Acc_Type`, `Acc_Code`, `Acc_Fullname`, `Acc
 ('ACC006', 'user', '27894', 'ณัฐพล ธรรมศักดิ์', 'ต้น', '0845678901', 'ton.tum', '25d55ad283aa400af464c76d713c07ad', 'Unauthorized'),
 ('ACC007', 'user', '85296', 'ชลธิชา ภักดีกุล', 'ฝน', '0856789012', 'fon.pakdee', '25d55ad283aa400af464c76d713c07ad', 'Actived'),
 ('ACC008', 'user', '74138', 'วรัญญู วงษ์ชัย', 'อั้ม', '0867890123', 'aum.wong', '25d55ad283aa400af464c76d713c07ad', 'Actived'),
-('ACC009', 'admin', '62514', 'ปิยะนุช ศรีสุวรรณ', 'ปุ้ย', '0878901234', 'puy.srisuwan', '25d55ad283aa400af464c76d713c07ad', 'Pending'),
+('ACC009', 'admin', '62514', 'ปิยะนุช ศรีสุวรรณ', 'ปุ้ย', '0878901234', 'puy.srisuwan', '25d55ad283aa400af464c76d713c07ad', 'Actived'),
 ('ACC010', 'user', '19537', 'ธนกฤต ใจมั่น', 'ตั้ม', '0889012345', 'tum.jaiman', '25d55ad283aa400af464c76d713c07ad', 'Actived'),
 ('ACC011', 'user', '48269', 'รัชนก แก้วใส', 'แก้ว', '0890123456', 'kaew.kaew', '25d55ad283aa400af464c76d713c07ad', 'Actived'),
 ('ACC012', 'user', '29175', 'นลินี ใจดี', 'ฝน', '0912345679', 'fon.jai', '25d55ad283aa400af464c76d713c07ad', 'Unauthorized'),
@@ -137,6 +137,15 @@ CREATE TABLE `log_tb` (
   `ACC_ID` text NOT NULL,
   `Log_Event` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `log_tb`
+--
+
+INSERT INTO `log_tb` (`Log_ID`, `Log_Date`, `ACC_ID`, `Log_Event`) VALUES
+('LOG0000000001', '20240316', 'ACC021', 'คุณ ณัฐพล จันทร์รอนฟิล์ม ได้เข้าสู่ระบบ เมื่อ 15:19 น.'),
+('LOG0000000002', '20240316', 'ACC021', 'คุณ ณัฐพล จันทร์รอน(ฟิล์ม) ได้เข้าสู่ระบบ เมื่อ 15:20 น.'),
+('LOG0000000003', '20240316', 'ACC021', 'คุณ ณัฐพล จันทร์รอน(ฟิล์ม) เข้าสู่ระบบ เมื่อวันที่ 16/03/2024 เวลา 15:25 น.');
 
 -- --------------------------------------------------------
 

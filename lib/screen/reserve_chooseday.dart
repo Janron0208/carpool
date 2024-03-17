@@ -205,7 +205,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                 padding: const EdgeInsets.only(bottom: 5),
                 child: Container(
                   width: MediaQuery.of(context).size.width * 1,
-                  height: MediaQuery.of(context).size.height * 0.15,
+                  // height: MediaQuery.of(context).size.height * 0.13,
                   child: Material(
                     color: Color.fromARGB(125, 255, 255, 255),
                     borderRadius: BorderRadius.circular(15),
@@ -264,71 +264,64 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                                   width:
                                       MediaQuery.of(context).size.width * 0.43,
                                   child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                                '${carModels[index].carBrand!}',
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                                '${carModels[index].carModel!}',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Color.fromARGB(
-                                                        255, 151, 151, 151))),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.23,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.03,
-                                              color: const Color.fromARGB(
-                                                  255, 167, 216, 255),
-                                              child: Center(
-                                                child: Text('ป้ายทะเบียน',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Color.fromARGB(
-                                                            255,
-                                                            255,
-                                                            255,
-                                                            255))),
-                                              ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.23,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.03,
+                                            color: MyStyle().color2,
+                                            child: Center(
+                                              child: Text('ป้ายทะเบียน',
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Color.fromARGB(
+                                                          255, 255, 255, 255))),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                                '${carModels[index].carNumber!}',
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: const Color.fromARGB(
-                                                        255, 68, 68, 68))),
-                                          ],
-                                        ),
+                                      Row(
+                                        children: [
+                                          Text('${carModels[index].carNumber!}',
+                                              style: TextStyle(
+                                                  fontSize: 27,
+                                                  color: const Color.fromARGB(
+                                                      255, 68, 68, 68))),
+                                        ],
                                       ),
+                                      // Expanded(
+                                      //   child: Row(
+                                      //     children: [
+                                      //       Text(
+                                      //           '${carModels[index].carBrand!}',
+                                      //           style: TextStyle(
+                                      //               fontSize: 20,
+                                      //               fontWeight:
+                                      //                   FontWeight.bold)),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                      // Expanded(
+                                      //   child: Row(
+                                      //     children: [
+                                      //       Text(
+                                      //           '${carModels[index].carModel!}',
+                                      //           style: TextStyle(
+                                      //               fontSize: 16,
+                                      //               color: Color.fromARGB(
+                                      //                   255, 151, 151, 151))),
+                                      //     ],
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -443,6 +436,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
           onValueChanged: (dates) {
             setState(() {
               _rangeDatePickerValueWithDefaultValue = dates;
+              print(_rangeDatePickerValueWithDefaultValue);
             });
           },
         ),
@@ -467,7 +461,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
     DateTime dateTime = DateFormat('yyyy-MM-dd HH:mm:ss.SSS').parse('$string!');
 
     // แปลง DateTime เป็น String รูปแบบ dd-MM-yyyy
-    String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
+    String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
 
     // แสดงผลลัพธ์
     return formattedDate; // 12-03-2024
@@ -557,7 +551,13 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
               ),
             ),
           ),
-          Expanded(flex: 1, child: Container()),
+          Expanded(
+              flex: 1,
+              child: IconButton(
+                  tooltip: 'ตารางคิวการจอง',
+                  onPressed: () {},
+                  icon: Icon(Icons.calendar_month,
+                      size: 30, color: Colors.white))),
         ],
       ),
     );

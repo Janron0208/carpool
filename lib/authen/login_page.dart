@@ -6,6 +6,7 @@ import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -284,7 +285,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  List<dynamic> data = [];
+  // List<dynamic> data = [];
 
   void checknullCode() async {
     final url = await Uri.parse(
@@ -292,7 +293,6 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     http.Response response = await http.get(url);
-
 
     // print(response.body);
 
@@ -353,6 +353,7 @@ class _LoginPageState extends State<LoginPage> {
         print('สวัสดีผู้ใช้งานทั่วไป ');
         routeTuService(MainPage(), data);
         MyPopup().showToast(context, 'เข้าสู่ระบบสำเร็จ');
+        insertLogEvent();
         setState(() {
           processing = 'no';
         });
@@ -360,6 +361,7 @@ class _LoginPageState extends State<LoginPage> {
         routeTuService(MainPage(), data);
         print('สวัสดีแอดมิน ');
         MyPopup().showToast(context, 'เข้าสู่ระบบสำเร็จ');
+        insertLogEvent();
         setState(() {
           processing = 'no';
         });
@@ -374,6 +376,49 @@ class _LoginPageState extends State<LoginPage> {
         processing = 'no';
         MyPopup().showError(context, 'คุณไม่ผ่านการอนุมัติกรุณาติดต่อแอดมิน');
       });
+    }
+  }
+
+  void insertLogEvent() async {
+    final url2 = await Uri.parse(
+      '${MyConstant().domain}/carpool/authen/getUserByCode.php?Acc_Code=$accCode',
+    );
+
+    http.Response response = await http.get(url2);
+
+    var data = json.decode(response.body);
+
+    var now = DateTime.now();
+    var formatterDate = DateFormat('yyyyMMdd').format(now);
+    var formatterTime = DateFormat('HH:mm').format(now);
+    var formattershowTime = DateFormat('dd/MM/yyyy').format(now);
+
+    // print(data[0]['Acc_ID']);
+    // print(formatterDate);
+    // print('${data[0]['Acc_Fullname']} ได้เข้าสู่ระบบ เมื่อ $formatterTime น.');
+    // print(formatterDate);
+
+    // เตรียม URL สำหรับการส่งค่าไปยัง PHP
+    var url1 =
+        Uri.parse('${MyConstant().domain}/carpool/log/insertLogevent.php');
+
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    var response1 = await http.post(
+      url1,
+      body: {
+        'accID': data[0]['Acc_ID'],
+        'logDate': formatterDate,
+        'logEvent':
+            'คุณ ${data[0]['Acc_Fullname']}(${data[0]['Acc_Nickname']}) เข้าสู่ระบบ เมื่อวันที่ $formattershowTime เวลา $formatterTime น.'
+      },
+    );
+
+    if (response1.statusCode == 200) {
+      // Success
+      print('Success');
+    } else {
+      // Error
+      print('Error');
     }
   }
 
