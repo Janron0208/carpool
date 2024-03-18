@@ -2,14 +2,14 @@ import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
 
-class TemplatePage extends StatefulWidget {
-  const TemplatePage({super.key});
+class ReserveShowTable extends StatefulWidget {
+  const ReserveShowTable({super.key});
 
   @override
-  State<TemplatePage> createState() => _TemplatePageState();
+  State<ReserveShowTable> createState() => _ReserveShowTableState();
 }
 
-class _TemplatePageState extends State<TemplatePage> {
+class _ReserveShowTableState extends State<ReserveShowTable> {
   String? loaddata = 'no';
 
   @override
@@ -71,7 +71,7 @@ class _TemplatePageState extends State<TemplatePage> {
           Expanded(
               flex: 3,
               child: Text(
-                'Text',
+                'ตารางจองรถ',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,

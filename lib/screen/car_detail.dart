@@ -76,7 +76,7 @@ class _CarDetailState extends State<CarDetail> {
                     Icons.post_add_rounded,
                     color: MyStyle().color6,
                   ),
-                  MyStyle().showTextSC('จองเลย', 18, MyStyle().color6),
+                  MyStyle().showTextSC(context,'จองเลย', 18, MyStyle().color6),
                 ],
               )),
         ),
@@ -106,14 +106,14 @@ class _CarDetailState extends State<CarDetail> {
                                       children: [
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextSCW(
+                                            child: MyStyle().showTextSCW(context,
                                                 'ยี่ห้อ :',
                                                 18,
                                                 FontWeight.bold,
                                                 MyStyle().color1)),
                                         Expanded(
                                             flex: 4,
-                                            child: MyStyle().showTextSCW(
+                                            child: MyStyle().showTextSCW(context,
                                                 '${carModels[0].carBrand}',
                                                 16,
                                                 FontWeight.normal,
@@ -125,14 +125,14 @@ class _CarDetailState extends State<CarDetail> {
                                       children: [
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextSCW(
+                                            child: MyStyle().showTextSCW(context,
                                                 'รุ่น/โมเดล :',
                                                 18,
                                                 FontWeight.bold,
                                                 MyStyle().color1)),
                                         Expanded(
                                             flex: 4,
-                                            child: MyStyle().showTextSCW(
+                                            child: MyStyle().showTextSCW(context,
                                                 '${carModels[0].carModel}',
                                                 16,
                                                 FontWeight.normal,
@@ -144,14 +144,14 @@ class _CarDetailState extends State<CarDetail> {
                                       children: [
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextSCW(
+                                            child: MyStyle().showTextSCW(context,
                                                 'เลขทะเบียน :',
                                                 18,
                                                 FontWeight.bold,
                                                 MyStyle().color1)),
                                         Expanded(
                                             flex: 4,
-                                            child: MyStyle().showTextSCW(
+                                            child: MyStyle().showTextSCW(context,
                                                 '${carModels[0].carNumber}',
                                                 16,
                                                 FontWeight.normal,
@@ -163,7 +163,7 @@ class _CarDetailState extends State<CarDetail> {
                                       children: [
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextSCW(
+                                            child: MyStyle().showTextSCW(context,
                                                 'เลขไมล์ล่าสุด :',
                                                 18,
                                                 FontWeight.bold,
@@ -177,7 +177,7 @@ class _CarDetailState extends State<CarDetail> {
                                                     16,
                                                     MyStyle().color3,
                                                     FontWeight.normal),
-                                                MyStyle().showTextSCW(
+                                                MyStyle().showTextSCW(context,
                                                     ' กิโลเมตร',
                                                     16,
                                                     FontWeight.normal,

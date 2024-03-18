@@ -1,30 +1,71 @@
+import 'package:carpool/unity/my_constant.dart';
+import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AddReserve {
-  
-  showFormReserve(BuildContext context, String text0,String text1, String text2) {
-    Scaffold alert = Scaffold(
+class ReserveAdd extends StatefulWidget {
+  final String carNumber, start, end, fullname, carID;
+  const ReserveAdd({
+    super.key,
+    required this.carNumber,
+    required this.start,
+    required this.end,
+    required this.fullname,
+    required this.carID,
+  });
+
+  @override
+  State<ReserveAdd> createState() => _ReserveAddState();
+}
+
+class _ReserveAddState extends State<ReserveAdd> {
+  String? accID;
+
+  @override
+  void initState() {
+    getUserData();
+
+    super.initState();
+  }
+
+  Future<Null> getUserData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      accID = preferences.getString('Acc_ID')!;
+      print(accID);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       backgroundColor: Color.fromARGB(141, 187, 187, 187),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                decoration: new BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: new BorderRadius.circular(20)),
-                child: SingleChildScrollView(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  decoration: new BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: new BorderRadius.circular(20)),
                   child: IntrinsicHeight(
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            MyStyle().showTextSCW('   กรอกข้อมูลการจอง ', 19,
-                                FontWeight.bold, MyStyle().color1),
+                            MyStyle().showTextSCW(
+                                context,
+                                '   กรอกข้อมูลการจอง ',
+                                MediaQuery.of(context).size.width / 20,
+                                FontWeight.bold,
+                                MyStyle().color1),
                             Spacer(),
                             IconButton(
                                 onPressed: () {
@@ -44,13 +85,19 @@ class AddReserve {
                                     Expanded(
                                         flex: 2,
                                         child: MyStyle().showTextSC(
+                                            context,
                                             'ทะเบียนรถ : ',
-                                            16,
+                                            MediaQuery.of(context).size.width /
+                                                17,
                                             MyStyle().color3)),
                                     Expanded(
                                         flex: 4,
                                         child: MyStyle().showTextSC(
-                                            '$text0', 17, MyStyle().color1)),
+                                            context,
+                                            '${widget.carNumber}',
+                                            MediaQuery.of(context).size.width /
+                                                17,
+                                            MyStyle().color1)),
                                   ],
                                 ),
                                 Row(
@@ -58,13 +105,21 @@ class AddReserve {
                                     Expanded(
                                         flex: 2,
                                         child: MyStyle().showTextSC(
+                                            context,
                                             'วันที่เบิกใช้รถ : ',
-                                            16,
+                                            MediaQuery.of(context).size.width /
+                                                17,
                                             MyStyle().color3)),
                                     Expanded(
                                         flex: 4,
                                         child: MyStyle().showTextSC(
-                                            '$text1', 17, MyStyle().color1)),
+                                            context,
+                                            widget.start == widget.end
+                                                ? dateTypeddmmyyyy(widget.start)
+                                                : '${dateTypeddmmyyyy(widget.start)} - ${dateTypeddmmyyyy(widget.end)}',
+                                            MediaQuery.of(context).size.width /
+                                                17,
+                                            MyStyle().color1)),
                                   ],
                                 ),
                                 Row(
@@ -72,21 +127,28 @@ class AddReserve {
                                     Expanded(
                                         flex: 2,
                                         child: MyStyle().showTextSC(
+                                            context,
                                             'ผู้เบิกใช้รถ : ',
-                                            16,
+                                            MediaQuery.of(context).size.width /
+                                                17,
                                             MyStyle().color3)),
                                     Expanded(
                                         flex: 4,
                                         child: MyStyle().showTextSC(
-                                            '$text2', 17, MyStyle().color1)),
+                                            context,
+                                            '${widget.fullname}',
+                                            MediaQuery.of(context).size.width /
+                                                17,
+                                            MyStyle().color1)),
                                   ],
                                 ),
                                 SizedBox(height: 5),
                                 Row(
                                   children: [
                                     MyStyle().showTextSC(
+                                        context,
                                         'โครงการ/งาน/สถานที่/จังหวัด',
-                                        17,
+                                        MediaQuery.of(context).size.width / 18,
                                         MyStyle().color3),
                                   ],
                                 ),
@@ -95,11 +157,11 @@ class AddReserve {
                                   // height: 200,
                                   child: TextFormField(
                                     maxLines: 3,
-                                    // onChanged: (value) {
-                                    //   setState(() {
-                                    //     line = value.trim();
-                                    //   });
-                                    // },
+                                    onChanged: (value) {
+                                      setState(() {
+                                        inputproject = value.trim();
+                                      });
+                                    },
                                     style: TextStyle(
                                         color:
                                             Color.fromARGB(255, 112, 112, 112),
@@ -157,6 +219,7 @@ class AddReserve {
                                       ),
                                     ),
                                     onPressed: () {
+                                      checkNull(context);
                                       // CheckNullText();
 
                                       // print('$code , $password');
@@ -179,18 +242,165 @@ class AddReserve {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    );
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
     );
   }
 
-  AddReserve();
+  String dateTypeddmmyyyy(String? text) {
+    String changeDateTypeOne() {
+      String dateString = '$text';
+      String year = dateString.substring(0, 4);
+      int intyear = int.parse(year) + 543;
+      String th_year = '$intyear';
+      String month = dateString.substring(4, 6);
+      String day = dateString.substring(6, 8);
+      String formattedDate = '$day/$month/$th_year';
+
+      return formattedDate;
+    }
+
+    return changeDateTypeOne();
+  }
+
+  String? inputproject;
+
+  Future<Null> checkNull(context) async {
+    if (inputproject == null || inputproject!.isEmpty) {
+      MyPopup().showError(context, 'กรุณากรอกโครงการหรือสถานที่');
+    } else {
+      askToConfirm();
+    }
+  }
+
+  Future<Null> askToConfirm() async {
+    showDialog(
+      context: context,
+      builder: (context) => Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Padding(
+          padding: EdgeInsets.all(60),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(220, 255, 255, 255),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
+                        )),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyStyle().showTextSC(context, 'ยืนยันการจอง', 15,
+                              Color.fromARGB(255, 29, 29, 29)),
+                          SizedBox(height: 20),
+                          Center(
+                            child: MyStyle().showTextSC(
+                                context,
+                                'เมื่อทำการจองแล้วสามารถยกเลิกได้ทุกเมื่อ',
+                                23,
+                                const Color.fromARGB(255, 66, 66, 66)),
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 0.2),
+                child: Container(
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(220, 255, 255, 255),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30.0),
+                            bottomRight: Radius.circular(30.0),
+                          )),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              insertDataToReserveTB();
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text('จอง',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 72, 209, 72),
+                                      fontSize: 18,
+                                    )),
+                              ),
+                            ),
+                          ),
+                          VerticalDivider(),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text('ปิด',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 216, 71, 71),
+                                      fontSize: 18,
+                                    )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<Null> insertDataToReserveTB() async {
+    print('${inputproject}');
+    print('${widget.start}');
+    print('${widget.end}');
+    print('${widget.carID}');
+    print('${accID}');
+
+    var url =
+        Uri.parse('${MyConstant().domain}/carpool/reserve/insertReserve.php');
+
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    var response = await http.post(
+      url,
+      body: {
+        'Res_Project': '$inputproject',
+        'Res_StartDate': '${widget.start}',
+        'Res_EndDate': '${widget.end}',
+        'Car_ID': '${widget.carID}',
+        'Acc_ID': '$accID'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Success
+      print('Success');
+      MyPopup().showToast(context, 'จองสำเร็จแล้ว');
+      Navigator.pop(context);
+      Navigator.pop(context);
+    } else {
+      // Error
+      print('Error');
+    }
+  }
 }

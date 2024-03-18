@@ -77,12 +77,13 @@ class _AccountDetailState extends State<AccountDetail> {
                                         Expanded(
                                             flex: 1,
                                             child: MyStyle().showTextS(
-                                                'รหัสพนักกงาน :', 15)),
+                                                context, 'รหัสพนักกงาน :', 23)),
                                         Expanded(
                                             flex: 2,
                                             child: MyStyle().showTextS(
+                                                context,
                                                 '${userModels[0].accCode}',
-                                                16)),
+                                                23)),
                                       ],
                                     ),
                                     Divider(),
@@ -90,13 +91,14 @@ class _AccountDetailState extends State<AccountDetail> {
                                       children: [
                                         Expanded(
                                             flex: 1,
-                                            child: MyStyle().showTextS(
-                                                'ชื่อ - นามสกุล :', 15)),
+                                            child: MyStyle().showTextS(context,
+                                                'ชื่อ - นามสกุล :', 23)),
                                         Expanded(
                                             flex: 2,
                                             child: MyStyle().showTextS(
+                                                context,
                                                 '${userModels[0].accFullname}',
-                                                16)),
+                                                23)),
                                       ],
                                     ),
                                     Divider(),
@@ -104,13 +106,27 @@ class _AccountDetailState extends State<AccountDetail> {
                                       children: [
                                         Expanded(
                                             flex: 1,
-                                            child: MyStyle()
-                                                .showTextS('ชื่อเล่น :', 15)),
+                                            child: MyStyle().showTextS(
+                                                context, 'ชื่อเล่น :', 23)),
                                         Expanded(
                                             flex: 2,
                                             child: MyStyle().showTextS(
+                                                context,
                                                 '${userModels[0].accNickname}',
-                                                16)),
+                                                23)),
+                                      ],
+                                    ),
+                                    Divider(),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 1,
+                                            child: MyStyle().showTextS(context,
+                                                'เบอร์โทรศัพท์ :', 23)),
+                                        Expanded(
+                                            flex: 2,
+                                            child: MyStyle().showTextS(context,
+                                                '${userModels[0].accTel}', 23)),
                                       ],
                                     ),
                                     Divider(),
@@ -119,25 +135,13 @@ class _AccountDetailState extends State<AccountDetail> {
                                         Expanded(
                                             flex: 1,
                                             child: MyStyle().showTextS(
-                                                'เบอร์โทรศัพท์ :', 15)),
+                                                context, 'Line ID :', 23)),
                                         Expanded(
                                             flex: 2,
                                             child: MyStyle().showTextS(
-                                                '${userModels[0].accTel}', 16)),
-                                      ],
-                                    ),
-                                    Divider(),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 1,
-                                            child: MyStyle()
-                                                .showTextS('Line ID :', 15)),
-                                        Expanded(
-                                            flex: 2,
-                                            child: MyStyle().showTextS(
+                                                context,
                                                 '${userModels[0].accLine}',
-                                                16)),
+                                                23)),
                                       ],
                                     ),
                                     Divider(),
@@ -146,9 +150,9 @@ class _AccountDetailState extends State<AccountDetail> {
                                         : Row(
                                             children: [
                                               Spacer(),
-                                              MyStyle().showTextS(
-                                                  'ประเภทบัญชี : ', 15),
-                                              MyStyle().showTextSC(
+                                              MyStyle().showTextS(context,
+                                                  'ประเภทบัญชี : ', 22),
+                                              MyStyle().showTextSC(context,
                                                   '${userModels[0].accType}',
                                                   18,
                                                   userModels[0].accType ==

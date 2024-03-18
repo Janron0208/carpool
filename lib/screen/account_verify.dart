@@ -203,7 +203,7 @@ class _AccountVerifyState extends State<AccountVerify> {
                                                       )),
                                                   Expanded(
                                                       flex: 2,
-                                                      child: MyStyle().showTextSCW(
+                                                      child: MyStyle().showTextSCW(context,
                                                           '${userModels[index].accType!}',
                                                           18,
                                                           FontWeight.normal,

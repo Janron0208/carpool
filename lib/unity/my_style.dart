@@ -21,24 +21,24 @@ class MyStyle {
     );
   }
 
-  Text showTextSCW(String text, double size, FontWeight weight, Color color) {
+  Text showTextSCW(context,String text, double size, FontWeight weight, Color color) {
     return Text(
       text,
-      style: TextStyle(fontSize: size, color: color, fontWeight: weight),
+      style: TextStyle(fontSize: MediaQuery.of(context).size.width / size, color: color, fontWeight: weight),
     );
   }
 
-  Text showTextS(String text, double size) {
+  Text showTextS(context, String text, double size) {
     return Text(
       text,
-      style: TextStyle(fontSize: size),
+      style: TextStyle(fontSize: MediaQuery.of(context).size.width / size),
     );
   }
 
-  Text showTextSC(String text, double size, Color color) {
+  Text showTextSC(context,String text, double size, Color color) {
     return Text(
       text,
-      style: TextStyle(fontSize: size, color: color),
+      style: TextStyle(fontSize: MediaQuery.of(context).size.width / size, color: color),
     );
   }
 
@@ -146,10 +146,13 @@ class MyStyle {
 
   String dateTypeddmmyyyy(String? text) {
     String changeDateTypeOne() {
-      // แปลง String เป็น DateTime
-      var dateTime = DateFormat('yyyyMMdd').parse(text!);
-      // รูปแบบวันที่ใหม่
-      var formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+      String dateString = '$text';
+      String year = dateString.substring(0, 4);
+      int intyear = int.parse(year) + 543;
+      String th_year = '$intyear';
+      String month = dateString.substring(4, 6);
+      String day = dateString.substring(6, 8);
+      String formattedDate = '$day/$month/$th_year';
 
       return formattedDate;
     }

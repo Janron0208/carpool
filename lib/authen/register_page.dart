@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:carpool/unity/my_style.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
@@ -30,58 +31,62 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Stack(
         children: [
           MyStyle().BG_Image(context, 'bg2.jpg'),
-          SafeArea(
-            child: Stack(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 1,
-                  height: MediaQuery.of(context).size.height * 1,
-                  child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 60, left: 10, right: 10, bottom: 10),
-                      child: Material(
-                        color: Color.fromARGB(181, 255, 255, 255),
-                        borderRadius: BorderRadius.circular(20),
-                        elevation: 8,
-                        child: SingleChildScrollView(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 1,
-                            height: MediaQuery.of(context).size.height * 1,
-                            child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: showContent(context)),
+          GestureDetector(
+            onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+            behavior: HitTestBehavior.opaque,
+            child: SafeArea(
+              child: Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 1,
+                    height: MediaQuery.of(context).size.height * 1,
+                    child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 60, left: 10, right: 10, bottom: 10),
+                        child: Material(
+                          color: Color.fromARGB(181, 255, 255, 255),
+                          borderRadius: BorderRadius.circular(20),
+                          elevation: 8,
+                          child: SingleChildScrollView(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 1,
+                              height: MediaQuery.of(context).size.height * 1,
+                              child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: showContent(context)),
+                            ),
                           ),
-                        ),
-                      )),
-                ),
-                showheadBar(context),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(13),
-                    child: Container(
-                      width: 80,
-                      height: 70,
-                      child: FloatingActionButton(
-                          onPressed: () {
-                            checkNullText();
-                          },
-                          backgroundColor: MyStyle().color1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.save_alt,
-                                color: MyStyle().color6,
-                              ),
-                              MyStyle()
-                                  .showTextSC('ยืนยัน', 18, MyStyle().color6),
-                            ],
-                          )),
+                        )),
+                  ),
+                  showheadBar(context),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(13),
+                      child: Container(
+                        width: 80,
+                        height: 70,
+                        child: FloatingActionButton(
+                            onPressed: () {
+                              checkNullText();
+                            },
+                            backgroundColor: MyStyle().color1,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.save_alt,
+                                  color: MyStyle().color6,
+                                ),
+                                MyStyle().showTextSC(
+                                    context, 'ยืนยัน', 18, MyStyle().color6),
+                              ],
+                            )),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )
         ],
@@ -519,11 +524,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          MyStyle().showTextSC('ยืนยันการลงทะเบียน', 23,
-                              Color.fromARGB(255, 29, 29, 29)),
+                          MyStyle().showTextSC(context, 'ยืนยันการลงทะเบียน',
+                              23, Color.fromARGB(255, 29, 29, 29)),
                           SizedBox(height: 20),
                           Center(
                             child: MyStyle().showTextSC(
+                                context,
                                 'เมื่อทำการลงทะเบียนแล้วกรุณารอทางแอดมินอนุมัติสิทธิการเข้าใช้งาน',
                                 15,
                                 const Color.fromARGB(255, 66, 66, 66)),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:carpool/screen/reserve_add.dart';
 import 'package:carpool/screen/reserve_result_search.dart';
+import 'package:carpool/screen/reserve_showtable.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -96,7 +97,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
 
     print(response.body);
 
-    if (response.body == 'ไม่พบรถที่ว่าง') {
+    if (response.body == '[]') {
       setState(() {
         loaddata = 'no';
         nodata = 'yes';
@@ -109,7 +110,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
           CarModel carModel = CarModel.fromJson(item);
           setState(() {
             carModels.add(carModel);
-            print(carModels.length);
+            print(carModel.carID);
           });
           setState(() {
             loaddata = 'no';
@@ -147,11 +148,13 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Image.asset('images/error.gif'),
+                                  Image.asset('images/error.gif',
+                                      scale: MediaQuery.of(context).size.width /
+                                          400),
                                   SizedBox(height: 30),
-                                  MyStyle().showTextSCW(
+                                  MyStyle().showTextSCW(context,
                                       'ไม่มีรถพร้อมใช้ในวันนี้',
-                                      25,
+                                      MediaQuery.of(context).size.width / 20,
                                       FontWeight.bold,
                                       MyStyle().color1)
                                 ],
@@ -212,12 +215,21 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                     clipBehavior: Clip.hardEdge,
                     child: InkWell(
                       onTap: () {
-                        AddReserve().showFormReserve(
+                        MyApi().NavigatorPushAnim(
                             context,
-                            '${carModels[index].carNumber}',
-                            start == end ? '$start' : '$start - $end',
-                            '$fullname');
-                        print('${carModels[index].carID!}');
+                            PageTransitionType.fade,
+                            ReserveAdd(
+                                carNumber: '${carModels[index].carNumber}',
+                                start: '$start',
+                                end: start == end ? '$start' : '$end',
+                                fullname: '$fullname',
+                                carID: '${carModels[index].carID!}'));
+                        // AddReserve(
+                        //     contet,
+                        //     '${carModels[index].carNumber}',
+                        //     start == end ? '$start' : '$start - $end',
+                        //     '$fullname');
+                        // print('${carModels[index].carID!}');
                         // MaterialPageRoute route = MaterialPageRoute(
                         //     builder: (context) => ReserveAdd(
                         //         // carID: '${carModels[index].carID}',
@@ -282,7 +294,11 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                                             child: Center(
                                               child: Text('ป้ายทะเบียน',
                                                   style: TextStyle(
-                                                      fontSize: 14,
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              30,
                                                       color: Color.fromARGB(
                                                           255, 255, 255, 255))),
                                             ),
@@ -293,7 +309,11 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                                         children: [
                                           Text('${carModels[index].carNumber!}',
                                               style: TextStyle(
-                                                  fontSize: 27,
+                                                  fontSize:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width /
+                                                          15,
                                                   color: const Color.fromARGB(
                                                       255, 68, 68, 68))),
                                         ],
@@ -344,6 +364,10 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                                       ),
                                     ),
                                   ),
+                                  Text(
+                                    '${carModels[index].carID!}',
+                                    style: TextStyle(fontSize: 10),
+                                  )
                                   // IconButton(
                                   //     onPressed: () {
                                   //       print(
@@ -393,7 +417,9 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
           child: ElevatedButton.icon(
             label: Text(
               'ค้นหารถที่ว่าง',
-              style: TextStyle(color: MyStyle().color1, fontSize: 20),
+              style: TextStyle(
+                  color: MyStyle().color1,
+                  fontSize: MediaQuery.of(context).size.width / 20),
             ),
             icon: Icon(Icons.search_rounded, color: MyStyle().color1),
             onPressed: () {
@@ -519,7 +545,8 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                         : Navigator.pop(context);
                   },
                   icon: Icon(!_visible ? Icons.search : Icons.arrow_back_ios,
-                      size: 30, color: Colors.white))),
+                      size: MediaQuery.of(context).size.width / 15,
+                      color: Colors.white))),
           Expanded(
             flex: 4,
             child: Center(
@@ -532,7 +559,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                       'เลือกวันที่ทำการจอง',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 25,
+                        fontSize: MediaQuery.of(context).size.width / 16,
                       ),
                     ),
                   ),
@@ -543,7 +570,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                       'รถยนต์ที่พร้อมใช้',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 25,
+                        fontSize: MediaQuery.of(context).size.width / 16,
                       ),
                     ),
                   ),
@@ -555,7 +582,10 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
               flex: 1,
               child: IconButton(
                   tooltip: 'ตารางคิวการจอง',
-                  onPressed: () {},
+                  onPressed: () {
+                    MyApi().NavigatorPushAnim(context,
+                        PageTransitionType.topToBottom, ReserveShowTable());
+                  },
                   icon: Icon(Icons.calendar_month,
                       size: 30, color: Colors.white))),
         ],

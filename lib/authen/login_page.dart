@@ -27,18 +27,22 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          showContent(context),
-          processing == 'no'
-              ? Container()
-              : Container(
-                  height: MediaQuery.of(context).size.height * 1,
-                  width: MediaQuery.of(context).size.width * 1,
-                  color: Color.fromARGB(132, 255, 255, 255),
-                  child: MyPopup().showProcessing(),
-                )
-        ],
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        behavior: HitTestBehavior.opaque,
+        child: Stack(
+          children: [
+            showContent(context),
+            processing == 'no'
+                ? Container()
+                : Container(
+                    height: MediaQuery.of(context).size.height * 1,
+                    width: MediaQuery.of(context).size.width * 1,
+                    color: Color.fromARGB(132, 255, 255, 255),
+                    child: MyPopup().showProcessing(),
+                  )
+          ],
+        ),
       ),
     );
   }
@@ -72,9 +76,9 @@ class _LoginPageState extends State<LoginPage> {
               // ),
               showLogoSVOA(context),
               SizedBox(height: 1),
-              MyStyle().showTextSCW(
+              MyStyle().showTextSCW(context,
                   'Carpool', 70, FontWeight.bold, MyStyle().color1),
-              MyStyle().showTextSC(
+              MyStyle().showTextSC(context,
                   'แอปพลิเคชันการจองรถยนต์บริษัท', 15, MyStyle().color1),
               SizedBox(height: 35),
               Padding(
@@ -164,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                                 PageTransitionType.fade, RegisterPage());
                           },
                           child: MyStyle()
-                              .showTextSC('สมัครสมาชิก', 18, MyStyle().color1),
+                              .showTextSC(context,'สมัครสมาชิก', 18, MyStyle().color1),
                         )
                       ],
                     ),

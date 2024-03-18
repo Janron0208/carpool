@@ -3,6 +3,7 @@ import 'package:carpool/screen/account_list.dart';
 import 'package:carpool/screen/account_verify.dart';
 import 'package:carpool/screen/car_list.dart';
 import 'package:carpool/screen/reserve_chooseday.dart';
+import 'package:carpool/screen/using_checkin.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -52,7 +53,8 @@ class _MainPageState extends State<MainPage> {
                             Text('ยินดีต้อนรับ $nickname',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 30,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width / 15,
                                     fontWeight: FontWeight.bold)),
                           ],
                         ),
@@ -84,14 +86,20 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         Icon(
                                           Icons.calendar_month_rounded,
-                                          size: 60,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              8,
                                           color: Colors.white,
                                         ),
                                         SizedBox(height: 10),
                                         Text(
                                           'จองรถ',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  20,
                                               color: Colors.white),
                                         )
                                       ],
@@ -105,7 +113,7 @@ class _MainPageState extends State<MainPage> {
                                     MyApi().NavigatorPushAnim(
                                         context,
                                         PageTransitionType.fade,
-                                        ReserveChooseDay());
+                                        UsingCheckIn());
                                   },
                                   child: Material(
                                     color: Color.fromARGB(71, 255, 255, 255),
@@ -116,14 +124,20 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         Icon(
                                           Icons.car_rental_rounded,
-                                          size: 60,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              8,
                                           color: Colors.white,
                                         ),
                                         SizedBox(height: 10),
                                         Text(
                                           'กำลังใช้งาน',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  20,
                                               color: Colors.white),
                                         )
                                       ],
@@ -146,14 +160,20 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         Icon(
                                           Icons.people,
-                                          size: 60,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              8,
                                           color: Colors.white,
                                         ),
                                         SizedBox(height: 10),
                                         Text(
                                           'รายชื่อผู้ใช้ระบบ',
                                           style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  20,
                                               color: Colors.white),
                                         )
                                       ],
@@ -176,14 +196,20 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         Icon(
                                           Icons.drive_eta,
-                                          size: 60,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              8,
                                           color: Colors.white,
                                         ),
                                         SizedBox(height: 10),
                                         Text(
                                           'รถยนต์',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  20,
                                               color: Colors.white),
                                         )
                                       ],
@@ -208,14 +234,20 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         Icon(
                                           Icons.verified,
-                                          size: 60,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              8,
                                           color: Colors.white,
                                         ),
                                         SizedBox(height: 10),
                                         Text(
                                           'อนุมัติสิทธิ',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  20,
                                               color: Colors.white),
                                         )
                                       ],
@@ -238,14 +270,20 @@ class _MainPageState extends State<MainPage> {
                                       children: [
                                         Icon(
                                           Icons.file_copy,
-                                          size: 60,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              8,
                                           color: Colors.white,
                                         ),
                                         SizedBox(height: 10),
                                         Text(
                                           'ใบสั่ง',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  20,
                                               color: Colors.white),
                                         )
                                       ],
@@ -281,7 +319,7 @@ class _MainPageState extends State<MainPage> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 23,
+                    fontSize: MediaQuery.of(context).size.width / 20,
                     fontWeight: FontWeight.bold),
               )),
           Expanded(

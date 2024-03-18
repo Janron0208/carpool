@@ -100,13 +100,13 @@ class _AccountListState extends State<AccountList> {
                                             children: [
                                               Expanded(
                                                   flex: 4,
-                                                  child: MyStyle().showTextSC(
+                                                  child: MyStyle().showTextSC(context,
                                                       'ชื่อผู้ใช้',
                                                       18,
                                                       Colors.white)),
                                               Expanded(
                                                   flex: 2,
-                                                  child: MyStyle().showTextSC(
+                                                  child: MyStyle().showTextSC(context,
                                                       'ประเภท',
                                                       18,
                                                       Colors.white)),
@@ -145,7 +145,7 @@ class _AccountListState extends State<AccountList> {
                                                         )),
                                                     Expanded(
                                                         flex: 2,
-                                                        child: MyStyle().showTextSCW(
+                                                        child: MyStyle().showTextSCW(context,
                                                             '${userModels[index].accType!}',
                                                             18,
                                                             FontWeight.normal,
