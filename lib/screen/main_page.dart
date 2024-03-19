@@ -3,7 +3,7 @@ import 'package:carpool/screen/account_list.dart';
 import 'package:carpool/screen/account_verify.dart';
 import 'package:carpool/screen/car_list.dart';
 import 'package:carpool/screen/reserve_chooseday.dart';
-import 'package:carpool/screen/using_checkin.dart';
+import 'package:carpool/screen/using_waiting.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -23,11 +23,15 @@ class _MainPageState extends State<MainPage> {
     super.initState();
   }
 
+  String fullname = ' ';
   String nickname = ' ';
+  String? type;
   Future<Null> getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
+      fullname = preferences.getString('Acc_Fullname')!;
       nickname = preferences.getString('Acc_Nickname')!;
+      type = preferences.getString('Acc_Type')!;
     });
   }
 
@@ -113,7 +117,7 @@ class _MainPageState extends State<MainPage> {
                                     MyApi().NavigatorPushAnim(
                                         context,
                                         PageTransitionType.fade,
-                                        UsingCheckIn());
+                                        UsingWaiting());
                                   },
                                   child: Material(
                                     color: Color.fromARGB(71, 255, 255, 255),
@@ -315,7 +319,7 @@ class _MainPageState extends State<MainPage> {
           Expanded(
               flex: 3,
               child: Text(
-                'Admin System',
+                type == 'user' ? '$fullname' : 'Admin System',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.white,

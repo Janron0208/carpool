@@ -87,7 +87,7 @@ class _AccountListState extends State<AccountList> {
                               child: Column(
                                 children: [
                                   Expanded(
-                                      flex: 3,
+                                      flex: 2,
                                       child: Material(
                                         borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(10),
@@ -100,15 +100,17 @@ class _AccountListState extends State<AccountList> {
                                             children: [
                                               Expanded(
                                                   flex: 4,
-                                                  child: MyStyle().showTextSC(context,
+                                                  child: MyStyle().showTextSC(
+                                                      context,
                                                       'ชื่อผู้ใช้',
-                                                      18,
+                                                      23,
                                                       Colors.white)),
                                               Expanded(
                                                   flex: 2,
-                                                  child: MyStyle().showTextSC(context,
+                                                  child: MyStyle().showTextSC(
+                                                      context,
                                                       'ประเภท',
-                                                      18,
+                                                      23,
                                                       Colors.white)),
                                               Expanded(
                                                   flex: 1, child: Text(' ')),
@@ -140,14 +142,18 @@ class _AccountListState extends State<AccountList> {
                                                               const EdgeInsets
                                                                   .only(
                                                                   right: 19),
-                                                          child: Text(
-                                                              '${userModels[index].accFullname!} (${userModels[index].accNickname!})'),
+                                                          child: MyStyle()
+                                                              .showTextS(
+                                                                  context,
+                                                                  '${userModels[index].accFullname!} (${userModels[index].accNickname!})',
+                                                                  29),
                                                         )),
                                                     Expanded(
                                                         flex: 2,
-                                                        child: MyStyle().showTextSCW(context,
+                                                        child: MyStyle().showTextSCW(
+                                                            context,
                                                             '${userModels[index].accType!}',
-                                                            18,
+                                                            23,
                                                             FontWeight.normal,
                                                             userModels[index]
                                                                         .accType ==

@@ -54,12 +54,12 @@ class _AccountDetailState extends State<AccountDetail> {
       body: Stack(
         children: [
           MyStyle().BG_Image(context, 'bg2.jpg'),
-          SafeArea(
-            child: Stack(
-              children: [
-                loaddata == 'yes'
-                    ? MyPopup().showLoadData()
-                    : Container(
+          loaddata == 'yes'
+              ? MyPopup().showLoadData()
+              : SafeArea(
+                  child: Stack(
+                    children: [
+                      Container(
                         width: MediaQuery.of(context).size.width * 1,
                         height: MediaQuery.of(context).size.height * 1,
                         child: Padding(
@@ -77,13 +77,14 @@ class _AccountDetailState extends State<AccountDetail> {
                                         Expanded(
                                             flex: 1,
                                             child: MyStyle().showTextS(
-                                                context, 'รหัสพนักกงาน :', 23)),
+                                                context, 'รหัสพนักงาน :', 23)),
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextS(
+                                            child: MyStyle().showTextSC(
                                                 context,
                                                 '${userModels[0].accCode}',
-                                                23)),
+                                                20,
+                                                MyStyle().color1)),
                                       ],
                                     ),
                                     Divider(),
@@ -95,10 +96,11 @@ class _AccountDetailState extends State<AccountDetail> {
                                                 'ชื่อ - นามสกุล :', 23)),
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextS(
+                                            child: MyStyle().showTextSC(
                                                 context,
                                                 '${userModels[0].accFullname}',
-                                                23)),
+                                                20,
+                                                MyStyle().color1)),
                                       ],
                                     ),
                                     Divider(),
@@ -110,10 +112,11 @@ class _AccountDetailState extends State<AccountDetail> {
                                                 context, 'ชื่อเล่น :', 23)),
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextS(
+                                            child: MyStyle().showTextSC(
                                                 context,
                                                 '${userModels[0].accNickname}',
-                                                23)),
+                                                20,
+                                                MyStyle().color1)),
                                       ],
                                     ),
                                     Divider(),
@@ -125,8 +128,11 @@ class _AccountDetailState extends State<AccountDetail> {
                                                 'เบอร์โทรศัพท์ :', 23)),
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextS(context,
-                                                '${userModels[0].accTel}', 23)),
+                                            child: MyStyle().showTextSC(
+                                                context,
+                                                '${userModels[0].accTel}',
+                                                20,
+                                                MyStyle().color1)),
                                       ],
                                     ),
                                     Divider(),
@@ -138,10 +144,11 @@ class _AccountDetailState extends State<AccountDetail> {
                                                 context, 'Line ID :', 23)),
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextS(
+                                            child: MyStyle().showTextSC(
                                                 context,
                                                 '${userModels[0].accLine}',
-                                                23)),
+                                                20,
+                                                MyStyle().color1)),
                                       ],
                                     ),
                                     Divider(),
@@ -152,7 +159,8 @@ class _AccountDetailState extends State<AccountDetail> {
                                               Spacer(),
                                               MyStyle().showTextS(context,
                                                   'ประเภทบัญชี : ', 22),
-                                              MyStyle().showTextSC(context,
+                                              MyStyle().showTextSC(
+                                                  context,
                                                   '${userModels[0].accType}',
                                                   18,
                                                   userModels[0].accType ==
@@ -163,7 +171,91 @@ class _AccountDetailState extends State<AccountDetail> {
                                           ),
                                     Spacer(),
                                     widget.formpage != 'verify'
-                                        ? Container()
+                                        ? Column(
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                height: 50,
+                                                child: ElevatedButton(
+                                                  style: ButtonStyle(
+                                                    foregroundColor:
+                                                        MaterialStateProperty
+                                                            .all<Color>(
+                                                                Colors.white),
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all<
+                                                                    Color>(
+                                                                MyStyle()
+                                                                    .color2),
+                                                    shape: MaterialStateProperty
+                                                        .all<
+                                                            RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                20.0), // Adjust corner radius
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    // CheckNullText();
+
+                                                    // print('$code , $password');
+                                                  },
+                                                  child: Text(
+                                                    'เปลี่ยนรหัสผ่าน',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                height: 50,
+                                                child: ElevatedButton(
+                                                  style: ButtonStyle(
+                                                    foregroundColor:
+                                                        MaterialStateProperty
+                                                            .all<Color>(
+                                                                Colors.white),
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all<
+                                                                    Color>(
+                                                                MyStyle()
+                                                                    .color1),
+                                                    shape: MaterialStateProperty
+                                                        .all<
+                                                            RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                20.0), // Adjust corner radius
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    // CheckNullText();
+
+                                                    // print('$code , $password');
+                                                  },
+                                                  child: Text(
+                                                    'แก้ไขรายชื่อ',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
                                         : Row(
                                             children: [
                                               Expanded(
@@ -206,40 +298,82 @@ class _AccountDetailState extends State<AccountDetail> {
                                                 flex: 1,
                                                 child: Container(),
                                               ),
-                                              Expanded(
-                                                flex: 4,
-                                                child: ElevatedButton(
-                                                  style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all<Color>(Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      223,
-                                                                      125,
-                                                                      125)),
-                                                      shape: MaterialStateProperty.all<
-                                                              RoundedRectangleBorder>(
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.zero,
-                                                      ))),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      status = 'Unauthorized';
-                                                      askToConfirmPass();
-                                                    });
-                                                  },
-                                                  child: Text(
-                                                    'ไม่ผ่าน',
-                                                    style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 53, 53, 53),
-                                                      fontSize: 18,
+                                              userModels[0].accStatus ==
+                                                      'Unauthorized'
+                                                  ? Expanded(
+                                                      flex: 4,
+                                                      child: ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty.all<
+                                                                        Color>(
+                                                                    Color.fromARGB(
+                                                                        255,
+                                                                        223,
+                                                                        125,
+                                                                        125)),
+                                                            shape: MaterialStateProperty.all<
+                                                                    RoundedRectangleBorder>(
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .zero,
+                                                            ))),
+                                                        onPressed: () {},
+                                                        child: Text(
+                                                          'ลบบัญชี',
+                                                          style: TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    53,
+                                                                    53,
+                                                                    53),
+                                                            fontSize: 18,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Expanded(
+                                                      flex: 4,
+                                                      child: ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty.all<
+                                                                        Color>(
+                                                                    Color.fromARGB(
+                                                                        255,
+                                                                        223,
+                                                                        125,
+                                                                        125)),
+                                                            shape: MaterialStateProperty.all<
+                                                                    RoundedRectangleBorder>(
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .zero,
+                                                            ))),
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            status =
+                                                                'Unauthorized';
+                                                            askToConfirmPass();
+                                                          });
+                                                        },
+                                                        child: Text(
+                                                          'ไม่ผ่าน',
+                                                          style: TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    53,
+                                                                    53,
+                                                                    53),
+                                                            fontSize: 18,
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
-                                              ),
                                             ],
                                           )
                                   ],
@@ -247,10 +381,10 @@ class _AccountDetailState extends State<AccountDetail> {
                               ),
                             )),
                       ),
-                showheadBar(context),
-              ],
-            ),
-          )
+                      showheadBar(context),
+                    ],
+                  ),
+                )
         ],
       ),
     );
@@ -272,13 +406,9 @@ class _AccountDetailState extends State<AccountDetail> {
                       size: 30, color: Colors.white))),
           Expanded(
               flex: 3,
-              child: Text(
-                '',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                ),
+              child: Center(
+                child: MyStyle().showTextSC(
+                    context, '${userModels[0].accFullname}', 17, Colors.white),
               )),
           Expanded(flex: 1, child: Container()),
         ],

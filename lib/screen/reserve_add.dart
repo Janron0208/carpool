@@ -1,3 +1,4 @@
+import 'package:carpool/unity/my_api.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
@@ -396,6 +397,7 @@ class _ReserveAddState extends State<ReserveAdd> {
       // Success
       print('Success');
       MyPopup().showToast(context, 'จองสำเร็จแล้ว');
+      MyApi().insertLogEvent('ทำการจองรถทะเบียน ${widget.carNumber}');
       Navigator.pop(context);
       Navigator.pop(context);
     } else {

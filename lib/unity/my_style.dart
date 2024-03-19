@@ -42,7 +42,7 @@ class MyStyle {
     );
   }
 
-  Text showTextNumberS(String? text, double size) {
+  Text showTextNumberS(context,String? text, double size) {
     String formatAmount() {
       String price = text!;
       String priceInText = "";
@@ -63,11 +63,11 @@ class MyStyle {
 
     return Text(
       formatAmount(),
-      style: TextStyle(fontSize: size),
+      style: TextStyle(fontSize: MediaQuery.of(context).size.width / size),
     );
   }
 
-  Text showTextNumberSC(String? text, double size, Color color) {
+  Text showTextNumberSC(context,String? text, double size, Color color) {
     String formatAmount() {
       String price = text!;
       String priceInText = "";
@@ -88,12 +88,12 @@ class MyStyle {
 
     return Text(
       formatAmount(),
-      style: TextStyle(fontSize: size, color: color),
+      style: TextStyle(fontSize: MediaQuery.of(context).size.width / size, color: color),
     );
   }
 
   Text showTextNumberSCW(
-      String? text, double size, Color color, FontWeight weight) {
+     context, String? text, double size, Color color, FontWeight weight) {
     String formatAmount() {
       String price = text!;
       String priceInText = "";
@@ -114,7 +114,7 @@ class MyStyle {
 
     return Text(
       formatAmount(),
-      style: TextStyle(fontSize: size, color: color, fontWeight: weight),
+      style: TextStyle(fontSize: MediaQuery.of(context).size.width / size, color: color, fontWeight: weight),
     );
   }
 

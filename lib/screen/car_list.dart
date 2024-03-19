@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:carpool/screen/car_detail.dart';
+import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -8,6 +10,7 @@ import 'package:carpool/models/car_model.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
+import 'package:page_transition/page_transition.dart';
 
 class CarList extends StatefulWidget {
   const CarList({super.key});
@@ -95,217 +98,210 @@ class _CarListState extends State<CarList> {
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 1,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.15,
-                                        child: Material(
-                                          color:
-                                              Color.fromARGB(99, 255, 255, 255),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          clipBehavior: Clip.hardEdge,
-                                          child: InkWell(
-                                            onTap: () {
-                                              // print('CarID : ${carModels[index].carID!}');
-                                              // MaterialPageRoute route = MaterialPageRoute(
-                                              //     builder: (context) => ShowDetailCar(
-                                              //         Car_ID: '${carModels[index].carID}'));
-                                              // Navigator.push(context, route).then((value) {
-                                              //   // carModels.clear();
-                                              //   // CarsLoadData();
-                                              //   setState(() {
-                                              //     // loaddata = 'yes';
-                                              //   });
-                                              // });
-                                            },
-                                            child: SizedBox(
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: AspectRatio(
-                                                        aspectRatio: 487 / 451,
-                                                        child: Container(
-                                                          decoration: new BoxDecoration(
-                                                              image: new DecorationImage(
-                                                                  fit: BoxFit
-                                                                      .fitWidth,
-                                                                  alignment:
-                                                                      FractionalOffset
-                                                                          .center,
-                                                                  image: AssetImage(carModels[index]
-                                                                              .carBrand! ==
-                                                                          'TOYOTA'
-                                                                      ? 'images/logo_toyota.png'
-                                                                      : 'images/logo_isuzu.png'))),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 5,
-                                                              top: 3,
-                                                              bottom: 5),
-                                                      child: Container(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.43,
-                                                        child: Column(
-                                                          children: [
-                                                            Expanded(
-                                                              child: Row(
-                                                                children: [
-                                                                  Text(
-                                                                      '${carModels[index].carBrand!}',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              20,
-                                                                          fontWeight:
-                                                                              FontWeight.bold)),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Row(
-                                                                children: [
-                                                                  Text(
-                                                                      '${carModels[index].carModel!}',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              151,
-                                                                              151,
-                                                                              151))),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Row(
-                                                                children: [
-                                                                  Container(
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.23,
-                                                                    height: MediaQuery.of(context)
-                                                                            .size
-                                                                            .height *
-                                                                        0.03,
-                                                                    color: const Color
-                                                                        .fromARGB(
-                                                                        255,
-                                                                        167,
-                                                                        216,
-                                                                        255),
-                                                                    child:
-                                                                        Center(
-                                                                      child: Text(
-                                                                          'ป้ายทะเบียน',
-                                                                          style: TextStyle(
-                                                                              fontSize: 14,
-                                                                              color: Color.fromARGB(255, 255, 255, 255))),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Row(
-                                                                children: [
-                                                                  Text(
-                                                                      '${carModels[index].carNumber!}',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              20,
-                                                                          color: const Color
-                                                                              .fromARGB(
-                                                                              255,
-                                                                              68,
-                                                                              68,
-                                                                              68))),
-                                                                ],
-                                                              ),
-                                                            ),
+                                        child: IntrinsicHeight(
+                                          child: Material(
+                                            color: Color.fromARGB(
+                                                99, 255, 255, 255),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            clipBehavior: Clip.hardEdge,
+                                            child: InkWell(
+                                              onTap: () {
+                                                print(
+                                                    'CarID : ${carModels[index].carID!}');
 
-                                                            // Spacer(),
-                                                            // Padding(
-                                                            //   padding: const EdgeInsets.only(right: 20),
-                                                            //   child: Row(
-                                                            //     mainAxisAlignment:
-                                                            //         MainAxisAlignment.end,
-                                                            //     children: [
-                                                            //       Text('สถานะรถวันนี้ : ',
-                                                            //           style: TextStyle(
-                                                            //               fontSize: 15,
-                                                            //               color: Color.fromARGB(
-                                                            //                   255, 151, 151, 151))),
-                                                            //       Text('ไม่ว่าง',
-                                                            //           style: TextStyle(
-                                                            //               fontSize: 16,
-                                                            //               color:  Colors.red[900])),
-                                                            //     ],
-                                                            //   ),
-                                                            // ),
-                                                          ],
+                                                MyApi().NavigatorPushAnim(
+                                                    context,
+                                                    PageTransitionType.fade,
+                                                    CarDetail(
+                                                      carID:
+                                                          '${carModels[index].carID!}',
+                                                      carNumber:
+                                                          '${carModels[index].carNumber!}',
+                                                    ));
+                                                // MaterialPageRoute route = MaterialPageRoute(
+                                                //     builder: (context) => ShowDetailCar(
+                                                //         Car_ID: '${carModels[index].carID}'));
+                                                // Navigator.push(context, route).then((value) {
+                                                //   // carModels.clear();
+                                                //   // CarsLoadData();
+                                                //   setState(() {
+                                                //     // loaddata = 'yes';
+                                                //   });
+                                                // });
+                                              },
+                                              child: SizedBox(
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: AspectRatio(
+                                                          aspectRatio:
+                                                              487 / 451,
+                                                          child: Container(
+                                                            decoration: new BoxDecoration(
+                                                                image: new DecorationImage(
+                                                                    fit: BoxFit
+                                                                        .fitWidth,
+                                                                    alignment:
+                                                                        FractionalOffset
+                                                                            .center,
+                                                                    image: AssetImage(carModels[index].carBrand! ==
+                                                                            'TOYOTA'
+                                                                        ? 'images/logo_toyota.png'
+                                                                        : 'images/logo_isuzu.png'))),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              print(
-                                                                  '${carModels[index].carID!}');
-                                                            },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .edit_document,
-                                                              size: 25,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      108,
-                                                                      77,
-                                                                      77,
-                                                                      77),
-                                                            )),
-                                                        // IconButton(
-                                                        //     onPressed: () {
-                                                        //       print(
-                                                        //           '${carModels[index].carID!}');
-                                                        //     },
-                                                        //     icon: Icon(
-                                                        //       Icons
-                                                        //           .delete_forever,
-                                                        //       color: Color
-                                                        //           .fromARGB(
-                                                        //               255,
-                                                        //               218,
-                                                        //               107,
-                                                        //               99),
-                                                        //       size: 35,
-                                                        //     ))
-                                                      ],
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                left: 5,
+                                                                top: 3,
+                                                                bottom: 5),
+                                                        child: Container(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.43,
+                                                          child: Column(
+                                                            children: [
+                                                              Expanded(
+                                                                child: Row(
+                                                                  children: [
+                                                                    MyStyle()
+                                                                        .showTextSCW(
+                                                                      context,
+                                                                      '${carModels[index].carBrand!}',
+                                                                      20,
+                                                                      FontWeight
+                                                                          .bold,
+                                                                      Colors
+                                                                          .black,
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                child: Row(
+                                                                  children: [
+                                                                    MyStyle()
+                                                                        .showTextSCW(
+                                                                      context,
+                                                                      '${carModels[index].carModel!}',
+                                                                      23,
+                                                                      FontWeight
+                                                                          .normal,
+                                                                      Colors
+                                                                          .grey,
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                child: Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.23,
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.03,
+                                                                      color: MyStyle()
+                                                                          .color2,
+                                                                      child:
+                                                                          Center(
+                                                                        child: Text(
+                                                                            'ป้ายทะเบียน',
+                                                                            style:
+                                                                                TextStyle(fontSize: 14, color: Color.fromARGB(255, 255, 255, 255))),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                child: Row(
+                                                                  children: [
+                                                                    MyStyle()
+                                                                        .showTextSCW(
+                                                                      context,
+                                                                      '${carModels[index].carNumber!}',
+                                                                      18,
+                                                                      FontWeight
+                                                                          .bold,
+                                                                      const Color
+                                                                          .fromARGB(
+                                                                          255,
+                                                                          59,
+                                                                          59,
+                                                                          59),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
-                                                  )
-                                                ],
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                print(
+                                                                    '${carModels[index].carID!}');
+                                                              },
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .edit_document,
+                                                                size: 25,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        108,
+                                                                        77,
+                                                                        77,
+                                                                        77),
+                                                              )),
+                                                          // IconButton(
+                                                          //     onPressed: () {
+                                                          //       print(
+                                                          //           '${carModels[index].carID!}');
+                                                          //     },
+                                                          //     icon: Icon(
+                                                          //       Icons
+                                                          //           .delete_forever,
+                                                          //       color: Color
+                                                          //           .fromARGB(
+                                                          //               255,
+                                                          //               218,
+                                                          //               107,
+                                                          //               99),
+                                                          //       size: 35,
+                                                          //     ))
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),

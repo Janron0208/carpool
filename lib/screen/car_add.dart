@@ -1,3 +1,4 @@
+import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/material.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
@@ -14,6 +15,7 @@ class CarAdd extends StatefulWidget {
 class _CarAddState extends State<CarAdd> {
   String? loaddata = 'no';
   String? carModel, carNumber;
+  String mileage = '0';
   String carStatus = 'Ready';
   final List<String> items = ['TOYOTA', 'ISUZU'];
   String? selectedValue;
@@ -36,83 +38,100 @@ class _CarAddState extends State<CarAdd> {
               children: [
                 loaddata == 'yes'
                     ? MyPopup().showLoadData()
-                    : Container(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: MediaQuery.of(context).size.height * 1,
-                        child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 60, left: 10, right: 10, bottom: 10),
-                            child: Material(
-                              borderRadius: BorderRadius.circular(20),
-                              elevation: 8,
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
-                                  children: [
-                                    Row(
+                    : SingleChildScrollView(
+                        child: GestureDetector(
+                          onTap: () =>
+                              FocusScope.of(context).requestFocus(FocusNode()),
+                          behavior: HitTestBehavior.opaque,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: MediaQuery.of(context).size.height * 0.95,
+                            child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 60, left: 10, right: 10, bottom: 10),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(20),
+                                  elevation: 8,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15),
+                                    child: Column(
                                       children: [
-                                        Text('ยี่ห้อรถยนต์',
-                                            style: TextStyle(fontSize: 20)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 3),
-                                    buildBrand(),
-                                    SizedBox(height: 25),
-                                    Row(
-                                      children: [
-                                        Text('รุ่น/รหัสโมเดล',
-                                            style: TextStyle(fontSize: 20)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 3),
-                                    buildModel(),
-                                    SizedBox(height: 25),
-                                    Row(
-                                      children: [
-                                        Text('ป้ายทะเบียน',
-                                            style: TextStyle(fontSize: 20)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 3),
-                                    buildNumber(),
-                                    Spacer(),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.5,
-                                      height: 50,
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          foregroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.white),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Color.fromARGB(
-                                                      255, 209, 209, 209)),
-                                          shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(
-                                                  20.0), // Adjust corner radius
+                                        Row(
+                                          children: [
+                                            Text('ยี่ห้อรถยนต์',
+                                                style: TextStyle(fontSize: 20)),
+                                          ],
+                                        ),
+                                        SizedBox(height: 3),
+                                        buildBrand(),
+                                        SizedBox(height: 25),
+                                        Row(
+                                          children: [
+                                            Text('รุ่น/รหัสโมเดล',
+                                                style: TextStyle(fontSize: 20)),
+                                          ],
+                                        ),
+                                        SizedBox(height: 3),
+                                        buildModel(),
+                                        SizedBox(height: 25),
+                                        Row(
+                                          children: [
+                                            Text('ป้ายทะเบียน',
+                                                style: TextStyle(fontSize: 20)),
+                                          ],
+                                        ),
+                                        SizedBox(height: 3),
+                                        buildNumber(),
+                                        SizedBox(height: 25),
+                                        Row(
+                                          children: [
+                                            Text('เลขไมล์',
+                                                style: TextStyle(fontSize: 20)),
+                                          ],
+                                        ),
+                                        SizedBox(height: 3),
+                                        buildMile(),
+                                        Spacer(),
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              1,
+                                          height: 50,
+                                          child: ElevatedButton(
+                                            style: ButtonStyle(
+                                              foregroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(Colors.white),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(MyStyle().color1),
+                                              shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0), // Adjust corner radius
+                                                ),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              checkNullText();
+                                            },
+                                            child: Text(
+                                              'บันทึก',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20),
                                             ),
                                           ),
-                                        ),
-                                        onPressed: () {
-                                          print('object');
-                                          insertData();
-                                        },
-                                        child: Text(
-                                          'บันทึก',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                          ),
+                        ),
                       ),
                 showheadBar(context),
               ],
@@ -216,6 +235,43 @@ class _CarAddState extends State<CarAdd> {
     );
   }
 
+  Container buildMile() {
+    return Container(
+      height: 70,
+      child: TextFormField(
+        initialValue: '0',
+        keyboardType: TextInputType.number,
+        onChanged: (value) {
+          setState(() {
+            mileage = value.trim();
+          });
+        },
+        style:
+            TextStyle(color: Color.fromARGB(255, 112, 112, 112), fontSize: 20),
+        decoration: InputDecoration(
+          hintText: 'เลขไมล์ล่าสุด',
+          hintStyle: TextStyle(
+              fontSize: 25, color: Color.fromARGB(255, 184, 184, 184)),
+          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          filled: true,
+          fillColor: Color.fromARGB(255, 241, 241, 241),
+        ),
+      ),
+    );
+  }
+
   Container showheadBar(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
@@ -257,17 +313,133 @@ class _CarAddState extends State<CarAdd> {
     );
   }
 
+  Future<Null> checkNullText() async {
+    if (carBrand == null ||
+        carBrand!.isEmpty ||
+        carModel == null ||
+        carModel!.isEmpty ||
+        carNumber == null ||
+        carNumber!.isEmpty ||
+        mileage == null ||
+        mileage!.isEmpty) {
+      MyPopup().showError(context, 'กรุณากรอกข้อมูลให้ครบถ้วน');
+    } else {
+      askToConfirm();
+    }
+  }
+
+  Future<Null> askToConfirm() async {
+    showDialog(
+      context: context,
+      builder: (context) => Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Padding(
+          padding: EdgeInsets.all(60),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(220, 255, 255, 255),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
+                        )),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyStyle().showTextSC(context, 'ยืนยันการเพิ่มรถยนต์',
+                              18, Color.fromARGB(255, 29, 29, 29)),
+                          SizedBox(height: 20),
+                          Center(
+                            child: MyStyle().showTextSC(
+                                context,
+                                'ต้องการเพิ่มรถยนต์ทะเบียน $carNumber หรือไม่',
+                                22,
+                                const Color.fromARGB(255, 66, 66, 66)),
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 0.2),
+                child: Container(
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(220, 255, 255, 255),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30.0),
+                            bottomRight: Radius.circular(30.0),
+                          )),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              insertData();
+                              MyPopup().showToast(context, 'เพิ่มรถยนต์สำเร็จ');
+                              MyApi().insertLogEvent(
+                                  'เพิ่มรถยนต์ทะเบียน $carNumber');
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text('ยืนยัน',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 72, 209, 72),
+                                      fontSize: 18,
+                                    )),
+                              ),
+                            ),
+                          ),
+                          VerticalDivider(),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Center(
+                                child: Text('ปิด',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 216, 71, 71),
+                                      fontSize: 18,
+                                    )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Map<String, String> data = {};
 
   Future<void> insertData() async {
-    print('$carBrand , $carModel ,$carNumber ,$carStatus');
+    print('$carBrand , $carModel ,$carNumber,$mileage ,$carStatus');
 
     var response = await http.post(
       Uri.parse('${MyConstant().domain}/carpool/car/insertCar.php'),
       body: data = {
-        'Car_Brand': carBrand!,
+        'Car_Brand': carBrand,
         'Car_Model': carModel!,
         'Car_Number': carNumber!,
+        'Car_Mileage': mileage!,
         'Car_Status': carStatus,
       },
     );

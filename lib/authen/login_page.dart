@@ -76,10 +76,10 @@ class _LoginPageState extends State<LoginPage> {
               // ),
               showLogoSVOA(context),
               SizedBox(height: 1),
-              MyStyle().showTextSCW(context,
-                  'Carpool', 70, FontWeight.bold, MyStyle().color1),
-              MyStyle().showTextSC(context,
-                  'แอปพลิเคชันการจองรถยนต์บริษัท', 15, MyStyle().color1),
+              MyStyle().showTextSCW(
+                  context, 'Carpool', 5, FontWeight.bold, MyStyle().color1),
+              MyStyle().showTextSC(context, 'แอปพลิเคชันการจองรถยนต์บริษัท', 20,
+                  MyStyle().color1),
               SizedBox(height: 35),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -167,8 +167,8 @@ class _LoginPageState extends State<LoginPage> {
                             MyApi().NavigatorPushAnim(context,
                                 PageTransitionType.fade, RegisterPage());
                           },
-                          child: MyStyle()
-                              .showTextSC(context,'สมัครสมาชิก', 18, MyStyle().color1),
+                          child: MyStyle().showTextSC(
+                              context, 'สมัครสมาชิก', 23, MyStyle().color1),
                         )
                       ],
                     ),

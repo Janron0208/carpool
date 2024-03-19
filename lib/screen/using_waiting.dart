@@ -1,0 +1,352 @@
+import 'dart:convert';
+import 'package:carpool/models/reserve_car_model.dart';
+import 'package:carpool/unity/my_api.dart';
+import 'package:carpool/unity/my_constant.dart';
+import 'package:carpool/unity/my_popup.dart';
+import 'package:carpool/unity/my_style.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+class UsingWaiting extends StatefulWidget {
+  const UsingWaiting({super.key});
+
+  @override
+  State<UsingWaiting> createState() => _UsingWaitingState();
+}
+
+class _UsingWaitingState extends State<UsingWaiting> {
+  String? loaddata = 'yes';
+  String? accID;
+  List<ReserveCarModel> reservecarModels = [];
+  String nodata = 'no';
+
+  @override
+  void initState() {
+    checkReserveByAccID();
+    super.initState();
+  }
+
+  Future<Null> checkReserveByAccID() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    accID = preferences.getString('Acc_ID')!;
+    print(accID);
+
+    var url = Uri.parse(
+        '${MyConstant().domain}/carpool/reserve/getAllReserveSyncCarByAccID.php');
+
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    var response = await http.post(
+      url,
+      body: {'Acc_ID': accID},
+    );
+
+    print(response.body);
+
+    if (response.body == '[]') {
+      setState(() {
+        loaddata = 'no';
+        nodata = 'yes';
+      });
+    } else {
+      setState(() {
+        var data = json.decode(response.body);
+
+        try {
+          for (var item in data) {
+            ReserveCarModel reservecarModel = ReserveCarModel.fromJson(item);
+            setState(() {
+              reservecarModels.add(reservecarModel);
+              print(reservecarModel.resID);
+              // print(reservecarModels.length);
+              nodata = 'no';
+            });
+            setState(() {
+              loaddata = 'no';
+            });
+          }
+        } catch (e) {}
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          MyStyle().BG_Image(context, 'bg2.jpg'),
+          SafeArea(
+            child: Stack(
+              children: [
+                loaddata == 'yes'
+                    ? MyPopup().showLoadData()
+                    : Container(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: MediaQuery.of(context).size.height * 1,
+                        child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 60, left: 10, right: 10, bottom: 10),
+                            child: Material(
+                              borderRadius: BorderRadius.circular(15),
+                              child: nodata == 'yes'
+                                  ? Center(
+                                      child: MyStyle().showTextSC(
+                                          context,
+                                          'ยังไม่มีการจอง',
+                                          16,
+                                          MyStyle().color1),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 13, right: 13, top: 10),
+                                      child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: reservecarModels.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Column(
+                                              children: [
+                                                SizedBox(height: 5),
+                                                Stack(
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        reservecarModels[0]
+                                                                    .resID ==
+                                                                reservecarModels[
+                                                                        index]
+                                                                    .resID
+                                                            ? print(
+                                                                reservecarModels[
+                                                                        0]
+                                                                    .resID)
+                                                            : MyPopup()
+                                                                .showToastError(
+                                                                    context,
+                                                                    'Check In คิวแรกเท่านั้น');
+                                                      },
+                                                      child: Material(
+                                                        color: reservecarModels[0]
+                                                                    .resID ==
+                                                                reservecarModels[
+                                                                        index]
+                                                                    .resID
+                                                            ? Color.fromARGB(
+                                                                206,
+                                                                226,
+                                                                239,
+                                                                255)
+                                                            : Color.fromARGB(68,
+                                                                189, 189, 189),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      8),
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                  height: 15),
+                                                              Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: MyStyle().showTextSC(
+                                                                        context,
+                                                                        reservecarModels[index].resStartDate == reservecarModels[index].resEndDate
+                                                                            ? 'วันที่ ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resStartDate}')}'
+                                                                            : 'วันที่ ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resStartDate}')} - ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resEndDate}')}',
+                                                                        22,
+                                                                        MyStyle()
+                                                                            .color1),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: MyStyle().showTextSC(
+                                                                        context,
+                                                                        'ทะเบียนรถ : ${reservecarModels[index].carNumber}',
+                                                                        23,
+                                                                        MyStyle()
+                                                                            .color3),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: MyStyle().showTextSC(
+                                                                        context,
+                                                                        'โปรเจค/สถานที่ : ${reservecarModels[index].resProject}',
+                                                                        23,
+                                                                        MyStyle()
+                                                                            .color3),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 15),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              showDialog<
+                                                                  String>(
+                                                                context:
+                                                                    context,
+                                                                builder: (BuildContext
+                                                                        context) =>
+                                                                    AlertDialog(
+                                                                  title: const Text(
+                                                                      'ยกเลิกการจองรถ?'),
+                                                                  content:
+                                                                      const Text(
+                                                                          'คุณต้องการยกเลิกการจองรถใช่หรือไม่'),
+                                                                  actions: <Widget>[
+                                                                    TextButton(
+                                                                        onPressed: () => Navigator.pop(
+                                                                            context,
+                                                                            'Cancel'),
+                                                                        child: MyStyle().showTextSC(
+                                                                            context,
+                                                                            'ปิด',
+                                                                            20,
+                                                                            const Color.fromARGB(
+                                                                                255,
+                                                                                54,
+                                                                                130,
+                                                                                244))),
+                                                                    TextButton(
+                                                                        onPressed: () =>
+                                                                            deleteReserve(
+                                                                                index),
+                                                                        child: MyStyle().showTextSC(
+                                                                            context,
+                                                                            'ยกเลิกการจอง',
+                                                                            20,
+                                                                            Colors.red)),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .cancel_rounded,
+                                                              size: 20,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      175,
+                                                                      63,
+                                                                      55),
+                                                            )),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                    height: reservecarModels[0]
+                                                                .resID ==
+                                                            reservecarModels[
+                                                                    index]
+                                                                .resID
+                                                        ? 20
+                                                        : 5),
+                                                reservecarModels[0].resID ==
+                                                        reservecarModels[index]
+                                                            .resID
+                                                    ? Column(
+                                                        children: [
+                                                          MyStyle().showTextS(
+                                                              context,
+                                                              'Check In คิวแรกเท่านั้น',
+                                                              20),
+                                                          SizedBox(height: 20),
+                                                        ],
+                                                      )
+                                                    : Container()
+                                              ],
+                                            );
+                                          }),
+                                    ),
+                            ))),
+                showheadBar(context),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container showheadBar(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 1,
+      height: 50,
+      child: Row(
+        children: [
+          Expanded(
+              flex: 1,
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back_ios,
+                      size: 30, color: Colors.white))),
+          Expanded(
+              flex: 3,
+              child: Text(
+                'คิวที่จอง',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+              )),
+          Expanded(flex: 1, child: Container()),
+        ],
+      ),
+    );
+  }
+
+  Future<Null> deleteReserve(index) async {
+    var url =
+        Uri.parse('${MyConstant().domain}/carpool/reserve/deleteReserve.php');
+
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    var response = await http.post(
+      url,
+      body: {
+        'Res_ID': '${reservecarModels[index].resID}',
+      },
+    );
+    print(reservecarModels[index].resID);
+    setState(() {
+      Navigator.pop(context);
+      MyApi().insertLogEvent(
+          'ยกเลิกการจองรถทะเบียน ${reservecarModels[index].carNumber}');
+      reservecarModels.clear();
+      loaddata = 'yes';
+      checkReserveByAccID();
+
+      MyPopup().showToast(context, 'ยกเลิกการจองสำเร็จ');
+    });
+  }
+}
