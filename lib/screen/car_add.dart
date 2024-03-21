@@ -16,14 +16,13 @@ class _CarAddState extends State<CarAdd> {
   String? loaddata = 'no';
   String? carModel, carNumber;
   String mileage = '0';
-  String carStatus = 'Ready';
+  String carStatus = 'No';
   final List<String> items = ['TOYOTA', 'ISUZU'];
   String? selectedValue;
   String carBrand = 'TOYOTA';
 
   @override
   void initState() {
-    print('object');
     super.initState();
   }
 
@@ -167,7 +166,7 @@ class _CarAddState extends State<CarAdd> {
 
   Container buildNumber() {
     return Container(
-      height: 70,
+      height: 60,
       child: TextFormField(
         onChanged: (value) {
           setState(() {
@@ -179,7 +178,7 @@ class _CarAddState extends State<CarAdd> {
         decoration: InputDecoration(
           hintText: 'ป้ายทะเบียน',
           hintStyle: TextStyle(
-              fontSize: 25, color: Color.fromARGB(255, 184, 184, 184)),
+              fontSize: 20, color: Color.fromARGB(255, 184, 184, 184)),
           contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent),
@@ -202,7 +201,7 @@ class _CarAddState extends State<CarAdd> {
 
   Container buildModel() {
     return Container(
-      height: 70,
+      height: 60,
       child: TextFormField(
         onChanged: (value) {
           setState(() {
@@ -214,7 +213,7 @@ class _CarAddState extends State<CarAdd> {
         decoration: InputDecoration(
           hintText: 'รุ่น/รหัสโมเดล',
           hintStyle: TextStyle(
-              fontSize: 25, color: Color.fromARGB(255, 184, 184, 184)),
+              fontSize: 20, color: Color.fromARGB(255, 184, 184, 184)),
           contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent),
@@ -237,7 +236,7 @@ class _CarAddState extends State<CarAdd> {
 
   Container buildMile() {
     return Container(
-      height: 70,
+      height: 60,
       child: TextFormField(
         initialValue: '0',
         keyboardType: TextInputType.number,
@@ -251,7 +250,7 @@ class _CarAddState extends State<CarAdd> {
         decoration: InputDecoration(
           hintText: 'เลขไมล์ล่าสุด',
           hintStyle: TextStyle(
-              fontSize: 25, color: Color.fromARGB(255, 184, 184, 184)),
+              fontSize: 20, color: Color.fromARGB(255, 184, 184, 184)),
           contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent),
@@ -384,11 +383,6 @@ class _CarAddState extends State<CarAdd> {
                           InkWell(
                             onTap: () {
                               insertData();
-                              MyPopup().showToast(context, 'เพิ่มรถยนต์สำเร็จ');
-                              MyApi().insertLogEvent(
-                                  'เพิ่มรถยนต์ทะเบียน $carNumber');
-                              Navigator.pop(context);
-                              Navigator.pop(context);
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.3,
@@ -439,14 +433,16 @@ class _CarAddState extends State<CarAdd> {
         'Car_Brand': carBrand,
         'Car_Model': carModel!,
         'Car_Number': carNumber!,
-        'Car_Mileage': mileage!,
+        'Car_Mileage': mileage,
         'Car_Status': carStatus,
       },
     );
 
     if (response.statusCode == 200) {
-      // Success
-      print('Success');
+      MyPopup().showToast(context, 'เพิ่มรถยนต์สำเร็จ');
+      MyApi().insertLogEvent('เพิ่มรถยนต์ใหม่ทะเบียน ${carNumber!}');
+      Navigator.pop(context);
+      Navigator.pop(context);
     } else {
       // Error
       print('Error');

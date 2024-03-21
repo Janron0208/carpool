@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:carpool/models/reserve_car_model.dart';
+import 'package:carpool/screen/using_checkin.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,12 +22,36 @@ class _UsingWaitingState extends State<UsingWaiting> {
   String? loaddata = 'yes';
   String? accID;
   List<ReserveCarModel> reservecarModels = [];
+
   String nodata = 'no';
+  String h_status = 'no';
 
   @override
   void initState() {
-    checkReserveByAccID();
+    checkStatusUsing();
     super.initState();
+  }
+
+  Future<Null> checkStatusUsing() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    accID = preferences.getString('Acc_ID')!;
+    var url = Uri.parse(
+        '${MyConstant().domain}/carpool/history/getHistoryByAccIDAndStatus.php');
+
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    var response = await http.post(
+      url,
+      body: {'Acc_ID': accID},
+    );
+
+    if (response.body == '[]') {
+      checkReserveByAccID();
+    } else {
+      setState(() {
+        h_status = 'yes';
+        loaddata = 'no';
+      });
+    }
   }
 
   Future<Null> checkReserveByAccID() async {
@@ -43,7 +69,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
       body: {'Acc_ID': accID},
     );
 
-    print(response.body);
+    // print(response.body);
 
     if (response.body == '[]') {
       setState(() {
@@ -74,226 +100,245 @@ class _UsingWaitingState extends State<UsingWaiting> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          MyStyle().BG_Image(context, 'bg2.jpg'),
-          SafeArea(
-            child: Stack(
+    return h_status == 'yes'
+        ? UsingCheckIn()
+        : Scaffold(
+            body: Stack(
               children: [
-                loaddata == 'yes'
-                    ? MyPopup().showLoadData()
-                    : Container(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: MediaQuery.of(context).size.height * 1,
-                        child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 60, left: 10, right: 10, bottom: 10),
-                            child: Material(
-                              borderRadius: BorderRadius.circular(15),
-                              child: nodata == 'yes'
-                                  ? Center(
-                                      child: MyStyle().showTextSC(
-                                          context,
-                                          'ยังไม่มีการจอง',
-                                          16,
-                                          MyStyle().color1),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 13, right: 13, top: 10),
-                                      child: ListView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: reservecarModels.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Column(
-                                              children: [
-                                                SizedBox(height: 5),
-                                                Stack(
-                                                  children: [
-                                                    InkWell(
-                                                      onTap: () {
-                                                        reservecarModels[0]
-                                                                    .resID ==
-                                                                reservecarModels[
-                                                                        index]
-                                                                    .resID
-                                                            ? print(
-                                                                reservecarModels[
-                                                                        0]
-                                                                    .resID)
-                                                            : MyPopup()
-                                                                .showToastError(
+                MyStyle().BG_Image(context, 'bg2.jpg'),
+                SafeArea(
+                  child: Stack(
+                    children: [
+                      loaddata == 'yes'
+                          ? MyPopup().showLoadData()
+                          : Container(
+                              width: MediaQuery.of(context).size.width * 1,
+                              height: MediaQuery.of(context).size.height * 1,
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 60, left: 10, right: 10, bottom: 10),
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: nodata == 'yes'
+                                        ? Center(
+                                            child: MyStyle().showTextSC(
+                                                context,
+                                                'ยังไม่มีการจอง',
+                                                16,
+                                                MyStyle().color1),
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 13, right: 13, top: 10),
+                                            child: ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount:
+                                                    reservecarModels.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Column(
+                                                    children: [
+                                                      reservecarModels[0]
+                                                                  .resID ==
+                                                              reservecarModels[
+                                                                      index]
+                                                                  .resID
+                                                          ? Column(
+                                                              children: [
+                                                                MyStyle().showTextS(
                                                                     context,
-                                                                    'Check In คิวแรกเท่านั้น');
-                                                      },
-                                                      child: Material(
-                                                        color: reservecarModels[0]
-                                                                    .resID ==
-                                                                reservecarModels[
-                                                                        index]
-                                                                    .resID
-                                                            ? Color.fromARGB(
-                                                                206,
-                                                                226,
-                                                                239,
-                                                                255)
-                                                            : Color.fromARGB(68,
-                                                                189, 189, 189),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      8),
-                                                          child: Column(
-                                                            children: [
-                                                              SizedBox(
-                                                                  height: 15),
-                                                              Row(
-                                                                children: [
-                                                                  Expanded(
-                                                                    child: MyStyle().showTextSC(
-                                                                        context,
-                                                                        reservecarModels[index].resStartDate == reservecarModels[index].resEndDate
-                                                                            ? 'วันที่ ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resStartDate}')}'
-                                                                            : 'วันที่ ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resStartDate}')} - ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resEndDate}')}',
-                                                                        22,
-                                                                        MyStyle()
-                                                                            .color1),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              Row(
-                                                                children: [
-                                                                  Expanded(
-                                                                    child: MyStyle().showTextSC(
-                                                                        context,
-                                                                        'ทะเบียนรถ : ${reservecarModels[index].carNumber}',
-                                                                        23,
-                                                                        MyStyle()
-                                                                            .color3),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              Row(
-                                                                children: [
-                                                                  Expanded(
-                                                                    child: MyStyle().showTextSC(
-                                                                        context,
-                                                                        'โปรเจค/สถานที่ : ${reservecarModels[index].resProject}',
-                                                                        23,
-                                                                        MyStyle()
-                                                                            .color3),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              SizedBox(
-                                                                  height: 15),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      children: [
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              showDialog<
-                                                                  String>(
-                                                                context:
+                                                                    'รถยนต์ที่จองไว้',
+                                                                    20),
+                                                                MyStyle().showTextS(
                                                                     context,
-                                                                builder: (BuildContext
-                                                                        context) =>
-                                                                    AlertDialog(
-                                                                  title: const Text(
-                                                                      'ยกเลิกการจองรถ?'),
-                                                                  content:
-                                                                      const Text(
-                                                                          'คุณต้องการยกเลิกการจองรถใช่หรือไม่'),
-                                                                  actions: <Widget>[
-                                                                    TextButton(
-                                                                        onPressed: () => Navigator.pop(
+                                                                    '( Check In รถที่ใช้งานเร็วๆนี้ก่อนเท่านั้น )',
+                                                                    28),
+                                                                SizedBox(
+                                                                    height: 5),
+                                                              ],
+                                                            )
+                                                          : Container(),
+                                                      SizedBox(height: 5),
+                                                      Stack(
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () {
+                                                              reservecarModels[0]
+                                                                          .resID ==
+                                                                      reservecarModels[
+                                                                              index]
+                                                                          .resID
+                                                                  ? showDialog<
+                                                                      String>(
+                                                                      context:
+                                                                          context,
+                                                                      builder: (BuildContext
+                                                                              context) =>
+                                                                          AlertDialog(
+                                                                        title: Text(
+                                                                            'เริ่มใช้งาน?'),
+                                                                        content: MyStyle().showTextSC(
                                                                             context,
-                                                                            'Cancel'),
-                                                                        child: MyStyle().showTextSC(
-                                                                            context,
-                                                                            'ปิด',
-                                                                            20,
-                                                                            const Color.fromARGB(
-                                                                                255,
-                                                                                54,
-                                                                                130,
-                                                                                244))),
-                                                                    TextButton(
-                                                                        onPressed: () =>
-                                                                            deleteReserve(
-                                                                                index),
-                                                                        child: MyStyle().showTextSC(
-                                                                            context,
-                                                                            'ยกเลิกการจอง',
-                                                                            20,
-                                                                            Colors.red)),
+                                                                            'คุณพร้อมใช้งานรถยนต์ทะเบียน ${reservecarModels[index].carNumber} แล้วหรือไม่',
+                                                                            21,
+                                                                            MyStyle().color3),
+                                                                        actions: <Widget>[
+                                                                          TextButton(
+                                                                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                                                                              child: MyStyle().showTextSC(context, 'ปิด', 20, Color.fromARGB(255, 244, 54, 54))),
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              checkValue(index);
+                                                                            },
+                                                                            child: MyStyle().showTextSC(
+                                                                                context,
+                                                                                'CheckIn Now!',
+                                                                                20,
+                                                                                Color.fromARGB(255, 46, 226, 76)),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )
+                                                                  : MyPopup()
+                                                                      .showToastError(
+                                                                          context,
+                                                                          'Check In คิวแรกเท่านั้น');
+                                                            },
+                                                            child: Material(
+                                                              color: reservecarModels[
+                                                                              0]
+                                                                          .resID ==
+                                                                      reservecarModels[
+                                                                              index]
+                                                                          .resID
+                                                                  ? Color
+                                                                      .fromARGB(
+                                                                          206,
+                                                                          226,
+                                                                          239,
+                                                                          255)
+                                                                  : Color
+                                                                      .fromARGB(
+                                                                          68,
+                                                                          189,
+                                                                          189,
+                                                                          189),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              child: Padding(
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        8),
+                                                                child: Column(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                        height:
+                                                                            15),
+                                                                    Row(
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child: MyStyle().showTextSC(
+                                                                              context,
+                                                                              reservecarModels[index].resStartDate == reservecarModels[index].resEndDate ? 'วันที่ ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resStartDate}')}' : 'วันที่ ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resStartDate}')} - ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resEndDate}')}',
+                                                                              22,
+                                                                              MyStyle().color1),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    Row(
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child: MyStyle().showTextSC(
+                                                                              context,
+                                                                              'ทะเบียนรถ : ${reservecarModels[index].carNumber}',
+                                                                              23,
+                                                                              MyStyle().color3),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    Row(
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child: MyStyle().showTextSC(
+                                                                              context,
+                                                                              'โปรเจค/สถานที่ : ${reservecarModels[index].resProject}',
+                                                                              23,
+                                                                              MyStyle().color3),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            15),
                                                                   ],
                                                                 ),
-                                                              );
-                                                            },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .cancel_rounded,
-                                                              size: 20,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      175,
-                                                                      63,
-                                                                      55),
-                                                            )),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                    height: reservecarModels[0]
-                                                                .resID ==
-                                                            reservecarModels[
-                                                                    index]
-                                                                .resID
-                                                        ? 20
-                                                        : 5),
-                                                reservecarModels[0].resID ==
-                                                        reservecarModels[index]
-                                                            .resID
-                                                    ? Column(
-                                                        children: [
-                                                          MyStyle().showTextS(
-                                                              context,
-                                                              'Check In คิวแรกเท่านั้น',
-                                                              20),
-                                                          SizedBox(height: 20),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    showDialog<
+                                                                        String>(
+                                                                      context:
+                                                                          context,
+                                                                      builder: (BuildContext
+                                                                              context) =>
+                                                                          AlertDialog(
+                                                                        title: const Text(
+                                                                            'ยกเลิกการจองรถ?'),
+                                                                        content:
+                                                                            const Text('คุณต้องการยกเลิกการจองรถใช่หรือไม่'),
+                                                                        actions: <Widget>[
+                                                                          TextButton(
+                                                                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                                                                              child: MyStyle().showTextSC(context, 'ปิด', 20, const Color.fromARGB(255, 54, 130, 244))),
+                                                                          TextButton(
+                                                                              onPressed: () => deleteReserve(index),
+                                                                              child: MyStyle().showTextSC(context, 'ยกเลิกการจอง', 20, Colors.red)),
+                                                                        ],
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .cancel_rounded,
+                                                                    size: 20,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            175,
+                                                                            63,
+                                                                            55),
+                                                                  )),
+                                                            ],
+                                                          )
                                                         ],
-                                                      )
-                                                    : Container()
-                                              ],
-                                            );
-                                          }),
-                                    ),
-                            ))),
-                showheadBar(context),
+                                                      ),
+                                                    ],
+                                                  );
+                                                }),
+                                          ),
+                                  ))),
+                      showheadBar(context),
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
-      ),
-    );
+          );
   }
 
   Container showheadBar(BuildContext context) {
@@ -348,5 +393,47 @@ class _UsingWaitingState extends State<UsingWaiting> {
 
       MyPopup().showToast(context, 'ยกเลิกการจองสำเร็จ');
     });
+  }
+
+  Future<Null> checkValue(index) async {
+    print('Acc ID : ${reservecarModels[index].accID}');
+    print('รหัสการจอง : ${reservecarModels[index].resID}');
+    print('CAR ID : ${reservecarModels[index].carID}');
+    var now = DateTime.now();
+    var formatterDate = DateFormat('yyyyMMddHHmmss').format(now);
+    String h_id = 'H${formatterDate}';
+
+    print('History : $h_id');
+
+    var url =
+        Uri.parse('${MyConstant().domain}/carpool/history/insertHistory.php');
+
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    var response = await http.post(
+      url,
+      body: {
+        'H_ID': '$h_id',
+        'Acc_ID': '$accID',
+        'Car_ID': '${reservecarModels[index].carID}',
+        'H_StartDate': '${reservecarModels[index].resStartDate}',
+        'H_EndDate': '${reservecarModels[index].resEndDate}',
+        'H_Project': '${reservecarModels[index].resProject}',
+        'H_MileageStart': '${reservecarModels[index].carMileage}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        Navigator.pop(context);
+        loaddata = 'yes';
+        checkStatusUsing();
+        MyApi().insertLogEvent(
+            'ทำการ Check In ทะเบียน ${reservecarModels[index].carNumber}');
+        MyPopup().showToast(context, 'Check In');
+      });
+    } else {
+      // Error
+      print('Error');
+    }
   }
 }

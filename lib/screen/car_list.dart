@@ -11,6 +11,7 @@ import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CarList extends StatefulWidget {
   const CarList({super.key});
@@ -23,7 +24,7 @@ class _CarListState extends State<CarList> {
   List<CarModel> carModels = [];
   String? loaddata = 'yes';
   Map<String, String> data = {};
-
+  String? type;
   @override
   void initState() {
     loadAllCar();
@@ -31,6 +32,11 @@ class _CarListState extends State<CarList> {
   }
 
   void loadAllCar() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      type = preferences.getString('Acc_Type')!;
+    });
+
     final url =
         await Uri.parse('${MyConstant().domain}/carpool/car/getAllCar.php');
 
@@ -49,21 +55,6 @@ class _CarListState extends State<CarList> {
       setState(() {
         loaddata = 'no';
       });
-
-      // String passData = item['Car_Number'];
-
-      // print(passData);
-
-      // print('Password : ${item['Acc_Password']}');
-      // if (item['Acc_Password'] == null) {
-      //   print('ไม่มีข้อมูล');
-      // } else {
-      //   print('มีข้อมูล');
-      // }
-      // print('Acc_Code: ${item['Acc_Code']}');
-      // print('Acc_Name: ${item['Acc_Fullame']}');
-      // print('Acc_Email: ${item['Acc_Nickname']}');
-      // print('--------------------');
     }
   }
 
@@ -100,8 +91,12 @@ class _CarListState extends State<CarList> {
                                                 1,
                                         child: IntrinsicHeight(
                                           child: Material(
-                                            color: Color.fromARGB(
-                                                99, 255, 255, 255),
+                                            color: carModels[index].carStatus !=
+                                                    'Ready'
+                                                ? const Color.fromARGB(
+                                                    38, 0, 0, 0)
+                                                : Color.fromARGB(
+                                                    99, 255, 255, 255),
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                             clipBehavior: Clip.hardEdge,
@@ -109,32 +104,29 @@ class _CarListState extends State<CarList> {
                                               onTap: () {
                                                 print(
                                                     'CarID : ${carModels[index].carID!}');
-
-                                                MyApi().NavigatorPushAnim(
-                                                    context,
-                                                    PageTransitionType.fade,
-                                                    CarDetail(
-                                                      carID:
-                                                          '${carModels[index].carID!}',
-                                                      carNumber:
-                                                          '${carModels[index].carNumber!}',
-                                                    ));
-                                                // MaterialPageRoute route = MaterialPageRoute(
-                                                //     builder: (context) => ShowDetailCar(
-                                                //         Car_ID: '${carModels[index].carID}'));
-                                                // Navigator.push(context, route).then((value) {
-                                                //   // carModels.clear();
-                                                //   // CarsLoadData();
-                                                //   setState(() {
-                                                //     // loaddata = 'yes';
-                                                //   });
-                                                // });
+                                                MaterialPageRoute route =
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CarDetail(
+                                                              carID:
+                                                                  '${carModels[index].carID!}',
+                                                              carNumber:
+                                                                  '${carModels[index].carNumber!}',
+                                                            ));
+                                                Navigator.push(context, route)
+                                                    .then((value) {
+                                                  setState(() {
+                                                    loaddata = 'yes';
+                                                    carModels.clear();
+                                                    loadAllCar();
+                                                  });
+                                                });
                                               },
                                               child: SizedBox(
                                                 child: Row(
                                                   children: [
                                                     Expanded(
-                                                      flex: 2,
+                                                      flex: 3,
                                                       child: Padding(
                                                         padding:
                                                             const EdgeInsets
@@ -159,7 +151,7 @@ class _CarListState extends State<CarList> {
                                                       ),
                                                     ),
                                                     Expanded(
-                                                      flex: 3,
+                                                      flex: 4,
                                                       child: Padding(
                                                         padding:
                                                             const EdgeInsets
@@ -252,7 +244,6 @@ class _CarListState extends State<CarList> {
                                                                   ],
                                                                 ),
                                                               ),
-
                                                             ],
                                                           ),
                                                         ),
@@ -261,42 +252,33 @@ class _CarListState extends State<CarList> {
                                                     Expanded(
                                                       flex: 1,
                                                       child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
                                                         children: [
-                                                          IconButton(
-                                                              onPressed: () {
-                                                                print(
-                                                                    '${carModels[index].carID!}');
-                                                              },
-                                                              icon: Icon(
-                                                                Icons
-                                                                    .edit_document,
-                                                                size: 25,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        108,
-                                                                        77,
-                                                                        77,
-                                                                        77),
-                                                              )),
-                                                          // IconButton(
-                                                          //     onPressed: () {
-                                                          //       print(
-                                                          //           '${carModels[index].carID!}');
-                                                          //     },
-                                                          //     icon: Icon(
-                                                          //       Icons
-                                                          //           .delete_forever,
-                                                          //       color: Color
-                                                          //           .fromARGB(
-                                                          //               255,
-                                                          //               218,
-                                                          //               107,
-                                                          //               99),
-                                                          //       size: 35,
-                                                          //     ))
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    top: 8),
+                                                            child: Icon(
+                                                              carModels[index]
+                                                                          .carStatus !=
+                                                                      'Ready'
+                                                                  ? Icons
+                                                                      .do_not_disturb_alt
+                                                                  : Icons.wifi,
+                                                              size: 35,
+                                                              color: carModels[
+                                                                              index]
+                                                                          .carStatus !=
+                                                                      'Ready'
+                                                                  ? Colors.red
+                                                                  : Color
+                                                                      .fromARGB(
+                                                                          185,
+                                                                          74,
+                                                                          218,
+                                                                          74),
+                                                            ),
+                                                          ),
                                                         ],
                                                       ),
                                                     )
@@ -346,19 +328,22 @@ class _CarListState extends State<CarList> {
               )),
           Expanded(
               flex: 1,
-              child: IconButton(
-                  onPressed: () {
-                    MaterialPageRoute route =
-                        MaterialPageRoute(builder: (context) => CarAdd());
-                    Navigator.push(context, route).then((value) {
-                      carModels.clear();
-                      loadAllCar();
-                      setState(() {
-                        loaddata = 'yes';
-                      });
-                    });
-                  },
-                  icon: Icon(Icons.add_circle, size: 30, color: Colors.white))),
+              child: type == 'user'
+                  ? Container()
+                  : IconButton(
+                      onPressed: () {
+                        MaterialPageRoute route =
+                            MaterialPageRoute(builder: (context) => CarAdd());
+                        Navigator.push(context, route).then((value) {
+                          setState(() {
+                            loaddata = 'yes';
+                            carModels.clear();
+                            loadAllCar();
+                          });
+                        });
+                      },
+                      icon: Icon(Icons.add_circle,
+                          size: 30, color: Colors.white))),
         ],
       ),
     );

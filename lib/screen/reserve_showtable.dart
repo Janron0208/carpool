@@ -106,15 +106,29 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                                         '${carModels[index].carNumber}',
                                                         12,
                                                         MyStyle().color1),
+                                                    carModels[index]
+                                                                .carStatus ==
+                                                            'No'
+                                                        ? Icon(
+                                                            Icons
+                                                                .not_interested,
+                                                            color: Colors.red,
+                                                          )
+                                                        : Text(''),
                                                     Spacer(),
-                                                    MyStyle().showTextSC(
-                                                        context,
-                                                        'เลขไมล์ล่าสุด : ',
-                                                        28,
-                                                        MyStyle().color3),
+                                                    // MyStyle().showTextSC(
+                                                    //     context,
+                                                    //     'เลขไมล์ล่าสุด : ',
+                                                    //     28,
+                                                    //     MyStyle().color3),
                                                     MyStyle().showTextNumberSC(
                                                         context,
                                                         '${carModels[index].carMileage}',
+                                                        23,
+                                                        MyStyle().color1),
+                                                    MyStyle().showTextSC(
+                                                        context,
+                                                        ' Km.',
                                                         23,
                                                         MyStyle().color1)
                                                   ],
