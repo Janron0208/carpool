@@ -5,10 +5,10 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
+$Acc_ID = $_POST['Acc_ID'];
 
 // ดึงข้อมูล
-$sql = "SELECT * FROM `car_tb` WHERE `Car_ID` LIKE '$carID' ORDER BY `Car_ID` DESC";
-
+$sql = "SELECT * FROM `history_tb` WHERE `Acc_ID` LIKE '$Acc_ID' AND `H_Status` LIKE 'started'";
 $result = $conn->query($sql);
 
 // แปลงข้อมูลเป็น JSON

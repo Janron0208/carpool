@@ -7,8 +7,8 @@ if ($conn->connect_error) {
 
 
 // ดึงข้อมูล
-$sql = "SELECT * FROM `car_tb` WHERE `Car_ID` LIKE '$carID' ORDER BY `Car_ID` DESC";
-
+$sql = "SELECT * FROM reserve_tb
+INNER JOIN account_tb ON reserve_tb.Acc_ID = account_tb.Acc_ID;";
 $result = $conn->query($sql);
 
 // แปลงข้อมูลเป็น JSON

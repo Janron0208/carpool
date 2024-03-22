@@ -5,54 +5,75 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
+// กำหนดค่าเริ่มต้น
 $start = $_POST['start'];
 $end = $_POST['end'];
 
-// ดึงข้อมูล
-$sql = "SELECT * FROM reserve_tb AS r
-INNER JOIN car_tb AS c ON r.Car_ID = c.Car_ID
-WHERE NOT ((r.Res_StartDate BETWEEN '$start' AND '$end')
-OR (r.Res_EndDate BETWEEN '$start' AND '$end')
-OR ('$start' BETWEEN r.Res_StartDate AND r.Res_EndDate)
-OR ('$end' BETWEEN r.Res_StartDate AND r.Res_EndDate))";
 
-// รันคิวรี่
+// ดึง Car_ID ทั้งหมดจาก car_tb
+$sql = "SELECT Car_ID FROM car_tb";
 $result = mysqli_query($conn, $sql);
 
-// ตรวจสอบว่ามีข้อมูลหรือไม่
-if (mysqli_num_rows($result) > 0) {
+// ประกาศ array สำหรับเก็บ Car_ID ที่ว่าง
+$available_cars = array();
 
-  // ประกาศอาร์เรย์
-  $items = array();
+while ($row = mysqli_fetch_assoc($result)) {
+  $car_id = $row['Car_ID'];
 
-  // วนลูปแต่ละแถว
-  while ($row = mysqli_fetch_assoc($result)) {
+  // ตรวจสอบว่า Car_ID นี้มีการจองหรือไม่
+  $sql = "SELECT * FROM reserve_tb WHERE Car_ID = '$car_id'";
+  $reserve_result = mysqli_query($conn, $sql);
 
-    // ดึง Car_ID
-    $car_id = $row['Car_ID'];
+  // กรณีไม่มีการจอง
+  if (mysqli_num_rows($reserve_result) == 0) {
+    array_push($available_cars, $car_id);
+  } else {
+    // กรณีมีการจอง ตรวจสอบว่าวันที่จองซ้อนทับกับช่วงวันที่ระบุหรือไม่
+    $is_available = true;
+    while ($reserve_row = mysqli_fetch_assoc($reserve_result)) {
+      $res_start_date = $reserve_row['Res_StartDate'];
+      $res_end_date = $reserve_row['Res_EndDate'];
 
-    // คิวรี่ SQL ค้นหาข้อมูลรถ
-    $sql_car = "SELECT * FROM `car_tb` WHERE `Car_ID` = '$car_id'";
+      // ตรวจสอบว่าวันที่ระบุอยู่ในช่วงวันที่จอง
+      if (($start >= $res_start_date && $start <= $res_end_date) ||
+          ($end >= $res_start_date && $end <= $res_end_date) ||
+          ($start <= $res_start_date && $end >= $res_end_date)) {
+        $is_available = false;
+        break;
+      }
+    }
 
-    // รันคิวรี่
-    $result_car = mysqli_query($conn, $sql_car);
-
-    // ดึงข้อมูลรถ
-    $row_car = mysqli_fetch_assoc($result_car);
-
-    // เพิ่มข้อมูลรถลงในอาร์เรย์
-    $items[] = $row_car;
-    $json = json_encode($items);
+    // กรณีไม่ซ้อนทับ เพิ่ม Car_ID ลงใน array
+    if ($is_available) {
+      array_push($available_cars, $car_id);
+    }
   }
 
-  // แสดงอาร์เรย์
-  print_r($json);
-
-} else {
-
-  // ไม่พบข้อมูล
-  echo "ไม่พบรถที่ว่าง";
-
 }
+
+// แสดง Car_ID ที่ว่าง
+// echo implode(", ", $available_cars);
+
+// เตรียม array สำหรับเก็บข้อมูล JSON
+$json_data = array();
+
+// วนลูปแต่ละ Car_ID ที่ว่าง
+foreach ($available_cars as $car_id) {
+  // ดึงข้อมูล Car_ID นี้
+  $sql1 = "SELECT * FROM car_tb WHERE Car_ID = '$car_id' AND Car_Status = 'Ready'";
+  $result1 = mysqli_query($conn, $sql1);
+  $car_data = mysqli_fetch_assoc($result1);
+
+  // เพิ่มข้อมูล Car_ID นี้ลงใน array JSON
+  array_push($json_data, $car_data);
+}
+
+// แปลง array JSON เป็น JSON string
+$json = json_encode($json_data);
+
+// แสดงผลลัพธ์ JSON
+echo $json;
+
+
 
 ?>

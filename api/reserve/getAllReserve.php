@@ -7,8 +7,7 @@ if ($conn->connect_error) {
 
 
 // ดึงข้อมูล
-$sql = "SELECT * FROM `car_tb` WHERE `Car_ID` LIKE '$carID' ORDER BY `Car_ID` DESC";
-
+$sql = "SELECT * FROM `reserve_tb` ORDER BY `reserve_tb`.`Res_StartDate` ASC";
 $result = $conn->query($sql);
 
 // แปลงข้อมูลเป็น JSON

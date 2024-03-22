@@ -7,6 +7,7 @@ import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -32,6 +33,8 @@ class _UsingCheckInState extends State<UsingCheckIn> {
       picLeft,
       picRight,
       picHood;
+
+  String? editProject;
 
   @override
   void initState() {
@@ -71,6 +74,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
 
     setState(() {
       his.add(hi[0]);
+      editProject = '${historyModels[0].hProject}';
       loaddata = 'no';
     });
 
@@ -204,7 +208,8 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                                                       maxLines: 3,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          // inputproject = value.trim();
+                                                          editProject =
+                                                              value.trim();
                                                         });
                                                       },
                                                       style: TextStyle(
@@ -336,7 +341,44 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                                                 SizedBox(height: 10),
                                                 uploadRight(context),
                                                 SizedBox(height: 10),
-                                                uploadHood(context)
+                                                uploadHood(context),
+                                                SizedBox(height: 20),
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  height: 50,
+                                                  child: ElevatedButton(
+                                                    style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all<
+                                                                      Color>(
+                                                                  MyStyle()
+                                                                      .color1),
+                                                      shape: MaterialStateProperty
+                                                          .all<
+                                                              RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  15.0), // Adjust corner radius
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    onPressed: () {
+                                                      checkNullImage();
+                                                      // setState(() {
+                                                      //   phase = 'return';
+                                                      // });
+                                                    },
+                                                    child: MyStyle().showTextSC(
+                                                        context,
+                                                        'บันทึก',
+                                                        20,
+                                                        Colors.white),
+                                                  ),
+                                                )
                                               ],
                                             ),
                                           )),
@@ -1199,7 +1241,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
     );
   }
 
-  Future<Null> chooseImage(ImageSource source) async {
+  Future chooseImage(ImageSource source) async {
     print(choosePic);
     try {
       var object = await ImagePicker().pickImage(
@@ -1240,7 +1282,70 @@ class _UsingCheckInState extends State<UsingCheckIn> {
         }
       });
 
-      print(picMileageStart);
+      // print('Path : ${object!.path}');
     } catch (e) {}
+  }
+
+  Future<Null> checkNullImage() async {
+    if (picMileageStart == null ||
+        picFront == null ||
+        picBack == null ||
+        picLeft == null ||
+        picRight == null ||
+        picHood == null) {
+      MyPopup().showError(context, 'กรุณาอัพโหลดรูปภาพให้ครบ');
+    } else {
+      createNameImage();
+    }
+  }
+
+  Future<Null> createNameImage() async {
+    String namepicMileageStart = '${historyModels[0].hID}_start.jpg';
+    String namepicFront = '${historyModels[0].hID}_front.jpg';
+    String namepicBack = '${historyModels[0].hID}_back.jpg';
+    String namepicLeft = '${historyModels[0].hID}_left.jpg';
+    String namepicRight = '${historyModels[0].hID}_right.jpg';
+    String namepicHood = '${historyModels[0].hID}_hood.jpg';
+
+    String pathpicMileageStart = '/carpool/pic_history/$namepicMileageStart';
+    String pathpicFront = '/carpool/pic_history/$namepicFront';
+    String pathpicBack = '/carpool/pic_history/$namepicBack';
+    String pathpicLeft = '/carpool/pic_history/$namepicLeft';
+    String pathpicRight = '/carpool/pic_history/$namepicRight';
+    String pathpicHood = '/carpool/pic_history/$namepicHood';
+
+    print(editProject);
+
+    //  var url =
+    //     Uri.parse('${MyConstant().domain}/carpool/reserve/insertReserve.php');
+
+    // // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    // var response = await http.post(
+    //   url,
+    //   body: {
+    //     'H_ID': '${historyModels[0].hID}',
+    //    'H_StartTime': '$inputproject',
+    //    'H_Project': '$inputproject',
+    //    'H_PicFront': '$inputproject',
+    //    'H_PicBack': '$inputproject',
+    //    'H_PicLeft': '$inputproject',
+    //    'H_PicRight': '$inputproject',
+    //    'H_PicHood': '$inputproject',
+    //    'H_PicMileageStart': '$inputproject',
+    //    'H_Status': 'start'
+    //   },
+    // );
+
+    // if (response.statusCode == 200) {
+    //   // Success
+    //   // print('Success');
+    //   // MyPopup().showToast(context, 'จองสำเร็จแล้ว');
+    //   // MyApi().insertLogEvent('ทำการจองรถทะเบียน ${widget.carNumber}');
+    //   // Navigator.pop(context);
+    //   // Navigator.pop(context);
+    // } else {
+    //   // Error
+    //   print('Error');
+    // }
   }
 }

@@ -30,14 +30,15 @@ if (mysqli_num_rows($result) > 0) {
 $carBrand = $_POST['Car_Brand'];
 $carModel = $_POST['Car_Model'];
 $carNumber = $_POST['Car_Number'];
+$carMileage = $_POST['Car_Mileage'];
 $carStatus = $_POST['Car_Status'];
 
 
-$sql = "INSERT INTO car_tb (Car_ID, Car_Brand, Car_Model, Car_Number, Car_Status) VALUES (?, ?, ?, ?, ?)";
+$sql = "INSERT INTO car_tb (Car_ID, Car_Brand, Car_Model, Car_Number, Car_Mileage, Car_Status) VALUES (?, ?, ?, ?, ?, ?)";
 
 // บันทึกข้อมูล
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('sssss', $newCarID, $carBrand, $carModel, $carNumber, $carStatus);
+$stmt->bind_param('ssssss', $newCarID, $carBrand, $carModel, $carNumber, $carMileage, $carStatus);
 $stmt->execute();
 
 if ($stmt->affected_rows === 1) {
