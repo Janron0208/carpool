@@ -179,5 +179,21 @@ class MyApi {
     }
   }
 
+  void checkEndToReserve() async {
+    final url = await Uri.parse(
+      '${MyConstant().domain}/carpool/system/checkEndToReserve.php',
+    );
+
+    http.Response response = await http.post(url);
+
+    if (response.statusCode == 200) {
+      // Success
+      print('Update Reserve Table');
+    } else {
+      // Error
+      print('Error');
+    }
+  }
+
   MyApi();
 }

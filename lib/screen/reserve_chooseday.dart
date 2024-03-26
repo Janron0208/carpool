@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:carpool/screen/reserve_add.dart';
-import 'package:carpool/screen/reserve_result_search.dart';
 import 'package:carpool/screen/reserve_showtable.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,6 +31,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
   List<String> chooseDay = [];
   String? today;
   String nodata = 'no';
+  String taberror = 'no';
 
   bool _visible = true;
   bool _isAnimated = false;
@@ -152,7 +152,8 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                                       scale: MediaQuery.of(context).size.width /
                                           400),
                                   SizedBox(height: 30),
-                                  MyStyle().showTextSCW(context,
+                                  MyStyle().showTextSCW(
+                                      context,
                                       'ไม่มีรถพร้อมใช้ในวันนี้',
                                       MediaQuery.of(context).size.width / 20,
                                       FontWeight.bold,
@@ -429,8 +430,6 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                 nodata = 'no';
               });
               getCarChooseDay();
-
-              // print('$code , $password');
             },
           ),
         ),
@@ -441,7 +440,9 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
   Widget _buildDefaultRangeDatePickerWithValue() {
     final config = CalendarDatePicker2Config(
       calendarType: CalendarDatePicker2Type.range,
-      selectedDayHighlightColor: MyStyle().color1,
+      selectedDayHighlightColor: taberror == 'yes'
+          ? Color.fromARGB(206, 190, 50, 39)
+          : MyStyle().color1,
       weekdayLabelTextStyle: TextStyle(
         color: MyStyle().color1,
         fontWeight: FontWeight.bold,
@@ -460,10 +461,33 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
           config: config,
           value: _rangeDatePickerValueWithDefaultValue,
           onValueChanged: (dates) {
-            setState(() {
-              _rangeDatePickerValueWithDefaultValue = dates;
-              print(_rangeDatePickerValueWithDefaultValue);
-            });
+            var now = DateTime.now();
+            var daynow = DateFormat('yyyyMMdd').format(now);
+            int intdaynow = int.parse(daynow);
+
+            var choose1 =
+                dates[0].toString().replaceAll('00:00:00.000', '').split(' ');
+
+            var datechoose1 = DateFormat('yyyy-MM-dd').parse(choose1[0]);
+            // รูปแบบวันที่ใหม่
+            var datechoose2 = DateFormat('yyyyMMdd').format(datechoose1);
+            int intdatechoose = int.parse(datechoose2);
+
+            print(intdaynow);
+            print(intdatechoose);
+
+            if (intdaynow > intdatechoose) {
+              setState(() {
+                // taberror = 'yes';
+                MyPopup().showToastError(context, 'เลือกวันก่อนหน้าไม่ได้');
+              });
+            } else {
+              setState(() {
+                // taberror = 'no';
+                _rangeDatePickerValueWithDefaultValue = dates;
+                // print(_rangeDatePickerValueWithDefaultValue);
+              });
+            }
           },
         ),
         Row(

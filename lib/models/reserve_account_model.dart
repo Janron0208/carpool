@@ -5,6 +5,7 @@ class ReserveAccountModel {
   String? resEndDate;
   String? carID;
   String? accID;
+  String? resStatus;
   String? accType;
   String? accCode;
   String? accFullname;
@@ -21,6 +22,7 @@ class ReserveAccountModel {
       this.resEndDate,
       this.carID,
       this.accID,
+      this.resStatus,
       this.accType,
       this.accCode,
       this.accFullname,
@@ -37,6 +39,7 @@ class ReserveAccountModel {
     resEndDate = json['Res_EndDate'];
     carID = json['Car_ID'];
     accID = json['Acc_ID'];
+    resStatus = json['Res_Status'];
     accType = json['Acc_Type'];
     accCode = json['Acc_Code'];
     accFullname = json['Acc_Fullname'];
@@ -55,6 +58,7 @@ class ReserveAccountModel {
     data['Res_EndDate'] = this.resEndDate;
     data['Car_ID'] = this.carID;
     data['Acc_ID'] = this.accID;
+    data['Res_Status'] = this.resStatus;
     data['Acc_Type'] = this.accType;
     data['Acc_Code'] = this.accCode;
     data['Acc_Fullname'] = this.accFullname;

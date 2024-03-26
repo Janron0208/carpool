@@ -1,5 +1,6 @@
 import 'package:carpool/screen/main_page.dart';
 import 'package:carpool/authen/login_page.dart';
+import 'package:carpool/unity/my_api.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +18,7 @@ class _CheckloginState extends State<Checklogin> {
   @override
   void initState() {
     checkPreferance();
+    MyApi().checkEndToReserve();
     super.initState();
   }
 

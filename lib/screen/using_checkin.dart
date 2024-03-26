@@ -1,14 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:carpool/models/history_model.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,6 +24,7 @@ class UsingCheckIn extends StatefulWidget {
 
 class _UsingCheckInState extends State<UsingCheckIn> {
   String? loaddata = 'yes';
+  String? loadPic = 'no';
   String? accID;
   List<HistoryModel> historyModels = [];
   List<dynamic> his = [];
@@ -75,6 +79,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
     setState(() {
       his.add(hi[0]);
       editProject = '${historyModels[0].hProject}';
+
       loaddata = 'no';
     });
 
@@ -95,294 +100,315 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                 children: [
                   loaddata == 'yes'
                       ? MyPopup().showLoadData()
-                      : Container(
-                          width: MediaQuery.of(context).size.width * 1,
-                          height: MediaQuery.of(context).size.height * 1,
-                          child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 60, left: 10, right: 10, bottom: 10),
-                              child: Material(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                elevation: 8,
-                                child: Padding(
-                                    padding: const EdgeInsets.all(15),
-                                    child: phase == 'start'
-                                        ? Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  MyStyle().showTextSC(
-                                                      context,
-                                                      'ขื่อผู้ใช้งาน : ',
-                                                      25,
-                                                      MyStyle().color3),
-                                                  Expanded(
-                                                    child: MyStyle().showTextSC(
-                                                        context,
-                                                        '${his[0]['Acc_Fullname']} (${his[0]['Acc_Nickname']})',
-                                                        23,
-                                                        MyStyle().color1),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10),
-                                              Row(
-                                                children: [
-                                                  MyStyle().showTextSC(
-                                                      context,
-                                                      'วันที่ใช้งาน : ',
-                                                      25,
-                                                      MyStyle().color3),
-                                                  Expanded(
-                                                    child: MyStyle().showTextSC(
-                                                        context,
-                                                        his[0]['H_StartDate'] ==
-                                                                his[0][
-                                                                    'H_EndDate']
-                                                            ? '${MyStyle().dateTypeddmmyyyy('${his[0]['H_StartDate']}')}'
-                                                            : '${MyStyle().dateTypeddmmyyyy('${his[0]['H_StartDate']}')} - ${MyStyle().dateTypeddmmyyyy('${his[0]['H_EndDate']}')}',
-                                                        23,
-                                                        MyStyle().color1),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10),
-                                              Row(
-                                                children: [
-                                                  MyStyle().showTextSC(
-                                                      context,
-                                                      'ทะเบียนรถ : ',
-                                                      25,
-                                                      MyStyle().color3),
-                                                  Expanded(
-                                                    child: MyStyle().showTextSC(
-                                                        context,
-                                                        '${his[0]['Car_Number']}',
-                                                        23,
-                                                        MyStyle().color1),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10),
-                                              Row(
-                                                children: [
-                                                  MyStyle().showTextSC(
-                                                      context,
-                                                      'เลขไมล์ล่าสุด : ',
-                                                      25,
-                                                      MyStyle().color3),
-                                                  Row(
-                                                    children: [
-                                                      MyStyle().showTextNumberSC(
-                                                          context,
-                                                          '${his[0]['Car_Mileage']}',
-                                                          23,
-                                                          MyStyle().color1),
-                                                      MyStyle().showTextSC(
-                                                          context,
-                                                          ' Km.',
-                                                          23,
-                                                          MyStyle().color1),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10),
-                                              Column(
+                      : Stack(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 1,
+                              height: MediaQuery.of(context).size.height * 1,
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 60, left: 10, right: 10, bottom: 10),
+                                  child: Material(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    elevation: 8,
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(15),
+                                        child: phase == 'start'
+                                            ? Column(
                                                 children: [
                                                   Row(
                                                     children: [
                                                       MyStyle().showTextSC(
                                                           context,
-                                                          'โครงการ/สถานที่ (แก้ไขได้)',
+                                                          'ขื่อผู้ใช้งาน : ',
                                                           25,
                                                           MyStyle().color3),
+                                                      Expanded(
+                                                        child: MyStyle().showTextSC(
+                                                            context,
+                                                            '${his[0]['Acc_Fullname']} (${his[0]['Acc_Nickname']})',
+                                                            23,
+                                                            MyStyle().color1),
+                                                      ),
                                                     ],
                                                   ),
-                                                  Container(
-                                                    // height: 200,
-                                                    child: TextFormField(
-                                                      initialValue:
-                                                          '${his[0]['H_Project']}',
-                                                      maxLines: 3,
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          editProject =
-                                                              value.trim();
-                                                        });
-                                                      },
-                                                      style: TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              112,
-                                                              112,
-                                                              112),
-                                                          fontSize: 18),
-                                                      decoration:
-                                                          InputDecoration(
-                                                        hintText:
-                                                            'กรุณากรอกข้อมูล',
-                                                        hintStyle: TextStyle(
-                                                            fontSize: 18.0,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    184,
-                                                                    184,
-                                                                    184)),
-                                                        contentPadding:
-                                                            EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        15,
-                                                                    vertical:
-                                                                        20),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: Colors
-                                                                  .transparent),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10.0),
-                                                        ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: Colors
-                                                                  .transparent),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10.0),
-                                                        ),
-                                                        errorBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: Colors
-                                                                  .transparent),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10.0),
-                                                        ),
-                                                        filled: true,
-                                                        fillColor:
-                                                            Color.fromARGB(255,
-                                                                241, 241, 241),
+                                                  SizedBox(height: 10),
+                                                  Row(
+                                                    children: [
+                                                      MyStyle().showTextSC(
+                                                          context,
+                                                          'วันที่ใช้งาน : ',
+                                                          25,
+                                                          MyStyle().color3),
+                                                      Expanded(
+                                                        child: MyStyle().showTextSC(
+                                                            context,
+                                                            his[0]['H_StartDate'] ==
+                                                                    his[0][
+                                                                        'H_EndDate']
+                                                                ? '${MyStyle().dateTypeddmmyyyy('${his[0]['H_StartDate']}')}'
+                                                                : '${MyStyle().dateTypeddmmyyyy('${his[0]['H_StartDate']}')} - ${MyStyle().dateTypeddmmyyyy('${his[0]['H_EndDate']}')}',
+                                                            23,
+                                                            MyStyle().color1),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10),
-                                              Spacer(),
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: 50,
-                                                child: ElevatedButton(
-                                                  style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all<
-                                                                    Color>(
-                                                                MyStyle()
-                                                                    .color1),
-                                                    shape: MaterialStateProperty
-                                                        .all<
-                                                            RoundedRectangleBorder>(
-                                                      RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                15.0), // Adjust corner radius
+                                                  SizedBox(height: 10),
+                                                  Row(
+                                                    children: [
+                                                      MyStyle().showTextSC(
+                                                          context,
+                                                          'ทะเบียนรถ : ',
+                                                          25,
+                                                          MyStyle().color3),
+                                                      Expanded(
+                                                        child: MyStyle().showTextSC(
+                                                            context,
+                                                            '${his[0]['Car_Number']}',
+                                                            23,
+                                                            MyStyle().color1),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      phase = 'upload';
-                                                    });
-                                                  },
-                                                  child: MyStyle().showTextSC(
-                                                      context,
-                                                      'ถัดไป',
-                                                      20,
-                                                      Colors.white),
-                                                ),
-                                              )
-                                              // Divider(),
-                                              // SizedBox(height: 10),
-                                            ],
-                                          )
-                                        : SingleChildScrollView(
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    MyStyle().showTextSC(
-                                                        context,
-                                                        'อัปโหลดรูปภาพ',
-                                                        20,
-                                                        MyStyle().color1),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 10),
-                                                uploadMileage(context),
-                                                SizedBox(height: 10),
-                                                uploadFront(context),
-                                                SizedBox(height: 10),
-                                                uploadBack(context),
-                                                SizedBox(height: 10),
-                                                uploadLeft(context),
-                                                SizedBox(height: 10),
-                                                uploadRight(context),
-                                                SizedBox(height: 10),
-                                                uploadHood(context),
-                                                SizedBox(height: 20),
-                                                Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  height: 50,
-                                                  child: ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all<
-                                                                      Color>(
+                                                  SizedBox(height: 10),
+                                                  Row(
+                                                    children: [
+                                                      MyStyle().showTextSC(
+                                                          context,
+                                                          'เลขไมล์ล่าสุด : ',
+                                                          25,
+                                                          MyStyle().color3),
+                                                      Row(
+                                                        children: [
+                                                          MyStyle()
+                                                              .showTextNumberSC(
+                                                                  context,
+                                                                  '${his[0]['Car_Mileage']}',
+                                                                  23,
                                                                   MyStyle()
                                                                       .color1),
-                                                      shape: MaterialStateProperty
-                                                          .all<
-                                                              RoundedRectangleBorder>(
-                                                        RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  15.0), // Adjust corner radius
+                                                          MyStyle().showTextSC(
+                                                              context,
+                                                              ' Km.',
+                                                              23,
+                                                              MyStyle().color1),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 10),
+                                                  Column(
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          MyStyle().showTextSC(
+                                                              context,
+                                                              'โครงการ/สถานที่ (แก้ไขได้)',
+                                                              25,
+                                                              MyStyle().color3),
+                                                        ],
+                                                      ),
+                                                      Container(
+                                                        // height: 200,
+                                                        child: TextFormField(
+                                                          initialValue:
+                                                              '${his[0]['H_Project']}',
+                                                          maxLines: 3,
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              editProject =
+                                                                  value.trim();
+                                                            });
+                                                          },
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      112,
+                                                                      112,
+                                                                      112),
+                                                              fontSize: 18),
+                                                          decoration:
+                                                              InputDecoration(
+                                                            hintText:
+                                                                'กรุณากรอกข้อมูล',
+                                                            hintStyle: TextStyle(
+                                                                fontSize: 18.0,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        184,
+                                                                        184,
+                                                                        184)),
+                                                            contentPadding:
+                                                                EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            15,
+                                                                        vertical:
+                                                                            20),
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                      .transparent),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.0),
+                                                            ),
+                                                            focusedBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                      .transparent),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.0),
+                                                            ),
+                                                            errorBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                      .transparent),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.0),
+                                                            ),
+                                                            filled: true,
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    241,
+                                                                    241,
+                                                                    241),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    onPressed: () {
-                                                      checkNullImage();
-                                                      // setState(() {
-                                                      //   phase = 'return';
-                                                      // });
-                                                    },
-                                                    child: MyStyle().showTextSC(
-                                                        context,
-                                                        'บันทึก',
-                                                        20,
-                                                        Colors.white),
+                                                    ],
                                                   ),
-                                                )
-                                              ],
-                                            ),
-                                          )),
-                              )),
+                                                  SizedBox(height: 10),
+                                                  Spacer(),
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height: 50,
+                                                    child: ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(
+                                                                    MyStyle()
+                                                                        .color1),
+                                                        shape: MaterialStateProperty
+                                                            .all<
+                                                                RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15.0), // Adjust corner radius
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          phase = 'upload';
+                                                        });
+                                                      },
+                                                      child: MyStyle()
+                                                          .showTextSC(
+                                                              context,
+                                                              'ถัดไป',
+                                                              20,
+                                                              Colors.white),
+                                                    ),
+                                                  )
+                                                  // Divider(),
+                                                  // SizedBox(height: 10),
+                                                ],
+                                              )
+                                            : SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        MyStyle().showTextSC(
+                                                            context,
+                                                            'อัปโหลดรูปภาพ',
+                                                            20,
+                                                            MyStyle().color1),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 10),
+                                                    uploadMileage(context),
+                                                    SizedBox(height: 10),
+                                                    uploadFront(context),
+                                                    SizedBox(height: 10),
+                                                    uploadBack(context),
+                                                    SizedBox(height: 10),
+                                                    uploadLeft(context),
+                                                    SizedBox(height: 10),
+                                                    uploadRight(context),
+                                                    SizedBox(height: 10),
+                                                    uploadHood(context),
+                                                    SizedBox(height: 20),
+                                                    Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      height: 50,
+                                                      child: ElevatedButton(
+                                                        style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(
+                                                                      MyStyle()
+                                                                          .color1),
+                                                          shape: MaterialStateProperty
+                                                              .all<
+                                                                  RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15.0), // Adjust corner radius
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          checkNullImage();
+                                                          // setState(() {
+                                                          //   phase = 'return';
+                                                          // });
+                                                        },
+                                                        child: MyStyle()
+                                                            .showTextSC(
+                                                                context,
+                                                                'บันทึก',
+                                                                20,
+                                                                Colors.white),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )),
+                                  )),
+                            ),
+                            loadPic == 'yes'
+                                ? Material(
+                                    color: Color.fromARGB(183, 255, 255, 255),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
+                                  )
+                                : Container()
+                          ],
                         ),
                   showheadBar(context),
                 ],
@@ -1174,7 +1200,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                 width: MediaQuery.of(context).size.width * 1,
                 height: MediaQuery.of(context).size.height * 0.6,
               ),
-              // SizedBox(height: 10),
+              SizedBox(height: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -1242,10 +1268,14 @@ class _UsingCheckInState extends State<UsingCheckIn> {
   }
 
   Future chooseImage(ImageSource source) async {
+    setState(() {
+      loadPic = 'yes';
+    });
     print(choosePic);
     try {
       var object = await ImagePicker().pickImage(
         source: source,
+        imageQuality: 50,
         maxWidth: 800.0,
         maxHeight: 800.0,
       );
@@ -1281,9 +1311,10 @@ class _UsingCheckInState extends State<UsingCheckIn> {
           });
         }
       });
-
-      // print('Path : ${object!.path}');
     } catch (e) {}
+    setState(() {
+      loadPic = 'no';
+    });
   }
 
   Future<Null> checkNullImage() async {
@@ -1300,21 +1331,91 @@ class _UsingCheckInState extends State<UsingCheckIn> {
   }
 
   Future<Null> createNameImage() async {
-    String namepicMileageStart = '${historyModels[0].hID}_start.jpg';
-    String namepicFront = '${historyModels[0].hID}_front.jpg';
-    String namepicBack = '${historyModels[0].hID}_back.jpg';
-    String namepicLeft = '${historyModels[0].hID}_left.jpg';
-    String namepicRight = '${historyModels[0].hID}_right.jpg';
-    String namepicHood = '${historyModels[0].hID}_hood.jpg';
+    setState(() {
+      loadPic = 'yes';
+    });
 
-    String pathpicMileageStart = '/carpool/pic_history/$namepicMileageStart';
-    String pathpicFront = '/carpool/pic_history/$namepicFront';
-    String pathpicBack = '/carpool/pic_history/$namepicBack';
-    String pathpicLeft = '/carpool/pic_history/$namepicLeft';
-    String pathpicRight = '/carpool/pic_history/$namepicRight';
-    String pathpicHood = '/carpool/pic_history/$namepicHood';
+    var timenow = DateTime.now();
+    var timestart = DateFormat('HH:mm').format(timenow);
+    // String namepicMileageStart = '${historyModels[0].hID}_start.jpg';
+    // String namepicFront = '${historyModels[0].hID}_front.jpg';
+    // String namepicBack = '${historyModels[0].hID}_back.jpg';
+    // String namepicLeft = '${historyModels[0].hID}_left.jpg';
+    // String namepicRight = '${historyModels[0].hID}_right.jpg';
+    // String namepicHood = '${historyModels[0].hID}_hood.jpg';
 
-    print(editProject);
+    // String pathpicMileageStart = '/carpool/pic_history/$namepicMileageStart';
+    // String pathpicFront = '/carpool/pic_history/$namepicFront';
+    // String pathpicBack = '/carpool/pic_history/$namepicBack';
+    // String pathpicLeft = '/carpool/pic_history/$namepicLeft';
+    // String pathpicRight = '/carpool/pic_history/$namepicRight';
+    // String pathpicHood = '/carpool/pic_history/$namepicHood';
+
+    List<String> PathPicture = [];
+    List<String> name = [
+      '_start.jpg',
+      '_front.jpg',
+      '_back.jpg',
+      '_left.jpg',
+      '_right.jpg',
+      '_hood.jpg',
+    ];
+    List<File?> paths = [];
+    paths.add(picMileageStart);
+    paths.add(picFront);
+    paths.add(picBack);
+    paths.add(picLeft);
+    paths.add(picRight);
+    paths.add(picHood);
+
+    String apiSaveHistory = '${MyConstant().domain}/carpool/savePic.php';
+
+    int loop = 0;
+    for (var item in paths) {
+      String nameFile = '${historyModels[0].hID}${name[loop]}';
+
+      Map<String, dynamic> map = {};
+      map['file'] =
+          await MultipartFile.fromFile(item!.path, filename: nameFile);
+      FormData data = FormData.fromMap(map);
+      await Dio().post(apiSaveHistory, data: data).then((value) async {
+        print('รูปที่ ${loop + 1} Upload Success');
+
+        PathPicture.add(
+            '/carpool/pic_history/${historyModels[0].hID}${name[loop]}');
+        print(PathPicture[loop]);
+
+        loop++;
+        if (loop >= paths.length) {}
+      });
+    }
+    print('ขั้นตอนต่อไป');
+
+    var url = Uri.parse(
+        '${MyConstant().domain}/carpool/history/updateHistoryStart.php');
+
+    var response = await http.post(
+      url,
+      body: {
+        'H_ID': '${historyModels[0].hID}',
+        'H_StartTime': '$timestart',
+        'H_Project': '$editProject',
+        'H_PicMileageStart': '${PathPicture[0]}',
+        'H_PicFront': '${PathPicture[1]}',
+        'H_PicBack': '${PathPicture[2]}',
+        'H_PicLeft': '${PathPicture[3]}',
+        'H_PicRight': '${PathPicture[4]}',
+        'H_PicHood': '${PathPicture[5]}',
+        'H_Status': 'driving'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      MyPopup().showToast(context, 'อัปโหลดรูปภาพสำเร็จ');
+    } else {
+      // Error
+      print('Error');
+    }
 
     //  var url =
     //     Uri.parse('${MyConstant().domain}/carpool/reserve/insertReserve.php');
@@ -1347,5 +1448,8 @@ class _UsingCheckInState extends State<UsingCheckIn> {
     //   // Error
     //   print('Error');
     // }
+    setState(() {
+      loadPic = 'no';
+    });
   }
 }
