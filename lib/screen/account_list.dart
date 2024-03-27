@@ -183,9 +183,7 @@ class _AccountListState extends State<AccountList> {
                                                                       (value) {
                                                                 // carModels.clear();
                                                                 // loadAllCar();
-                                                                setState(() {
-                                                                  // loaddata = 'yes';
-                                                                });
+                                                                
                                                               });
                                                             },
                                                             icon: Icon(Icons

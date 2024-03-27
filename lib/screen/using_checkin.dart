@@ -42,11 +42,11 @@ class _UsingCheckInState extends State<UsingCheckIn> {
 
   @override
   void initState() {
-    checkStatusUsing();
+    checkStatusStarted();
     super.initState();
   }
 
-  Future<Null> checkStatusUsing() async {
+  Future<Null> checkStatusStarted() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     accID = preferences.getString('Acc_ID')!;
     var url1 = Uri.parse(
@@ -55,7 +55,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
     // ส่งค่า accCode และ inputPassword ไปยัง PHP
     var response = await http.post(
       url1,
-      body: {'Acc_ID': accID},
+      body: {'Acc_ID': accID, 'H_Status': 'started'},
     );
 
     var data1 = json.decode(response.body);
@@ -1326,7 +1326,25 @@ class _UsingCheckInState extends State<UsingCheckIn> {
         picHood == null) {
       MyPopup().showError(context, 'กรุณาอัพโหลดรูปภาพให้ครบ');
     } else {
-      createNameImage();
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('ยืนยันการบันทึก'),
+          content: const Text('ตรวจสอบข้อมูลให้เรียบร้อยก่อนการบันทึก'),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: MyStyle().showTextSC(context, 'ปิด', 20, Colors.red)),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  createNameImage();
+                },
+                child: MyStyle().showTextSC(
+                    context, 'บันทึก', 20, Color.fromARGB(255, 54, 130, 244))),
+          ],
+        ),
+      );
     }
   }
 
@@ -1450,6 +1468,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
     // }
     setState(() {
       loadPic = 'no';
+      Navigator.pop(context);
     });
   }
 }

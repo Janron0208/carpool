@@ -1,14 +1,20 @@
+import 'dart:convert';
+
+import 'package:carpool/models/history_model.dart';
 import 'package:carpool/screen/Speed_Ticked.dart';
 import 'package:carpool/screen/account_detail.dart';
 import 'package:carpool/screen/account_list.dart';
 import 'package:carpool/screen/account_verify.dart';
 import 'package:carpool/screen/car_list.dart';
 import 'package:carpool/screen/reserve_chooseday.dart';
+import 'package:carpool/screen/return_car.dart';
 import 'package:carpool/screen/using_waiting.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:carpool/unity/my_constant.dart';
+import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -32,6 +38,7 @@ class _MainPageState extends State<MainPage> {
   String? type, accID;
   String checkstatus = 'yes';
   String checkined = 'no';
+  String showReturnCar = 'no';
 
   Future<Null> getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -66,11 +73,40 @@ class _MainPageState extends State<MainPage> {
         checkstatus = 'no';
       });
     }
+    checkStatusDriving();
+  }
+
+  String? endDate;
+  Future<Null> checkStatusDriving() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    accID = preferences.getString('Acc_ID')!;
+    var url1 = Uri.parse(
+        '${MyConstant().domain}/carpool/history/getHistoryByAccIDAndStatus.php');
+
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    var response = await http.post(
+      url1,
+      body: {'Acc_ID': accID, 'H_Status': 'driving'},
+    );
+    var data = json.decode(response.body);
+    print(response.body);
+    print(response.body.length);
+    if (response.body.length > 2) {
+      setState(() {
+        showReturnCar = 'yes';
+        endDate = data[0]['H_EndDate'];
+      });
+    } else {
+      setState(() {
+        showReturnCar = 'no';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           showBlackground(context),
@@ -83,53 +119,23 @@ class _MainPageState extends State<MainPage> {
                   child: Padding(
                     padding: const EdgeInsets.only(
                         top: 60, left: 25, right: 25, bottom: 10),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text('ยินดีต้อนรับ $nickname',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize:
-                                          MediaQuery.of(context).size.width /
-                                              15,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 1,
-                            height: MediaQuery.of(context).size.height * 0.81,
-                            child: type == 'user'
-                                ? GridView.count(
-                                    primary: false,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10,
-                                    crossAxisCount: 2,
-                                    children: <Widget>[
-                                        btnReserveCar(context),
-                                        btnCheckIn(context),
-                                        btnCarList(context),
-                                        btnMyProfile(context),
-                                      ])
-                                : GridView.count(
-                                    primary: false,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10,
-                                    crossAxisCount: 2,
-                                    children: <Widget>[
-                                        btnReserveCar(context),
-                                        btnCheckIn(context),
-                                        btnAccountList(context),
-                                        btnCarList(context),
-                                        btnVerify(context),
-                                        btnTickedSpeed(context),
-                                        btnMyProfile(context),
-                                      ]),
-                          ),
-                        ],
-                      ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: showTextWelcome(context),
+                        ),
+                        showReturnCar == 'no'
+                            ? Container()
+                            : Expanded(
+                                flex: 3, child: showReturnCarBTN(context)),
+                        Expanded(
+                          flex: 11,
+                          child: showMenu(context),
+                        ),
+
+                        // SizedBox(height: 10),
+                      ],
                     ),
                   ),
                 ),
@@ -139,6 +145,116 @@ class _MainPageState extends State<MainPage> {
           )
         ],
       ),
+    );
+  }
+
+  Container showMenu(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 1,
+      height: MediaQuery.of(context).size.height * 0.6,
+      child: type == 'user'
+          ? GridView.count(
+              primary: false,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              crossAxisCount: 2,
+              children: <Widget>[
+                  btnReserveCar(context),
+                  btnCheckIn(context),
+                  btnCarList(context),
+                  btnMyProfile(context),
+                ])
+          : GridView.count(
+              primary: false,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              crossAxisCount: 2,
+              children: <Widget>[
+                  btnReserveCar(context),
+                  btnCheckIn(context),
+                  btnAccountList(context),
+                  btnCarList(context),
+                  btnVerify(context),
+                  btnTickedSpeed(context),
+                  btnMyProfile(context),
+                ]),
+    );
+  }
+
+  Column showReturnCarBTN(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            MaterialPageRoute route =
+                MaterialPageRoute(builder: (context) => ReturnCar());
+            Navigator.push(context, route).then((value) {
+              setState(() {
+                getData();
+              });
+            });
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width * 1,
+            child: Stack(
+              children: [
+                Material(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  shadowColor: Colors.grey,
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(20),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            width: 100,
+                            height: 100,
+                            child: Image.asset('images/car_running.gif')),
+                        SizedBox(width: 20),
+                        MyStyle().showTextSC(context, 'คืนรถยนต์', 15,
+                            const Color.fromARGB(255, 73, 73, 73))
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      MyStyle().showTextSC(
+                          context,
+                          'ไม่ควรเกินวันที่ ${MyStyle().dateTypeddmmyyyy(endDate)}   ',
+                          30,
+                          Color.fromARGB(255, 139, 139, 139)),
+                      Icon(
+                        Icons.offline_bolt,
+                        size: 30,
+                        color: Color.fromARGB(255, 162, 241, 166),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        showReturnCar == 'no' ? Container() : SizedBox(height: 10),
+      ],
+    );
+  }
+
+  Row showTextWelcome(BuildContext context) {
+    return Row(
+      children: [
+        Text('ยินดีต้อนรับ $nickname',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: MediaQuery.of(context).size.width / 15,
+                fontWeight: FontWeight.bold)),
+      ],
     );
   }
 
@@ -280,11 +396,20 @@ class _MainPageState extends State<MainPage> {
     return InkWell(
       splashColor: Color.fromARGB(255, 69, 153, 48).withAlpha(30),
       onTap: () {
-        MyApi().NavigatorPushAnim(
-            context, PageTransitionType.fade, UsingWaiting());
+        MaterialPageRoute route = showReturnCar == 'yes'
+            ? MyPopup()
+                .showError(context, 'กรุณากดคืนรถยนต์ที่กำลังใช้งานอยู่ก่อน')
+            : MaterialPageRoute(builder: (context) => UsingWaiting());
+        Navigator.push(context, route).then((value) {
+          setState(() {
+            getData();
+          });
+        });
       },
       child: Material(
-        color: Color.fromARGB(71, 255, 255, 255),
+        color: showReturnCar == 'yes'
+            ? Color.fromARGB(47, 116, 116, 116)
+            : Color.fromARGB(71, 255, 255, 255),
         borderRadius: BorderRadius.circular(20),
         child: Stack(
           children: [
@@ -304,8 +429,8 @@ class _MainPageState extends State<MainPage> {
                       checkstatus == 'yes'
                           ? '---'
                           : checkined == 'yes'
-                              ? 'กำลังใช้งาน'
-                              : 'Check In',
+                              ? 'กำลังเช็คอิน'
+                              : 'เช็คอิน',
                       20,
                       Colors.white)
                 ],

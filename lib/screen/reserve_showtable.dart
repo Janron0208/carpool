@@ -229,6 +229,7 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                             ),
                                           ),
                                         ),
+                                        
                                         SizedBox(height: 15)
                                       ],
                                     );

@@ -29,6 +29,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
   @override
   void initState() {
     checkStatusUsing();
+
     super.initState();
   }
 
@@ -41,7 +42,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
     // ส่งค่า accCode และ inputPassword ไปยัง PHP
     var response = await http.post(
       url,
-      body: {'Acc_ID': accID},
+      body: {'Acc_ID': accID, 'H_Status': "started"},
     );
 
     if (response.body == '[]') {
@@ -96,6 +97,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
         } catch (e) {}
       });
     }
+    print('h_status = $h_status');
   }
 
   @override
@@ -196,7 +198,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
                                                                             },
                                                                             child: MyStyle().showTextSC(
                                                                                 context,
-                                                                                'CheckIn Now!',
+                                                                                'CheckIn Now',
                                                                                 20,
                                                                                 Color.fromARGB(255, 46, 226, 76)),
                                                                           ),
