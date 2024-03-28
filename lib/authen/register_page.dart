@@ -531,7 +531,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: MyStyle().showTextSC(
                                 context,
                                 'เมื่อทำการลงทะเบียนแล้วกรุณารอทางแอดมินอนุมัติสิทธิการเข้าใช้งาน',
-                                15,
+                                25,
                                 const Color.fromARGB(255, 66, 66, 66)),
                           ),
                         ],
