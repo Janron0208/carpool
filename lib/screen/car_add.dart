@@ -351,11 +351,14 @@ class _CarAddState extends State<CarAdd> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          MyStyle().showTextSC(context, 'ยืนยันการเพิ่มรถยนต์',
-                              18, Color.fromARGB(255, 29, 29, 29)),
+                          MyStyle().showSizeTextSC(
+                              context,
+                              'ยืนยันการเพิ่มรถยนต์',
+                              18,
+                              Color.fromARGB(255, 29, 29, 29)),
                           SizedBox(height: 20),
                           Center(
-                            child: MyStyle().showTextSC(
+                            child: MyStyle().showSizeTextSC(
                                 context,
                                 'ต้องการเพิ่มรถยนต์ทะเบียน $carNumber หรือไม่',
                                 22,

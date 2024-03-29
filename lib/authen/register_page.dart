@@ -78,7 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   Icons.save_alt,
                                   color: MyStyle().color6,
                                 ),
-                                MyStyle().showTextSC(
+                                MyStyle().showSizeTextSC(
                                     context, 'ยืนยัน', 18, MyStyle().color6),
                               ],
                             )),
@@ -524,11 +524,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          MyStyle().showTextSC(context, 'ยืนยันการลงทะเบียน',
-                              23, Color.fromARGB(255, 29, 29, 29)),
+                          MyStyle().showSizeTextSC(
+                              context,
+                              'ยืนยันการลงทะเบียน',
+                              23,
+                              Color.fromARGB(255, 29, 29, 29)),
                           SizedBox(height: 20),
                           Center(
-                            child: MyStyle().showTextSC(
+                            child: MyStyle().showSizeTextSC(
                                 context,
                                 'เมื่อทำการลงทะเบียนแล้วกรุณารอทางแอดมินอนุมัติสิทธิการเข้าใช้งาน',
                                 25,

@@ -5,6 +5,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
+$carID = $_POST['Car_ID'];
 
 // ดึงข้อมูล
 $sql = "SELECT * FROM `car_tb` WHERE `Car_ID` LIKE '$carID' ORDER BY `Car_ID` DESC";

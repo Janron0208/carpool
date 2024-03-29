@@ -14,6 +14,7 @@ class Checklogin extends StatefulWidget {
 class _CheckloginState extends State<Checklogin> {
   String? idLogin;
   String? typeLogin;
+  
 
   @override
   void initState() {

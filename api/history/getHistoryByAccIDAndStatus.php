@@ -6,9 +6,10 @@ if ($conn->connect_error) {
 }
 
 $Acc_ID = $_POST['Acc_ID'];
+$H_Status = $_POST['H_Status'];
 
 // ดึงข้อมูล
-$sql = "SELECT * FROM `history_tb` WHERE `Acc_ID` LIKE '$Acc_ID' AND `H_Status` LIKE 'started'";
+$sql = "SELECT * FROM `history_tb` WHERE `Acc_ID` LIKE '$Acc_ID' AND `H_Status` LIKE '$H_Status'";
 $result = $conn->query($sql);
 
 // แปลงข้อมูลเป็น JSON

@@ -77,7 +77,7 @@ class _ReturnCarState extends State<ReturnCar> {
                                                 child: Image.asset(
                                                     'images/arrow_left_bottom.gif')),
                                             SizedBox(width: 20),
-                                            MyStyle().showTextSC(context,
+                                            MyStyle().showSizeTextSC(context,
                                                 'คืนรถ', 20, MyStyle().color1),
                                           ],
                                         ),
@@ -108,7 +108,7 @@ class _ReturnCarState extends State<ReturnCar> {
           children: [
             Row(
               children: [
-                MyStyle().showTextSC(
+                MyStyle().showSizeTextSC(
                     context, 'ปัญหาการใช้งานรถยนต์', 20, MyStyle().color1),
               ],
             ),
@@ -172,7 +172,7 @@ class _ReturnCarState extends State<ReturnCar> {
           children: [
             Row(
               children: [
-                MyStyle().showTextSC(
+                MyStyle().showSizeTextSC(
                     context, 'เลขไมล์หลังใช้รถยนต์', 20, MyStyle().color1),
               ],
             ),
@@ -238,7 +238,7 @@ class _ReturnCarState extends State<ReturnCar> {
           children: [
             Row(
               children: [
-                MyStyle().showTextSC(
+                MyStyle().showSizeTextSC(
                     context, 'รูปเลขไมล์หลังใช้รถยนต์', 20, MyStyle().color1),
               ],
             ),
@@ -269,7 +269,7 @@ class _ReturnCarState extends State<ReturnCar> {
                               size: 30,
                               color: Colors.white,
                             ),
-                            MyStyle().showTextSC(
+                            MyStyle().showSizeTextSC(
                                 context, 'เพิ่มรูปภาพ', 23, Colors.white)
                           ],
                         ),
@@ -405,8 +405,8 @@ class _ReturnCarState extends State<ReturnCar> {
                           chooseImage(ImageSource.gallery);
                         });
                       },
-                      child: MyStyle()
-                          .showTextSC(context, 'เปลี่ยนรูป', 20, Colors.white),
+                      child: MyStyle().showSizeTextSC(
+                          context, 'เปลี่ยนรูป', 20, Colors.white),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -431,7 +431,7 @@ class _ReturnCarState extends State<ReturnCar> {
                         });
                       },
                       child: MyStyle()
-                          .showTextSC(context, 'ปิด', 20, Colors.white),
+                          .showSizeTextSC(context, 'ปิด', 20, Colors.white),
                     ),
                   )
                 ],
@@ -466,13 +466,14 @@ class _ReturnCarState extends State<ReturnCar> {
           actions: <Widget>[
             TextButton(
                 onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: MyStyle().showTextSC(context, 'ปิด', 20, Colors.red)),
+                child:
+                    MyStyle().showSizeTextSC(context, 'ปิด', 20, Colors.red)),
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   updateToDatabase();
                 },
-                child: MyStyle().showTextSC(
+                child: MyStyle().showSizeTextSC(
                     context, 'คืนรถ', 20, Color.fromARGB(255, 54, 130, 244))),
           ],
         ),

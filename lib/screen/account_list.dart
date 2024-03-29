@@ -100,18 +100,20 @@ class _AccountListState extends State<AccountList> {
                                             children: [
                                               Expanded(
                                                   flex: 4,
-                                                  child: MyStyle().showTextSC(
-                                                      context,
-                                                      'ชื่อผู้ใช้',
-                                                      23,
-                                                      Colors.white)),
+                                                  child: MyStyle()
+                                                      .showSizeTextSC(
+                                                          context,
+                                                          'ชื่อผู้ใช้',
+                                                          23,
+                                                          Colors.white)),
                                               Expanded(
                                                   flex: 2,
-                                                  child: MyStyle().showTextSC(
-                                                      context,
-                                                      'ประเภท',
-                                                      23,
-                                                      Colors.white)),
+                                                  child: MyStyle()
+                                                      .showSizeTextSC(
+                                                          context,
+                                                          'ประเภท',
+                                                          23,
+                                                          Colors.white)),
                                               Expanded(
                                                   flex: 1, child: Text(' ')),
                                             ],
@@ -143,14 +145,14 @@ class _AccountListState extends State<AccountList> {
                                                                   .only(
                                                                   right: 19),
                                                           child: MyStyle()
-                                                              .showTextS(
+                                                              .showSizeTextS(
                                                                   context,
                                                                   '${userModels[index].accFullname!} (${userModels[index].accNickname!})',
                                                                   29),
                                                         )),
                                                     Expanded(
                                                         flex: 2,
-                                                        child: MyStyle().showTextSCW(
+                                                        child: MyStyle().showSizeTextSCW(
                                                             context,
                                                             '${userModels[index].accType!}',
                                                             23,
@@ -183,7 +185,6 @@ class _AccountListState extends State<AccountList> {
                                                                       (value) {
                                                                 // carModels.clear();
                                                                 // loadAllCar();
-                                                                
                                                               });
                                                             },
                                                             icon: Icon(Icons

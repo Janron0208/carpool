@@ -19,7 +19,6 @@ class _AccountDetailState extends State<AccountDetail> {
   String? loaddata = 'yes';
   List<UserModel> userModels = [];
   String? status;
- 
 
   @override
   void initState() {
@@ -77,11 +76,11 @@ class _AccountDetailState extends State<AccountDetail> {
                                       children: [
                                         Expanded(
                                             flex: 1,
-                                            child: MyStyle().showTextS(
+                                            child: MyStyle().showSizeTextS(
                                                 context, 'รหัสพนักงาน :', 23)),
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextSC(
+                                            child: MyStyle().showSizeTextSC(
                                                 context,
                                                 '${userModels[0].accCode}',
                                                 20,
@@ -93,11 +92,13 @@ class _AccountDetailState extends State<AccountDetail> {
                                       children: [
                                         Expanded(
                                             flex: 1,
-                                            child: MyStyle().showTextS(context,
-                                                'ชื่อ - นามสกุล :', 23)),
+                                            child: MyStyle().showSizeTextS(
+                                                context,
+                                                'ชื่อ - นามสกุล :',
+                                                23)),
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextSC(
+                                            child: MyStyle().showSizeTextSC(
                                                 context,
                                                 '${userModels[0].accFullname}',
                                                 20,
@@ -109,11 +110,11 @@ class _AccountDetailState extends State<AccountDetail> {
                                       children: [
                                         Expanded(
                                             flex: 1,
-                                            child: MyStyle().showTextS(
+                                            child: MyStyle().showSizeTextS(
                                                 context, 'ชื่อเล่น :', 23)),
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextSC(
+                                            child: MyStyle().showSizeTextSC(
                                                 context,
                                                 '${userModels[0].accNickname}',
                                                 20,
@@ -125,11 +126,13 @@ class _AccountDetailState extends State<AccountDetail> {
                                       children: [
                                         Expanded(
                                             flex: 1,
-                                            child: MyStyle().showTextS(context,
-                                                'เบอร์โทรศัพท์ :', 23)),
+                                            child: MyStyle().showSizeTextS(
+                                                context,
+                                                'เบอร์โทรศัพท์ :',
+                                                23)),
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextSC(
+                                            child: MyStyle().showSizeTextSC(
                                                 context,
                                                 '${userModels[0].accTel}',
                                                 20,
@@ -141,11 +144,11 @@ class _AccountDetailState extends State<AccountDetail> {
                                       children: [
                                         Expanded(
                                             flex: 1,
-                                            child: MyStyle().showTextS(
+                                            child: MyStyle().showSizeTextS(
                                                 context, 'Line ID :', 23)),
                                         Expanded(
                                             flex: 2,
-                                            child: MyStyle().showTextSC(
+                                            child: MyStyle().showSizeTextSC(
                                                 context,
                                                 '${userModels[0].accLine}',
                                                 20,
@@ -158,9 +161,9 @@ class _AccountDetailState extends State<AccountDetail> {
                                         : Row(
                                             children: [
                                               Spacer(),
-                                              MyStyle().showTextS(context,
+                                              MyStyle().showSizeTextS(context,
                                                   'ประเภทบัญชี : ', 22),
-                                              MyStyle().showTextSC(
+                                              MyStyle().showSizeTextSC(
                                                   context,
                                                   '${userModels[0].accType}',
                                                   18,
@@ -449,7 +452,7 @@ class _AccountDetailState extends State<AccountDetail> {
           Expanded(
               flex: 3,
               child: Center(
-                child: MyStyle().showTextSC(
+                child: MyStyle().showSizeTextSC(
                     context, '${userModels[0].accFullname}', 17, Colors.white),
               )),
           Expanded(flex: 1, child: Container()),

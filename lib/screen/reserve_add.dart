@@ -61,7 +61,7 @@ class _ReserveAddState extends State<ReserveAdd> {
                       children: [
                         Row(
                           children: [
-                            MyStyle().showTextSCW(
+                            MyStyle().showSizeTextSCW(
                                 context,
                                 '   กรอกข้อมูลการจอง ',
                                 MediaQuery.of(context).size.width / 20,
@@ -85,7 +85,7 @@ class _ReserveAddState extends State<ReserveAdd> {
                                   children: [
                                     Expanded(
                                         flex: 2,
-                                        child: MyStyle().showTextSC(
+                                        child: MyStyle().showSizeTextSC(
                                             context,
                                             'ทะเบียนรถ : ',
                                             MediaQuery.of(context).size.width /
@@ -93,7 +93,7 @@ class _ReserveAddState extends State<ReserveAdd> {
                                             MyStyle().color3)),
                                     Expanded(
                                         flex: 4,
-                                        child: MyStyle().showTextSC(
+                                        child: MyStyle().showSizeTextSC(
                                             context,
                                             '${widget.carNumber}',
                                             MediaQuery.of(context).size.width /
@@ -105,7 +105,7 @@ class _ReserveAddState extends State<ReserveAdd> {
                                   children: [
                                     Expanded(
                                         flex: 2,
-                                        child: MyStyle().showTextSC(
+                                        child: MyStyle().showSizeTextSC(
                                             context,
                                             'วันที่เบิกใช้รถ : ',
                                             MediaQuery.of(context).size.width /
@@ -113,7 +113,7 @@ class _ReserveAddState extends State<ReserveAdd> {
                                             MyStyle().color3)),
                                     Expanded(
                                         flex: 4,
-                                        child: MyStyle().showTextSC(
+                                        child: MyStyle().showSizeTextSC(
                                             context,
                                             widget.start == widget.end
                                                 ? dateTypeddmmyyyy(widget.start)
@@ -127,7 +127,7 @@ class _ReserveAddState extends State<ReserveAdd> {
                                   children: [
                                     Expanded(
                                         flex: 2,
-                                        child: MyStyle().showTextSC(
+                                        child: MyStyle().showSizeTextSC(
                                             context,
                                             'ผู้เบิกใช้รถ : ',
                                             MediaQuery.of(context).size.width /
@@ -135,7 +135,7 @@ class _ReserveAddState extends State<ReserveAdd> {
                                             MyStyle().color3)),
                                     Expanded(
                                         flex: 4,
-                                        child: MyStyle().showTextSC(
+                                        child: MyStyle().showSizeTextSC(
                                             context,
                                             '${widget.fullname}',
                                             MediaQuery.of(context).size.width /
@@ -146,7 +146,7 @@ class _ReserveAddState extends State<ReserveAdd> {
                                 SizedBox(height: 5),
                                 Row(
                                   children: [
-                                    MyStyle().showTextSC(
+                                    MyStyle().showSizeTextSC(
                                         context,
                                         'โครงการ/งาน/สถานที่/จังหวัด',
                                         MediaQuery.of(context).size.width / 18,
@@ -299,11 +299,11 @@ class _ReserveAddState extends State<ReserveAdd> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          MyStyle().showTextSC(context, 'ยืนยันการจอง', 15,
+                          MyStyle().showSizeTextSC(context, 'ยืนยันการจอง', 15,
                               Color.fromARGB(255, 29, 29, 29)),
                           SizedBox(height: 20),
                           Center(
-                            child: MyStyle().showTextSC(
+                            child: MyStyle().showSizeTextSC(
                                 context,
                                 'เมื่อทำการจองแล้วสามารถยกเลิกได้ทุกเมื่อ',
                                 23,

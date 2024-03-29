@@ -6,6 +6,7 @@ import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,22 +28,58 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-        behavior: HitTestBehavior.opaque,
-        child: Stack(
-          children: [
-            showContent(context),
-            processing == 'no'
-                ? Container()
-                : Container(
-                    height: MediaQuery.of(context).size.height * 1,
-                    width: MediaQuery.of(context).size.width * 1,
-                    color: Color.fromARGB(132, 255, 255, 255),
-                    child: MyPopup().showProcessing(),
-                  )
-          ],
-        ),
+        body: MediaQuery.of(context).size.width > 700
+            ? showErrorScreenSize()
+            : showWidgetLogin(context));
+  }
+
+  Container showErrorScreenSize() {
+    return Container(
+              color: Colors.black,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 150,
+                      height: 150,
+                      child: Image.asset('images/error.gif'),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'ขออภัย!',
+                      style: TextStyle(fontSize: 30, color: Colors.white),
+                    ),
+                    Text(
+                      'ขนาดหน้าจอนี้ยังไม่รองรับ',
+                      style: TextStyle(fontSize: 30, color: Colors.white),
+                    ),
+                    Text(
+                      '* โปรดใช้งานในโทรศัพท์ *',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            );
+  }
+
+  GestureDetector showWidgetLogin(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      behavior: HitTestBehavior.opaque,
+      child: Stack(
+        children: [
+          showContent(context),
+          processing == 'no'
+              ? Container()
+              : Container(
+                  height: MediaQuery.of(context).size.height * 1,
+                  width: MediaQuery.of(context).size.width * 1,
+                  color: Color.fromARGB(132, 255, 255, 255),
+                  child: MyPopup().showProcessing(),
+                )
+        ],
       ),
     );
   }
@@ -76,10 +113,17 @@ class _LoginPageState extends State<LoginPage> {
               // ),
               showLogoSVOA(context),
               SizedBox(height: 1),
-              MyStyle().showTextSCW(
-                  context, 'Carpool', 5, FontWeight.bold, MyStyle().color1),
-              MyStyle().showTextSC(context, 'แอปพลิเคชันการจองรถยนต์บริษัท', 20,
-                  MyStyle().color1),
+
+              Text(
+                'Carpool',
+                style: TextStyle(
+                    fontSize:
+                        MediaQuery.of(context).size.width > 900 ? 120 : 70,
+                    fontWeight: FontWeight.bold,
+                    color: MyStyle().color1),
+              ),
+              MyStyle().showSizeTextSC(context, 'แอปพลิเคชันการจองรถยนต์บริษัท',
+                  25, MyStyle().color1),
               SizedBox(height: 35),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -167,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                             MyApi().NavigatorPushAnim(context,
                                 PageTransitionType.fade, RegisterPage());
                           },
-                          child: MyStyle().showTextSC(
+                          child: MyStyle().showSizeTextSC(
                               context, 'สมัครสมาชิก', 23, MyStyle().color1),
                         )
                       ],

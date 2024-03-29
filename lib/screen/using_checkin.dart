@@ -9,11 +9,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:path/path.dart' as path;
 
 class UsingCheckIn extends StatefulWidget {
   const UsingCheckIn({super.key});
@@ -38,10 +40,24 @@ class _UsingCheckInState extends State<UsingCheckIn> {
       picRight,
       picHood;
 
+  Uint8List picMileageStartWeb = Uint8List(10);
+  Uint8List picFrontWeb = Uint8List(10);
+  Uint8List picBackWeb = Uint8List(10);
+  Uint8List picLeftWeb = Uint8List(10);
+  Uint8List picRightWeb = Uint8List(10);
+  Uint8List picHoodWeb = Uint8List(10);
+  String startWeb = 'no',
+      frontWeb = 'no',
+      backWeb = 'no',
+      leftWeb = 'no',
+      rightWeb = 'no',
+      hoodWeb = 'no';
   String? editProject;
 
   @override
   void initState() {
+    print('on Website : ${kIsWeb}');
+
     checkStatusStarted();
     super.initState();
   }
@@ -119,30 +135,32 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                                                 children: [
                                                   Row(
                                                     children: [
-                                                      MyStyle().showTextSC(
+                                                      MyStyle().showSizeTextSC(
                                                           context,
                                                           'ขื่อผู้ใช้งาน : ',
                                                           25,
                                                           MyStyle().color3),
                                                       Expanded(
-                                                        child: MyStyle().showTextSC(
-                                                            context,
-                                                            '${his[0]['Acc_Fullname']} (${his[0]['Acc_Nickname']})',
-                                                            23,
-                                                            MyStyle().color1),
+                                                        child: MyStyle()
+                                                            .showSizeTextSC(
+                                                                context,
+                                                                '${his[0]['Acc_Fullname']} (${his[0]['Acc_Nickname']})',
+                                                                23,
+                                                                MyStyle()
+                                                                    .color1),
                                                       ),
                                                     ],
                                                   ),
                                                   SizedBox(height: 10),
                                                   Row(
                                                     children: [
-                                                      MyStyle().showTextSC(
+                                                      MyStyle().showSizeTextSC(
                                                           context,
                                                           'วันที่ใช้งาน : ',
                                                           25,
                                                           MyStyle().color3),
                                                       Expanded(
-                                                        child: MyStyle().showTextSC(
+                                                        child: MyStyle().showSizeTextSC(
                                                             context,
                                                             his[0]['H_StartDate'] ==
                                                                     his[0][
@@ -157,24 +175,26 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                                                   SizedBox(height: 10),
                                                   Row(
                                                     children: [
-                                                      MyStyle().showTextSC(
+                                                      MyStyle().showSizeTextSC(
                                                           context,
                                                           'ทะเบียนรถ : ',
                                                           25,
                                                           MyStyle().color3),
                                                       Expanded(
-                                                        child: MyStyle().showTextSC(
-                                                            context,
-                                                            '${his[0]['Car_Number']}',
-                                                            23,
-                                                            MyStyle().color1),
+                                                        child: MyStyle()
+                                                            .showSizeTextSC(
+                                                                context,
+                                                                '${his[0]['Car_Number']}',
+                                                                23,
+                                                                MyStyle()
+                                                                    .color1),
                                                       ),
                                                     ],
                                                   ),
                                                   SizedBox(height: 10),
                                                   Row(
                                                     children: [
-                                                      MyStyle().showTextSC(
+                                                      MyStyle().showSizeTextSC(
                                                           context,
                                                           'เลขไมล์ล่าสุด : ',
                                                           25,
@@ -188,11 +208,13 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                                                                   23,
                                                                   MyStyle()
                                                                       .color1),
-                                                          MyStyle().showTextSC(
-                                                              context,
-                                                              ' Km.',
-                                                              23,
-                                                              MyStyle().color1),
+                                                          MyStyle()
+                                                              .showSizeTextSC(
+                                                                  context,
+                                                                  ' Km.',
+                                                                  23,
+                                                                  MyStyle()
+                                                                      .color1),
                                                         ],
                                                       ),
                                                     ],
@@ -202,7 +224,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                                                     children: [
                                                       Row(
                                                         children: [
-                                                          MyStyle().showTextSC(
+                                                          MyStyle().showSizeTextSC(
                                                               context,
                                                               'โครงการ/สถานที่ (แก้ไขได้)',
                                                               25,
@@ -322,7 +344,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                                                         });
                                                       },
                                                       child: MyStyle()
-                                                          .showTextSC(
+                                                          .showSizeTextSC(
                                                               context,
                                                               'ถัดไป',
                                                               20,
@@ -338,11 +360,13 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        MyStyle().showTextSC(
-                                                            context,
-                                                            'อัปโหลดรูปภาพ',
-                                                            20,
-                                                            MyStyle().color1),
+                                                        MyStyle()
+                                                            .showSizeTextSC(
+                                                                context,
+                                                                'อัปโหลดรูปภาพ',
+                                                                20,
+                                                                MyStyle()
+                                                                    .color1),
                                                       ],
                                                     ),
                                                     SizedBox(height: 10),
@@ -389,7 +413,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                                                           // });
                                                         },
                                                         child: MyStyle()
-                                                            .showTextSC(
+                                                            .showSizeTextSC(
                                                                 context,
                                                                 'บันทึก',
                                                                 20,
@@ -443,82 +467,145 @@ class _UsingCheckInState extends State<UsingCheckIn> {
           children: [
             Row(
               children: [
-                MyStyle().showTextSC(
+                MyStyle().showSizeTextSC(
                     context, 'เลขไมล์ก่อนเดินทาง : ', 25, MyStyle().color3),
                 Row(
                   children: [
                     MyStyle().showTextNumberSC(context,
                         '${his[0]['Car_Mileage']}', 23, MyStyle().color1),
-                    MyStyle().showTextSC(context, ' Km.', 23, MyStyle().color1),
+                    MyStyle()
+                        .showSizeTextSC(context, ' Km.', 23, MyStyle().color1),
                   ],
                 ),
               ],
             ),
             SizedBox(height: 5),
-            Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 120,
-                child: picMileageStart == null
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          backgroundColor: Colors.grey[300],
-                          elevation: 5.0,
-                          shadowColor: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            choosePic = 'mileageStart';
-                            chooseImage(ImageSource.gallery);
-                          });
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_a_photo_rounded,
-                              size: 30,
-                              color: Colors.white,
+            kIsWeb
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: startWeb == 'no'
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
                             ),
-                            MyStyle().showTextSC(
-                                context, 'เพิ่มรูปภาพ', 23, Colors.white)
-                          ],
-                        ),
-                      )
-                    : Stack(
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey[300],
-                                  image: DecorationImage(
-                                      fit: BoxFit.contain,
-                                      image: FileImage(picMileageStart!)))),
-                          InkWell(
-                            onTap: () {
+                            onPressed: () {
                               setState(() {
                                 choosePic = 'mileageStart';
-                                showPicture();
+                                chooseImage(ImageSource.gallery);
                               });
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Color.fromARGB(118, 104, 104, 104),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.search,
-                                  size: 40,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
                                   color: Colors.white,
                                 ),
-                              ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
                             ),
                           )
-                        ],
-                      )),
+                        : Stack(
+                            children: [
+                              Container(
+                                child: Center(
+                                    child: Image.memory(picMileageStartWeb)),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'mileageStart';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ))
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: picMileageStart == null
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                choosePic = 'mileageStart';
+                                chooseImage(ImageSource.gallery);
+                              });
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.grey[300],
+                                      image: DecorationImage(
+                                          fit: BoxFit.contain,
+                                          image: FileImage(picMileageStart!)))),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'mileageStart';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
           ],
         ),
       ),
@@ -548,75 +635,136 @@ class _UsingCheckInState extends State<UsingCheckIn> {
           children: [
             Row(
               children: [
-                MyStyle()
-                    .showTextSC(context, 'รูปถ่ายหน้ารถ', 25, MyStyle().color3),
+                MyStyle().showSizeTextSC(
+                    context, 'รูปถ่ายหน้ารถ', 25, MyStyle().color3),
               ],
             ),
             SizedBox(height: 5),
-            Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 120,
-                child: picFront == null
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          backgroundColor: Colors.grey[300],
-                          elevation: 5.0,
-                          shadowColor: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            choosePic = 'front';
-                            chooseImage(ImageSource.gallery);
-                          });
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_a_photo_rounded,
-                              size: 30,
-                              color: Colors.white,
+            kIsWeb
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: frontWeb == 'no'
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
                             ),
-                            MyStyle().showTextSC(
-                                context, 'เพิ่มรูปภาพ', 23, Colors.white)
-                          ],
-                        ),
-                      )
-                    : Stack(
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey[300],
-                                  image: DecorationImage(
-                                      fit: BoxFit.contain,
-                                      image: FileImage(picFront!)))),
-                          InkWell(
-                            onTap: () {
+                            onPressed: () {
                               setState(() {
                                 choosePic = 'front';
-                                showPicture();
+                                chooseImage(ImageSource.gallery);
                               });
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Color.fromARGB(118, 104, 104, 104),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.search,
-                                  size: 40,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
                                   color: Colors.white,
                                 ),
-                              ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
                             ),
                           )
-                        ],
-                      )),
+                        : Stack(
+                            children: [
+                              Container(
+                                child: Center(child: Image.memory(picFrontWeb)),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'front';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ))
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: picFront == null
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                choosePic = 'front';
+                                chooseImage(ImageSource.gallery);
+                              });
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.grey[300],
+                                      image: DecorationImage(
+                                          fit: BoxFit.contain,
+                                          image: FileImage(picFront!)))),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'front';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
           ],
         ),
       ),
@@ -646,75 +794,136 @@ class _UsingCheckInState extends State<UsingCheckIn> {
           children: [
             Row(
               children: [
-                MyStyle()
-                    .showTextSC(context, 'รูปถ่ายหลังรถ', 25, MyStyle().color3),
+                MyStyle().showSizeTextSC(
+                    context, 'รูปถ่ายหลังรถ', 25, MyStyle().color3),
               ],
             ),
             SizedBox(height: 5),
-            Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 120,
-                child: picBack == null
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          backgroundColor: Colors.grey[300],
-                          elevation: 5.0,
-                          shadowColor: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            choosePic = 'back';
-                            chooseImage(ImageSource.gallery);
-                          });
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_a_photo_rounded,
-                              size: 30,
-                              color: Colors.white,
+            kIsWeb
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: backWeb == 'no'
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
                             ),
-                            MyStyle().showTextSC(
-                                context, 'เพิ่มรูปภาพ', 23, Colors.white)
-                          ],
-                        ),
-                      )
-                    : Stack(
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey[300],
-                                  image: DecorationImage(
-                                      fit: BoxFit.contain,
-                                      image: FileImage(picBack!)))),
-                          InkWell(
-                            onTap: () {
+                            onPressed: () {
                               setState(() {
                                 choosePic = 'back';
-                                showPicture();
+                                chooseImage(ImageSource.gallery);
                               });
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Color.fromARGB(118, 104, 104, 104),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.search,
-                                  size: 40,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
                                   color: Colors.white,
                                 ),
-                              ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
                             ),
                           )
-                        ],
-                      )),
+                        : Stack(
+                            children: [
+                              Container(
+                                child: Center(child: Image.memory(picBackWeb)),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'back';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ))
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: picBack == null
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                choosePic = 'back';
+                                chooseImage(ImageSource.gallery);
+                              });
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.grey[300],
+                                      image: DecorationImage(
+                                          fit: BoxFit.contain,
+                                          image: FileImage(picBack!)))),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'back';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
           ],
         ),
       ),
@@ -744,75 +953,136 @@ class _UsingCheckInState extends State<UsingCheckIn> {
           children: [
             Row(
               children: [
-                MyStyle().showTextSC(
+                MyStyle().showSizeTextSC(
                     context, 'รูปถ่ายรถข้างซ้าย', 25, MyStyle().color3),
               ],
             ),
             SizedBox(height: 5),
-            Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 120,
-                child: picLeft == null
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          backgroundColor: Colors.grey[300],
-                          elevation: 5.0,
-                          shadowColor: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            choosePic = 'left';
-                            chooseImage(ImageSource.gallery);
-                          });
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_a_photo_rounded,
-                              size: 30,
-                              color: Colors.white,
+            kIsWeb
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: leftWeb == 'no'
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
                             ),
-                            MyStyle().showTextSC(
-                                context, 'เพิ่มรูปภาพ', 23, Colors.white)
-                          ],
-                        ),
-                      )
-                    : Stack(
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey[300],
-                                  image: DecorationImage(
-                                      fit: BoxFit.contain,
-                                      image: FileImage(picLeft!)))),
-                          InkWell(
-                            onTap: () {
+                            onPressed: () {
                               setState(() {
                                 choosePic = 'left';
-                                showPicture();
+                                chooseImage(ImageSource.gallery);
                               });
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Color.fromARGB(118, 104, 104, 104),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.search,
-                                  size: 40,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
                                   color: Colors.white,
                                 ),
-                              ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
                             ),
                           )
-                        ],
-                      )),
+                        : Stack(
+                            children: [
+                              Container(
+                                child: Center(child: Image.memory(picLeftWeb)),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'left';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ))
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: picLeft == null
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                choosePic = 'left';
+                                chooseImage(ImageSource.gallery);
+                              });
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.grey[300],
+                                      image: DecorationImage(
+                                          fit: BoxFit.contain,
+                                          image: FileImage(picLeft!)))),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'left';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
           ],
         ),
       ),
@@ -842,75 +1112,136 @@ class _UsingCheckInState extends State<UsingCheckIn> {
           children: [
             Row(
               children: [
-                MyStyle().showTextSC(
+                MyStyle().showSizeTextSC(
                     context, 'รูปถ่ายรถข้างขวา', 25, MyStyle().color3),
               ],
             ),
             SizedBox(height: 5),
-            Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 120,
-                child: picRight == null
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          backgroundColor: Colors.grey[300],
-                          elevation: 5.0,
-                          shadowColor: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            choosePic = 'right';
-                            chooseImage(ImageSource.gallery);
-                          });
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_a_photo_rounded,
-                              size: 30,
-                              color: Colors.white,
+            kIsWeb
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: rightWeb == 'no'
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
                             ),
-                            MyStyle().showTextSC(
-                                context, 'เพิ่มรูปภาพ', 23, Colors.white)
-                          ],
-                        ),
-                      )
-                    : Stack(
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey[300],
-                                  image: DecorationImage(
-                                      fit: BoxFit.contain,
-                                      image: FileImage(picRight!)))),
-                          InkWell(
-                            onTap: () {
+                            onPressed: () {
                               setState(() {
                                 choosePic = 'right';
-                                showPicture();
+                                chooseImage(ImageSource.gallery);
                               });
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Color.fromARGB(118, 104, 104, 104),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.search,
-                                  size: 40,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
                                   color: Colors.white,
                                 ),
-                              ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
                             ),
                           )
-                        ],
-                      )),
+                        : Stack(
+                            children: [
+                              Container(
+                                child: Center(child: Image.memory(picRightWeb)),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'right';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ))
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: picRight == null
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                choosePic = 'right';
+                                chooseImage(ImageSource.gallery);
+                              });
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.grey[300],
+                                      image: DecorationImage(
+                                          fit: BoxFit.contain,
+                                          image: FileImage(picRight!)))),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'right';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
           ],
         ),
       ),
@@ -940,75 +1271,136 @@ class _UsingCheckInState extends State<UsingCheckIn> {
           children: [
             Row(
               children: [
-                MyStyle().showTextSC(
+                MyStyle().showSizeTextSC(
                     context, 'รูปถ่ายใต้ฝากระโปรง', 25, MyStyle().color3),
               ],
             ),
             SizedBox(height: 5),
-            Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 120,
-                child: picHood == null
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          backgroundColor: Colors.grey[300],
-                          elevation: 5.0,
-                          shadowColor: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            choosePic = 'hood';
-                            chooseImage(ImageSource.gallery);
-                          });
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_a_photo_rounded,
-                              size: 30,
-                              color: Colors.white,
+            kIsWeb
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: hoodWeb == 'no'
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
                             ),
-                            MyStyle().showTextSC(
-                                context, 'เพิ่มรูปภาพ', 23, Colors.white)
-                          ],
-                        ),
-                      )
-                    : Stack(
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey[300],
-                                  image: DecorationImage(
-                                      fit: BoxFit.contain,
-                                      image: FileImage(picHood!)))),
-                          InkWell(
-                            onTap: () {
+                            onPressed: () {
                               setState(() {
                                 choosePic = 'hood';
-                                showPicture();
+                                chooseImage(ImageSource.gallery);
                               });
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Color.fromARGB(118, 104, 104, 104),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.search,
-                                  size: 40,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
                                   color: Colors.white,
                                 ),
-                              ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
                             ),
                           )
-                        ],
-                      )),
+                        : Stack(
+                            children: [
+                              Container(
+                                child: Center(child: Image.memory(picHoodWeb)),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'hood';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ))
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: picHood == null
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                choosePic = 'hood';
+                                chooseImage(ImageSource.gallery);
+                              });
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.grey[300],
+                                      image: DecorationImage(
+                                          fit: BoxFit.contain,
+                                          image: FileImage(picHood!)))),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    choosePic = 'hood';
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
           ],
         ),
       ),
@@ -1038,7 +1430,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
           children: [
             Row(
               children: [
-                MyStyle().showTextSC(
+                MyStyle().showSizeTextSC(
                     context, 'เลขไมล์วันคืนรถ', 25, MyStyle().color3),
               ],
             ),
@@ -1070,7 +1462,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                               size: 30,
                               color: Colors.white,
                             ),
-                            MyStyle().showTextSC(
+                            MyStyle().showSizeTextSC(
                                 context, 'เพิ่มรูปภาพ', 23, Colors.white)
                           ],
                         ),
@@ -1142,15 +1534,26 @@ class _UsingCheckInState extends State<UsingCheckIn> {
               child: phase == 'upload'
                   ? IconButton(
                       onPressed: () {
-                        setState(() {
-                          picMileageStart = null;
-                          picMileageEnd = null;
-                          picFront = null;
-                          picBack = null;
-                          picLeft = null;
-                          picRight = null;
-                          picHood = null;
-                        });
+                        if (kIsWeb) {
+                          startWeb = 'no';
+                          frontWeb = 'no';
+                          backWeb = 'no';
+                          leftWeb = 'no';
+                          rightWeb = 'no';
+                          hoodWeb = 'no';
+                          // print(picMileageStartWeb);
+                          //  Uint8List picMileageStartWeb = Uint8List(10);
+                        } else {
+                          setState(() {
+                            picMileageStart = null;
+                            picMileageEnd = null;
+                            picFront = null;
+                            picBack = null;
+                            picLeft = null;
+                            picRight = null;
+                            picHood = null;
+                          });
+                        }
 
                         MyPopup().showToast(context, 'รีเซ็ทสำเร็จ');
                       },
@@ -1175,31 +1578,53 @@ class _UsingCheckInState extends State<UsingCheckIn> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Color.fromARGB(0, 255, 255, 255),
-                  image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: FileImage(choosePic == 'mileageStart'
-                            ? picMileageStart!
-                            : choosePic == 'mileageEnd'
-                                ? picMileageEnd!
-                                : choosePic == 'front'
-                                    ? picFront!
-                                    : choosePic == 'back'
-                                        ? picBack!
-                                        : choosePic == 'left'
-                                            ? picLeft!
-                                            : choosePic == 'right'
-                                                ? picRight!
-                                                : picHood! // Use a default image if picHood is null or not a File
+              kIsWeb
+                  ? Container(
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Color.fromARGB(0, 255, 255, 255),
+                      ),
+                      child: Image.memory(
+                          choosePic == 'mileageStart'
+                              ? picMileageStartWeb
+                              : choosePic == 'front'
+                                  ? picFrontWeb
+                                  : choosePic == 'back'
+                                      ? picBackWeb
+                                      : choosePic == 'left'
+                                          ? picLeftWeb
+                                          : choosePic == 'right'
+                                              ? picRightWeb
+                                              : picHoodWeb,
+                          fit: BoxFit.contain),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Color.fromARGB(0, 255, 255, 255),
+                        image: DecorationImage(
+                          fit: BoxFit.contain,
+                          image: FileImage(choosePic == 'mileageStart'
+                                  ? picMileageStart!
+                                  : choosePic == 'mileageEnd'
+                                      ? picMileageEnd!
+                                      : choosePic == 'front'
+                                          ? picFront!
+                                          : choosePic == 'back'
+                                              ? picBack!
+                                              : choosePic == 'left'
+                                                  ? picLeft!
+                                                  : choosePic == 'right'
+                                                      ? picRight!
+                                                      : picHood! // Use a default image if picHood is null or not a File
+                              ),
                         ),
-                  ),
-                ),
-                width: MediaQuery.of(context).size.width * 1,
-                height: MediaQuery.of(context).size.height * 0.6,
-              ),
+                      ),
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                    ),
               SizedBox(height: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1225,8 +1650,8 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                           chooseImage(ImageSource.gallery);
                         });
                       },
-                      child: MyStyle()
-                          .showTextSC(context, 'เปลี่ยนรูป', 20, Colors.white),
+                      child: MyStyle().showSizeTextSC(
+                          context, 'เปลี่ยนรูป', 20, Colors.white),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -1251,7 +1676,7 @@ class _UsingCheckInState extends State<UsingCheckIn> {
                         });
                       },
                       child: MyStyle()
-                          .showTextSC(context, 'ปิด', 20, Colors.white),
+                          .showSizeTextSC(context, 'ปิด', 20, Colors.white),
                     ),
                   )
                 ],
@@ -1273,44 +1698,87 @@ class _UsingCheckInState extends State<UsingCheckIn> {
     });
     print(choosePic);
     try {
-      var object = await ImagePicker().pickImage(
-        source: source,
-        imageQuality: 50,
-        maxWidth: 800.0,
-        maxHeight: 800.0,
-      );
+      if (kIsWeb) {
+        final ImagePicker _picker = ImagePicker();
+        XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+        var f = await image!.readAsBytes();
+        setState(() {
+          if (choosePic == 'mileageStart') {
+            setState(() {
+              startWeb = 'yes';
+              picMileageStartWeb = f;
+            });
+          } else if (choosePic == 'mileageEnd') {
+            setState(() {
+              // picMileageEndWE = File(image!.path);
+            });
+          } else if (choosePic == 'front') {
+            setState(() {
+              frontWeb = 'yes';
+              picFrontWeb = f;
+            });
+          } else if (choosePic == 'back') {
+            setState(() {
+              backWeb = 'yes';
+              picBackWeb = f;
+            });
+          } else if (choosePic == 'left') {
+            setState(() {
+              leftWeb = 'yes';
+              picLeftWeb = f;
+            });
+          } else if (choosePic == 'right') {
+            setState(() {
+              rightWeb = 'yes';
+              picRightWeb = f;
+            });
+          } else if (choosePic == 'hood') {
+            setState(() {
+              hoodWeb = 'yes';
+              picHoodWeb = f;
+            });
+          }
+        });
+      } else {
+        var object = await ImagePicker().pickImage(
+          source: source,
+          imageQuality: 50,
+          maxWidth: 800.0,
+          maxHeight: 800.0,
+        );
 
-      setState(() {
-        if (choosePic == 'mileageStart') {
-          setState(() {
-            picMileageStart = File(object!.path);
-          });
-        } else if (choosePic == 'mileageEnd') {
-          setState(() {
-            picMileageEnd = File(object!.path);
-          });
-        } else if (choosePic == 'front') {
-          setState(() {
-            picFront = File(object!.path);
-          });
-        } else if (choosePic == 'back') {
-          setState(() {
-            picBack = File(object!.path);
-          });
-        } else if (choosePic == 'left') {
-          setState(() {
-            picLeft = File(object!.path);
-          });
-        } else if (choosePic == 'right') {
-          setState(() {
-            picRight = File(object!.path);
-          });
-        } else if (choosePic == 'hood') {
-          setState(() {
-            picHood = File(object!.path);
-          });
-        }
-      });
+        setState(() {
+          if (choosePic == 'mileageStart') {
+            setState(() {
+              picMileageStart = File(object!.path);
+            });
+          } else if (choosePic == 'mileageEnd') {
+            setState(() {
+              picMileageEnd = File(object!.path);
+            });
+          } else if (choosePic == 'front') {
+            setState(() {
+              picFront = File(object!.path);
+            });
+          } else if (choosePic == 'back') {
+            setState(() {
+              picBack = File(object!.path);
+            });
+          } else if (choosePic == 'left') {
+            setState(() {
+              picLeft = File(object!.path);
+            });
+          } else if (choosePic == 'right') {
+            setState(() {
+              picRight = File(object!.path);
+            });
+          } else if (choosePic == 'hood') {
+            setState(() {
+              picHood = File(object!.path);
+            });
+          }
+        });
+      }
     } catch (e) {}
     setState(() {
       loadPic = 'no';
@@ -1318,56 +1786,107 @@ class _UsingCheckInState extends State<UsingCheckIn> {
   }
 
   Future<Null> checkNullImage() async {
-    if (picMileageStart == null ||
-        picFront == null ||
-        picBack == null ||
-        picLeft == null ||
-        picRight == null ||
-        picHood == null) {
-      MyPopup().showError(context, 'กรุณาอัพโหลดรูปภาพให้ครบ');
+    if (kIsWeb) {
+      if (startWeb == 'no' ||
+          frontWeb == 'no' ||
+          backWeb == 'no' ||
+          leftWeb == 'no' ||
+          rightWeb == 'no' ||
+          hoodWeb == 'no') {
+        MyPopup().showError(context, 'กรุณาอัพโหลดรูปภาพให้ครบ');
+      } else {
+        showDialogConfirm();
+      }
     } else {
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('ยืนยันการบันทึก'),
-          content: const Text('ตรวจสอบข้อมูลให้เรียบร้อยก่อนการบันทึก'),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: MyStyle().showTextSC(context, 'ปิด', 20, Colors.red)),
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  createNameImage();
-                },
-                child: MyStyle().showTextSC(
-                    context, 'บันทึก', 20, Color.fromARGB(255, 54, 130, 244))),
-          ],
-        ),
-      );
+      if (picMileageStart == null ||
+          picFront == null ||
+          picBack == null ||
+          picLeft == null ||
+          picRight == null ||
+          picHood == null) {
+        MyPopup().showError(context, 'กรุณาอัพโหลดรูปภาพให้ครบ');
+      } else {
+        showDialogConfirm();
+      }
     }
   }
 
-  Future<Null> createNameImage() async {
+  Future<String?> showDialogConfirm() {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('ยืนยันการบันทึก'),
+        content: const Text('ตรวจสอบข้อมูลให้เรียบร้อยก่อนการบันทึก'),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: MyStyle().showSizeTextSC(context, 'ปิด', 20, Colors.red)),
+          TextButton(
+              onPressed: () {
+                if (kIsWeb) {
+                  createNameImageWeb();
+                } else {
+                  Navigator.pop(context);
+                  createNameImageMobile();
+                }
+              },
+              child: MyStyle().showSizeTextSC(
+                  context, 'บันทึก', 20, Color.fromARGB(255, 54, 130, 244))),
+        ],
+      ),
+    );
+  }
+
+  Future<File> convertUint8ListToFile(Uint8List bytes) async {
+    final tempDir = await getTemporaryDirectory();
+    final filename = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final file = File(path.join(tempDir.path, filename));
+    file.writeAsBytesSync(bytes);
+    return file;
+  }
+
+  Future<Null> createNameImageWeb() async {
+    print('WEBSITE');
+
     setState(() {
       loadPic = 'yes';
     });
 
     var timenow = DateTime.now();
     var timestart = DateFormat('HH:mm').format(timenow);
-    // String namepicMileageStart = '${historyModels[0].hID}_start.jpg';
-    // String namepicFront = '${historyModels[0].hID}_front.jpg';
-    // String namepicBack = '${historyModels[0].hID}_back.jpg';
-    // String namepicLeft = '${historyModels[0].hID}_left.jpg';
-    // String namepicRight = '${historyModels[0].hID}_right.jpg';
-    // String namepicHood = '${historyModels[0].hID}_hood.jpg';
 
-    // String pathpicMileageStart = '/carpool/pic_history/$namepicMileageStart';
-    // String pathpicFront = '/carpool/pic_history/$namepicFront';
-    // String pathpicBack = '/carpool/pic_history/$namepicBack';
-    // String pathpicLeft = '/carpool/pic_history/$namepicLeft';
-    // String pathpicRight = '/carpool/pic_history/$namepicRight';
-    // String pathpicHood = '/carpool/pic_history/$namepicHood';
+    List<String> PathPicture = [];
+    List<String> name = [
+      '_start.jpg',
+      '_front.jpg',
+      '_left.jpg',
+      '_right.jpg',
+      '_hood.jpg',
+    ];
+    List<Uint8List?> pathsUint8List = [];
+    pathsUint8List.add(picMileageStartWeb);
+    pathsUint8List.add(picFrontWeb);
+    pathsUint8List.add(picLeftWeb);
+    pathsUint8List.add(picRightWeb);
+    pathsUint8List.add(picHoodWeb);
+    int loop = 0;
+
+    List<File?> paths = [];
+
+    for (var item in pathsUint8List) {
+      // String nameFile = '${historyModels[0].hID}${name[loop]}';
+
+      print(convertUint8ListToFile(picMileageStartWeb));
+    }
+  }
+
+  Future<Null> createNameImageMobile() async {
+    setState(() {
+      loadPic = 'yes';
+    });
+
+    var timenow = DateTime.now();
+    var timestart = DateFormat('HH:mm').format(timenow);
 
     List<String> PathPicture = [];
     List<String> name = [
@@ -1385,7 +1904,6 @@ class _UsingCheckInState extends State<UsingCheckIn> {
     paths.add(picLeft);
     paths.add(picRight);
     paths.add(picHood);
-
     String apiSaveHistory = '${MyConstant().domain}/carpool/savePic.php';
 
     int loop = 0;
@@ -1411,7 +1929,6 @@ class _UsingCheckInState extends State<UsingCheckIn> {
 
     var url = Uri.parse(
         '${MyConstant().domain}/carpool/history/updateHistoryStart.php');
-
     var response = await http.post(
       url,
       body: {
@@ -1427,45 +1944,12 @@ class _UsingCheckInState extends State<UsingCheckIn> {
         'H_Status': 'driving'
       },
     );
-
     if (response.statusCode == 200) {
       MyPopup().showToast(context, 'อัปโหลดรูปภาพสำเร็จ');
     } else {
       // Error
       print('Error');
     }
-
-    //  var url =
-    //     Uri.parse('${MyConstant().domain}/carpool/reserve/insertReserve.php');
-
-    // // ส่งค่า accCode และ inputPassword ไปยัง PHP
-    // var response = await http.post(
-    //   url,
-    //   body: {
-    //     'H_ID': '${historyModels[0].hID}',
-    //    'H_StartTime': '$inputproject',
-    //    'H_Project': '$inputproject',
-    //    'H_PicFront': '$inputproject',
-    //    'H_PicBack': '$inputproject',
-    //    'H_PicLeft': '$inputproject',
-    //    'H_PicRight': '$inputproject',
-    //    'H_PicHood': '$inputproject',
-    //    'H_PicMileageStart': '$inputproject',
-    //    'H_Status': 'start'
-    //   },
-    // );
-
-    // if (response.statusCode == 200) {
-    //   // Success
-    //   // print('Success');
-    //   // MyPopup().showToast(context, 'จองสำเร็จแล้ว');
-    //   // MyApi().insertLogEvent('ทำการจองรถทะเบียน ${widget.carNumber}');
-    //   // Navigator.pop(context);
-    //   // Navigator.pop(context);
-    // } else {
-    //   // Error
-    //   print('Error');
-    // }
     setState(() {
       loadPic = 'no';
       Navigator.pop(context);

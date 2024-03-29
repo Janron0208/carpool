@@ -11,7 +11,7 @@ $Acc_ID = $_POST['Acc_ID'];
 $sql = "SELECT reserve_tb.*, car_tb.*
 FROM reserve_tb
 INNER JOIN car_tb ON reserve_tb.Car_ID = car_tb.Car_ID
-WHERE reserve_tb.Acc_ID LIKE '$Acc_ID'
+WHERE reserve_tb.Acc_ID LIKE '$Acc_ID' AND reserve_tb.Res_Status LIKE 'start'
 ORDER BY reserve_tb.Res_StartDate ASC;";
 $result = $conn->query($sql);
 

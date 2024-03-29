@@ -19,6 +19,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -29,6 +30,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   void initState() {
+
     getData();
     super.initState();
   }
@@ -122,15 +124,116 @@ class _MainPageState extends State<MainPage> {
                     child: Column(
                       children: [
                         Expanded(
-                          flex: 1,
-                          child: showTextWelcome(context),
-                        ),
+                            child: Column(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 1,
+                              child: Material(
+                                color: Color.fromARGB(71, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(10),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.pause_circle,
+                                        color:
+                                            Color.fromARGB(255, 224, 164, 74),
+                                        shadows: [BoxShadow(blurRadius: 2)],
+                                      ),
+                                      MyStyle().showSizeTextSC(
+                                          context,
+                                          ' กำลังใช้งาน ',
+                                          22,
+                                          MyStyle().color2),
+                                      MyStyle().showSizeTextSC(
+                                          context, '5', 22, MyStyle().color2),
+                                      MyStyle().showSizeTextSC(context, ' คัน',
+                                          22, MyStyle().color2),
+                                      Spacer(),
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.search))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 1,
+                              child: Material(
+                                color: Color.fromARGB(71, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(10),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.play_circle,
+                                        color: Color.fromARGB(255, 74, 224, 74),
+                                        shadows: [BoxShadow(blurRadius: 2)],
+                                      ),
+                                      MyStyle().showSizeTextSC(
+                                          context,
+                                          ' ว่างวันนี้ทั้งหมด ',
+                                          22,
+                                          MyStyle().color2),
+                                      MyStyle().showSizeTextSC(
+                                          context, '5', 22, MyStyle().color2),
+                                      MyStyle().showSizeTextSC(context, ' คัน',
+                                          22, MyStyle().color2),
+                                      Spacer(),
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.search))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 1,
+                              child: Material(
+                                color: Color.fromARGB(71, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(10),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.notification_important_sharp,
+                                        color: Color.fromARGB(255, 224, 84, 74),
+                                        shadows: [BoxShadow(blurRadius: 2)],
+                                      ),
+                                      MyStyle().showSizeTextSC(
+                                          context,
+                                          ' เกินกำหนดคืนรถ ',
+                                          22,
+                                          MyStyle().color2),
+                                      MyStyle().showSizeTextSC(
+                                          context, '5', 22, MyStyle().color2),
+                                      MyStyle().showSizeTextSC(context, ' คัน',
+                                          22, MyStyle().color2),
+                                      Spacer(),
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.search))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
                         showReturnCar == 'no'
                             ? Container()
-                            : Expanded(
-                                flex: 3, child: showReturnCarBTN(context)),
+                            : Expanded(child: showReturnCarBTN(context)),
                         Expanded(
-                          flex: 11,
                           child: showMenu(context),
                         ),
 
@@ -166,9 +269,9 @@ class _MainPageState extends State<MainPage> {
                 ])
           : GridView.count(
               primary: false,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              crossAxisCount: 2,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5,
+              crossAxisCount: 3,
               children: <Widget>[
                   btnReserveCar(context),
                   btnCheckIn(context),
@@ -213,7 +316,7 @@ class _MainPageState extends State<MainPage> {
                             height: 100,
                             child: Image.asset('images/car_running.gif')),
                         SizedBox(width: 20),
-                        MyStyle().showTextSC(context, 'คืนรถยนต์', 15,
+                        MyStyle().showSizeTextSC(context, 'คืนรถยนต์', 15,
                             const Color.fromARGB(255, 73, 73, 73))
                       ],
                     ),
@@ -224,7 +327,7 @@ class _MainPageState extends State<MainPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      MyStyle().showTextSC(
+                      MyStyle().showSizeTextSC(
                           context,
                           'ไม่ควรเกินวันที่ ${MyStyle().dateTypeddmmyyyy(endDate)}   ',
                           30,
@@ -278,11 +381,12 @@ class _MainPageState extends State<MainPage> {
           children: [
             Icon(
               Icons.person,
-              size: MediaQuery.of(context).size.width / 8,
+              size: type == 'admin' ? 30 : 45,
               color: Colors.white,
             ),
             SizedBox(height: 10),
-            MyStyle().showTextSC(context, 'ผู้ใช้', 18, Colors.white)
+            MyStyle().showSizeTextSC(
+                context, 'ผู้ใช้', type == 'admin' ? 25 : 18, Colors.white)
           ],
         ),
       ),
@@ -304,11 +408,12 @@ class _MainPageState extends State<MainPage> {
           children: [
             Icon(
               Icons.file_copy,
-              size: MediaQuery.of(context).size.width / 8,
+              size: type == 'admin' ? 30 : 45,
               color: Colors.white,
             ),
             SizedBox(height: 10),
-            MyStyle().showTextSC(context, 'ใบสั่ง', 18, Colors.white)
+            MyStyle().showSizeTextSC(
+                context, 'ใบสั่ง', type == 'admin' ? 25 : 18, Colors.white)
           ],
         ),
       ),
@@ -330,11 +435,12 @@ class _MainPageState extends State<MainPage> {
           children: [
             Icon(
               Icons.verified,
-              size: MediaQuery.of(context).size.width / 8,
+              size: type == 'admin' ? 30 : 45,
               color: Colors.white,
             ),
             SizedBox(height: 10),
-            MyStyle().showTextSC(context, 'อนุมัติสิทธิ', 19, Colors.white)
+            MyStyle().showSizeTextSC(context, 'อนุมัติสิทธิ',
+                type == 'admin' ? 25 : 19, Colors.white)
           ],
         ),
       ),
@@ -355,11 +461,12 @@ class _MainPageState extends State<MainPage> {
           children: [
             Icon(
               Icons.drive_eta,
-              size: MediaQuery.of(context).size.width / 8,
+              size: type == 'admin' ? 30 : 45,
               color: Colors.white,
             ),
             SizedBox(height: 10),
-            MyStyle().showTextSC(context, 'รถยนต์', 18, Colors.white)
+            MyStyle().showSizeTextSC(
+                context, 'รถยนต์', type == 'admin' ? 25 : 18, Colors.white)
           ],
         ),
       ),
@@ -381,11 +488,12 @@ class _MainPageState extends State<MainPage> {
           children: [
             Icon(
               Icons.people,
-              size: MediaQuery.of(context).size.width / 8,
+              size: type == 'admin' ? 30 : 45,
               color: Colors.white,
             ),
             SizedBox(height: 10),
-            MyStyle().showTextSC(context, 'รายชื่อพนักงาน', 23, Colors.white)
+            MyStyle().showSizeTextSC(context, 'รายชื่อพนักงาน',
+                type == 'admin' ? 25 : 18, Colors.white)
           ],
         ),
       ),
@@ -420,18 +528,18 @@ class _MainPageState extends State<MainPage> {
                 children: [
                   Icon(
                     Icons.car_rental_rounded,
-                    size: MediaQuery.of(context).size.width / 8,
+                    size: type == 'admin' ? 30 : 45,
                     color: Colors.white,
                   ),
                   SizedBox(height: 10),
-                  MyStyle().showTextSC(
+                  MyStyle().showSizeTextSC(
                       context,
                       checkstatus == 'yes'
                           ? '---'
                           : checkined == 'yes'
                               ? 'กำลังเช็คอิน'
                               : 'เช็คอิน',
-                      20,
+                      type == 'admin' ? 25 : 18,
                       Colors.white)
                 ],
               ),
@@ -475,11 +583,12 @@ class _MainPageState extends State<MainPage> {
           children: [
             Icon(
               Icons.calendar_month_rounded,
-              size: MediaQuery.of(context).size.width / 8,
+              size: type == 'admin' ? 30 : 45,
               color: Colors.white,
             ),
             SizedBox(height: 10),
-            MyStyle().showTextSC(context, 'จองรถ', 18, Colors.white)
+            MyStyle().showSizeTextSC(
+                context, 'จองรถ', type == 'admin' ? 25 : 18, Colors.white)
           ],
         ),
       ),

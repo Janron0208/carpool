@@ -21,28 +21,33 @@ class MyStyle {
     );
   }
 
-  Text showTextSCW(context,String text, double size, FontWeight weight, Color color) {
+  Text showSizeTextSCW(
+      context, String text, double size, FontWeight weight, Color color) {
     return Text(
       text,
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width / size, color: color, fontWeight: weight),
+      style: TextStyle(
+          fontSize: MediaQuery.of(context).size.width / size,
+          color: color,
+          fontWeight: weight),
     );
   }
 
-  Text showTextS(context, String text, double size) {
+  Text showSizeTextS(context, String text, double size) {
     return Text(
       text,
       style: TextStyle(fontSize: MediaQuery.of(context).size.width / size),
     );
   }
 
-  Text showTextSC(context,String text, double size, Color color) {
+  Text showSizeTextSC(context, String text, double size, Color color) {
     return Text(
       text,
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width / size, color: color),
+      style: TextStyle(
+          fontSize: MediaQuery.of(context).size.width / size, color: color),
     );
   }
 
-  Text showTextNumberS(context,String? text, double size) {
+  Text showTextNumberS(context, String? text, double size) {
     String formatAmount() {
       String price = text!;
       String priceInText = "";
@@ -67,7 +72,7 @@ class MyStyle {
     );
   }
 
-  Text showTextNumberSC(context,String? text, double size, Color color) {
+  Text showTextNumberSC(context, String? text, double size, Color color) {
     String formatAmount() {
       String price = text!;
       String priceInText = "";
@@ -88,12 +93,13 @@ class MyStyle {
 
     return Text(
       formatAmount(),
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width / size, color: color),
+      style: TextStyle(
+          fontSize: MediaQuery.of(context).size.width / size, color: color),
     );
   }
 
   Text showTextNumberSCW(
-     context, String? text, double size, Color color, FontWeight weight) {
+      context, String? text, double size, Color color, FontWeight weight) {
     String formatAmount() {
       String price = text!;
       String priceInText = "";
@@ -114,7 +120,10 @@ class MyStyle {
 
     return Text(
       formatAmount(),
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width / size, color: color, fontWeight: weight),
+      style: TextStyle(
+          fontSize: MediaQuery.of(context).size.width / size,
+          color: color,
+          fontWeight: weight),
     );
   }
 

@@ -16,17 +16,17 @@ if (mysqli_num_rows($result) > 0) {
  $lastResID = $row['Res_ID'];
 
  // Extract last 3 digits and increment
- $lastThreeDigits = substr($lastResID, -3);
+ $lastThreeDigits = substr($lastResID, -7);
  $plusID = (int) $lastThreeDigits + 1;
 
  // Format with leading zeros
- $formattedPlusID = str_pad($plusID, 3, "0", STR_PAD_LEFT);
+ $formattedPlusID = str_pad($plusID, 7, "0", STR_PAD_LEFT);
 
  // Create new Log_ID
  $newResID = "RES" . $formattedPlusID;
 } else {
  // Set default starting ID if no record exists
- $newResID = "RES001";
+ $newResID = "RES0000001";
 }
 
 

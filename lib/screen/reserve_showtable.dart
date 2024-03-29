@@ -102,7 +102,7 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                               children: [
                                                 Row(
                                                   children: [
-                                                    MyStyle().showTextSC(
+                                                    MyStyle().showSizeTextSC(
                                                         context,
                                                         '${carModels[index].carNumber}',
                                                         12,
@@ -117,7 +117,7 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                                           )
                                                         : Text(''),
                                                     Spacer(),
-                                                    // MyStyle().showTextSC(
+                                                    // MyStyle().showSizeTextSC(
                                                     //     context,
                                                     //     'เลขไมล์ล่าสุด : ',
                                                     //     28,
@@ -127,7 +127,7 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                                         '${carModels[index].carMileage}',
                                                         23,
                                                         MyStyle().color1),
-                                                    MyStyle().showTextSC(
+                                                    MyStyle().showSizeTextSC(
                                                         context,
                                                         ' Km.',
                                                         23,
@@ -170,7 +170,7 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                                                     children: [
                                                                       Row(
                                                                         children: [
-                                                                          MyStyle().showTextSC(
+                                                                          MyStyle().showSizeTextSC(
                                                                               context,
                                                                               reserveaccModels[index].resStartDate == reserveaccModels[index].resEndDate ? '${MyStyle().dateTypeddmmyyyy('${reserveaccModels[index].resStartDate}')}' : '${MyStyle().dateTypeddmmyyyy('${reserveaccModels[index].resStartDate}')} - ${MyStyle().dateTypeddmmyyyy('${reserveaccModels[index].resEndDate}')}',
                                                                               20,
@@ -179,12 +179,12 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                                                       ),
                                                                       Row(
                                                                         children: [
-                                                                          MyStyle().showTextSC(
+                                                                          MyStyle().showSizeTextSC(
                                                                               context,
                                                                               'ชื่อผู้จอง : ',
                                                                               25,
                                                                               Color.fromARGB(255, 102, 102, 102)),
-                                                                          MyStyle().showTextSC(
+                                                                          MyStyle().showSizeTextSC(
                                                                               context,
                                                                               '${reserveaccModels[index].accFullname} (${reserveaccModels[index].accNickname})',
                                                                               25,
@@ -196,7 +196,7 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                                                           Expanded(
                                                                             flex:
                                                                                 1,
-                                                                            child: MyStyle().showTextSC(
+                                                                            child: MyStyle().showSizeTextSC(
                                                                                 context,
                                                                                 'โครงการ/สถานที่ :',
                                                                                 25,
@@ -205,7 +205,7 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                                                           Expanded(
                                                                             flex:
                                                                                 2,
-                                                                            child: MyStyle().showTextSC(
+                                                                            child: MyStyle().showSizeTextSC(
                                                                                 context,
                                                                                 ' ${reserveaccModels[index].resProject}',
                                                                                 25,
@@ -229,7 +229,6 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                             ),
                                           ),
                                         ),
-                                        
                                         SizedBox(height: 15)
                                       ],
                                     );

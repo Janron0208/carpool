@@ -123,7 +123,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
                                     borderRadius: BorderRadius.circular(15),
                                     child: nodata == 'yes'
                                         ? Center(
-                                            child: MyStyle().showTextSC(
+                                            child: MyStyle().showSizeTextSC(
                                                 context,
                                                 'ยังไม่มีการจอง',
                                                 16,
@@ -150,14 +150,16 @@ class _UsingWaitingState extends State<UsingWaiting> {
                                                                   .resID
                                                           ? Column(
                                                               children: [
-                                                                MyStyle().showTextS(
-                                                                    context,
-                                                                    'รถยนต์ที่จองไว้',
-                                                                    20),
-                                                                MyStyle().showTextS(
-                                                                    context,
-                                                                    '( Check In รถที่ใช้งานเร็วๆนี้ก่อนเท่านั้น )',
-                                                                    28),
+                                                                MyStyle()
+                                                                    .showSizeTextS(
+                                                                        context,
+                                                                        'รถยนต์ที่จองไว้',
+                                                                        20),
+                                                                MyStyle()
+                                                                    .showSizeTextS(
+                                                                        context,
+                                                                        '( Check In รถที่ใช้งานเร็วๆนี้ก่อนเท่านั้น )',
+                                                                        28),
                                                                 SizedBox(
                                                                     height: 5),
                                                               ],
@@ -182,7 +184,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
                                                                           AlertDialog(
                                                                         title: Text(
                                                                             'เริ่มใช้งาน?'),
-                                                                        content: MyStyle().showTextSC(
+                                                                        content: MyStyle().showSizeTextSC(
                                                                             context,
                                                                             'คุณพร้อมใช้งานรถยนต์ทะเบียน ${reservecarModels[index].carNumber} แล้วหรือไม่',
                                                                             21,
@@ -190,13 +192,13 @@ class _UsingWaitingState extends State<UsingWaiting> {
                                                                         actions: <Widget>[
                                                                           TextButton(
                                                                               onPressed: () => Navigator.pop(context, 'Cancel'),
-                                                                              child: MyStyle().showTextSC(context, 'ปิด', 20, Color.fromARGB(255, 244, 54, 54))),
+                                                                              child: MyStyle().showSizeTextSC(context, 'ปิด', 20, Color.fromARGB(255, 244, 54, 54))),
                                                                           InkWell(
                                                                             onTap:
                                                                                 () {
                                                                               checkValue(index);
                                                                             },
-                                                                            child: MyStyle().showTextSC(
+                                                                            child: MyStyle().showSizeTextSC(
                                                                                 context,
                                                                                 'CheckIn Now',
                                                                                 20,
@@ -246,7 +248,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
                                                                     Row(
                                                                       children: [
                                                                         Expanded(
-                                                                          child: MyStyle().showTextSC(
+                                                                          child: MyStyle().showSizeTextSC(
                                                                               context,
                                                                               reservecarModels[index].resStartDate == reservecarModels[index].resEndDate ? 'วันที่ ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resStartDate}')}' : 'วันที่ ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resStartDate}')} - ${MyStyle().dateTypeddmmyyyy('${reservecarModels[index].resEndDate}')}',
                                                                               22,
@@ -257,7 +259,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
                                                                     Row(
                                                                       children: [
                                                                         Expanded(
-                                                                          child: MyStyle().showTextSC(
+                                                                          child: MyStyle().showSizeTextSC(
                                                                               context,
                                                                               'ทะเบียนรถ : ${reservecarModels[index].carNumber}',
                                                                               23,
@@ -268,7 +270,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
                                                                     Row(
                                                                       children: [
                                                                         Expanded(
-                                                                          child: MyStyle().showTextSC(
+                                                                          child: MyStyle().showSizeTextSC(
                                                                               context,
                                                                               'โปรเจค/สถานที่ : ${reservecarModels[index].resProject}',
                                                                               23,
@@ -306,10 +308,10 @@ class _UsingWaitingState extends State<UsingWaiting> {
                                                                         actions: <Widget>[
                                                                           TextButton(
                                                                               onPressed: () => Navigator.pop(context, 'Cancel'),
-                                                                              child: MyStyle().showTextSC(context, 'ปิด', 20, const Color.fromARGB(255, 54, 130, 244))),
+                                                                              child: MyStyle().showSizeTextSC(context, 'ปิด', 20, const Color.fromARGB(255, 54, 130, 244))),
                                                                           TextButton(
                                                                               onPressed: () => deleteReserve(index),
-                                                                              child: MyStyle().showTextSC(context, 'ยกเลิกการจอง', 20, Colors.red)),
+                                                                              child: MyStyle().showSizeTextSC(context, 'ยกเลิกการจอง', 20, Colors.red)),
                                                                         ],
                                                                       ),
                                                                     );

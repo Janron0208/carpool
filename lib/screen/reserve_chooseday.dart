@@ -152,7 +152,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                                       scale: MediaQuery.of(context).size.width /
                                           400),
                                   SizedBox(height: 30),
-                                  MyStyle().showTextSCW(
+                                  MyStyle().showSizeTextSCW(
                                       context,
                                       'ไม่มีรถพร้อมใช้ในวันนี้',
                                       MediaQuery.of(context).size.width / 20,

@@ -171,7 +171,7 @@ class _CarListState extends State<CarList> {
                                                                 child: Row(
                                                                   children: [
                                                                     MyStyle()
-                                                                        .showTextSCW(
+                                                                        .showSizeTextSCW(
                                                                       context,
                                                                       '${carModels[index].carBrand!}',
                                                                       20,
@@ -187,7 +187,7 @@ class _CarListState extends State<CarList> {
                                                                 child: Row(
                                                                   children: [
                                                                     MyStyle()
-                                                                        .showTextSCW(
+                                                                        .showSizeTextSCW(
                                                                       context,
                                                                       '${carModels[index].carModel!}',
                                                                       23,
@@ -228,7 +228,7 @@ class _CarListState extends State<CarList> {
                                                                 child: Row(
                                                                   children: [
                                                                     MyStyle()
-                                                                        .showTextSCW(
+                                                                        .showSizeTextSCW(
                                                                       context,
                                                                       '${carModels[index].carNumber!}',
                                                                       18,

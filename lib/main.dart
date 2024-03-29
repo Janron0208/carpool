@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
       title: 'Carpool',
-      home: Checklogin(),
+      home:
+          Checklogin(),
     );
   }
 }

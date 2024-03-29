@@ -19,6 +19,7 @@ $available_cars = array();
 
 while ($row = mysqli_fetch_assoc($result)) {
   $car_id = $row['Car_ID'];
+  $Res_Status = "start";
 
   // ตรวจสอบว่า Car_ID นี้มีการจองหรือไม่
   $sql = "SELECT * FROM reserve_tb WHERE Car_ID = '$car_id'";

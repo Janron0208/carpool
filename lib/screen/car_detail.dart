@@ -135,7 +135,7 @@ class _CarDetailState extends State<CarDetail> {
                                                 Expanded(
                                                   child: Row(
                                                     children: [
-                                                      MyStyle().showTextSCW(
+                                                      MyStyle().showSizeTextSCW(
                                                         context,
                                                         '${carModels[0].carBrand!}',
                                                         20,
@@ -148,7 +148,7 @@ class _CarDetailState extends State<CarDetail> {
                                                 Expanded(
                                                   child: Row(
                                                     children: [
-                                                      MyStyle().showTextSCW(
+                                                      MyStyle().showSizeTextSCW(
                                                         context,
                                                         '${carModels[0].carModel!}',
                                                         23,
@@ -192,7 +192,7 @@ class _CarDetailState extends State<CarDetail> {
                                                 Expanded(
                                                   child: Row(
                                                     children: [
-                                                      MyStyle().showTextSCW(
+                                                      MyStyle().showSizeTextSCW(
                                                         context,
                                                         '${carModels[0].carNumber!}',
                                                         18,
@@ -220,7 +220,7 @@ class _CarDetailState extends State<CarDetail> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       children: [
-                                        MyStyle().showTextSC(
+                                        MyStyle().showSizeTextSC(
                                           context,
                                           'เลขไมล์ล่าสุด : ',
                                           20,
@@ -233,7 +233,7 @@ class _CarDetailState extends State<CarDetail> {
                                           MyStyle().color1,
                                           FontWeight.bold,
                                         ),
-                                        MyStyle().showTextSCW(
+                                        MyStyle().showSizeTextSCW(
                                           context,
                                           ' Km.',
                                           20,
@@ -247,7 +247,7 @@ class _CarDetailState extends State<CarDetail> {
                                 SizedBox(height: 5),
                                 Row(
                                   children: [
-                                    MyStyle().showTextSC(context,
+                                    MyStyle().showSizeTextSC(context,
                                         'เมนูการจัดการ', 20, Colors.white),
                                   ],
                                 ),
@@ -300,7 +300,7 @@ class _CarDetailState extends State<CarDetail> {
                                                     });
                                                   });
                                                 },
-                                                child: MyStyle().showTextSC(
+                                                child: MyStyle().showSizeTextSC(
                                                     context,
                                                     'แก้ไขรายละเอียดรถยนต์',
                                                     20,
@@ -328,7 +328,7 @@ class _CarDetailState extends State<CarDetail> {
                                             ),
                                           ),
                                           onPressed: () {},
-                                          child: MyStyle().showTextSC(
+                                          child: MyStyle().showSizeTextSC(
                                               context,
                                               'ตารางการตรวจเช็ตสภาพรถยนต์',
                                               22,
@@ -354,7 +354,7 @@ class _CarDetailState extends State<CarDetail> {
                                             ),
                                           ),
                                           onPressed: () {},
-                                          child: MyStyle().showTextSC(
+                                          child: MyStyle().showSizeTextSC(
                                               context,
                                               'ประวัติการถูกใช้งาน',
                                               20,
@@ -385,12 +385,12 @@ class _CarDetailState extends State<CarDetail> {
                                           context: context,
                                           builder: (BuildContext context) =>
                                               AlertDialog(
-                                            title: MyStyle().showTextSC(
+                                            title: MyStyle().showSizeTextSC(
                                                 context,
                                                 'ลบรถยนต์คันนี้',
                                                 15,
                                                 MyStyle().color1),
-                                            content: MyStyle().showTextSC(
+                                            content: MyStyle().showSizeTextSC(
                                                 context,
                                                 'คุณต้องการลบรถยนต์ทะเบียน ${widget.carNumber} ใช่หรือไม่',
                                                 21,
@@ -400,19 +400,24 @@ class _CarDetailState extends State<CarDetail> {
                                                   onPressed: () =>
                                                       Navigator.pop(
                                                           context, 'Cancel'),
-                                                  child: MyStyle().showTextSC(
-                                                      context,
-                                                      'ปิด',
-                                                      20,
-                                                      const Color.fromARGB(
-                                                          255, 54, 130, 244))),
+                                                  child: MyStyle()
+                                                      .showSizeTextSC(
+                                                          context,
+                                                          'ปิด',
+                                                          20,
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              54,
+                                                              130,
+                                                              244))),
                                               TextButton(
                                                   onPressed: () => deleteCar(),
-                                                  child: MyStyle().showTextSC(
-                                                      context,
-                                                      'ลบ',
-                                                      20,
-                                                      Colors.red)),
+                                                  child: MyStyle()
+                                                      .showSizeTextSC(
+                                                          context,
+                                                          'ลบ',
+                                                          20,
+                                                          Colors.red)),
                                             ],
                                           ),
                                         );
@@ -427,8 +432,8 @@ class _CarDetailState extends State<CarDetail> {
                                             Icons.delete_forever,
                                             color: MyStyle().color6,
                                           ),
-                                          MyStyle().showTextSC(context, 'ลบ',
-                                              18, MyStyle().color6),
+                                          MyStyle().showSizeTextSC(context,
+                                              'ลบ', 18, MyStyle().color6),
                                         ],
                                       )),
                                 ),
