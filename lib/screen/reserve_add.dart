@@ -119,7 +119,7 @@ class _ReserveAddState extends State<ReserveAdd> {
                                                 ? dateTypeddmmyyyy(widget.start)
                                                 : '${dateTypeddmmyyyy(widget.start)} - ${dateTypeddmmyyyy(widget.end)}',
                                             MediaQuery.of(context).size.width /
-                                                17,
+                                                15,
                                             MyStyle().color1)),
                                   ],
                                 ),

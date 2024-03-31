@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:carpool/unity/my_api.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
@@ -20,11 +22,48 @@ class ReturnCar extends StatefulWidget {
 class _ReturnCarState extends State<ReturnCar> {
   String? loaddata = 'no';
   File? picMileageEnd;
+  Uint8List? picMileageEndWeb;
   String? inputTextComment, inputTextLastmile;
+  String? hisID, carID, carNumber;
 
   @override
   void initState() {
+    getHistoryStatusDriving();
     super.initState();
+  }
+
+  Future<void> getHistoryStatusDriving() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String accID = preferences.getString('Acc_ID')!;
+    var url1 = Uri.parse(
+        '${MyConstant().domain}/carpool/history/getHistoryByAccIDAndStatus.php');
+
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    var response = await http.post(
+      url1,
+      body: {'Acc_ID': accID, 'H_Status': 'driving'},
+    );
+    var data1 = json.decode(response.body);
+    setState(() {
+      hisID = data1[0]['H_ID'];
+      carID = data1[0]['Car_ID'];
+    });
+    getCarNumber();
+  }
+
+  Future<void> getCarNumber() async {
+    var url =
+        Uri.parse('${MyConstant().domain}/carpool/car/getCarLikeCarID.php');
+
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    var response = await http.post(
+      url,
+      body: {'Car_ID': carID},
+    );
+    var data = json.decode(response.body);
+    setState(() {
+      carNumber = data[0]['Car_Number'];
+    });
   }
 
   @override
@@ -48,7 +87,7 @@ class _ReturnCarState extends State<ReturnCar> {
                           height: MediaQuery.of(context).size.height * 1,
                           child: Padding(
                               padding: const EdgeInsets.only(
-                                  top: 60, left: 10, right: 10, bottom: 10),
+                                  top: 70, left: 10, right: 10, bottom: 10),
                               child: Column(
                                 children: [
                                   inputLastmile(context),
@@ -243,68 +282,136 @@ class _ReturnCarState extends State<ReturnCar> {
               ],
             ),
             SizedBox(height: 10),
-            Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 120,
-                child: picMileageEnd == null
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          backgroundColor: Colors.grey[300],
-                          elevation: 5.0,
-                          shadowColor: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            chooseImage(ImageSource.gallery);
-                          });
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_a_photo_rounded,
-                              size: 30,
-                              color: Colors.white,
+            kIsWeb
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: picMileageEndWeb == null
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
                             ),
-                            MyStyle().showSizeTextSC(
-                                context, 'เพิ่มรูปภาพ', 23, Colors.white)
-                          ],
-                        ),
-                      )
-                    : Stack(
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey[300],
-                                  image: DecorationImage(
-                                      fit: BoxFit.contain,
-                                      image: FileImage(picMileageEnd!)))),
-                          InkWell(
-                            onTap: () {
+                            onPressed: () {
                               setState(() {
-                                showPicture();
+                                chooseImage(ImageSource.gallery);
                               });
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Color.fromARGB(118, 104, 104, 104),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.search,
-                                  size: 40,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
                                   color: Colors.white,
                                 ),
-                              ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
                             ),
                           )
-                        ],
-                      )),
+                        : Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: Colors.grey[300],
+                                ),
+                                child: Center(
+                                  child: Image.memory(
+                                    picMileageEndWeb!,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ))
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 120,
+                    child: picMileageEnd == null
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              elevation: 5.0,
+                              shadowColor: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                chooseImage(ImageSource.gallery);
+                              });
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                MyStyle().showSizeTextSC(
+                                    context, 'เพิ่มรูปภาพ', 23, Colors.white)
+                              ],
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.grey[300],
+                                      image: DecorationImage(
+                                          fit: BoxFit.contain,
+                                          image: FileImage(picMileageEnd!)))),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    showPicture();
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Color.fromARGB(118, 104, 104, 104),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.search,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
           ],
         ),
       ),
@@ -314,7 +421,7 @@ class _ReturnCarState extends State<ReturnCar> {
   Container showheadBar(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
-      height: 50,
+      height: 60,
       child: Row(
         children: [
           Expanded(
@@ -343,17 +450,44 @@ class _ReturnCarState extends State<ReturnCar> {
 
   Future chooseImage(ImageSource source) async {
     try {
-      var object = await ImagePicker().pickImage(
-        source: source,
-        imageQuality: 50,
-        maxWidth: 800.0,
-        maxHeight: 800.0,
-      );
+      if (kIsWeb) {
+        final ImagePicker _picker = ImagePicker();
+        XFile? image = await _picker.pickImage(
+          source: source,
+          imageQuality: 50,
+          maxWidth: 800.0,
+          maxHeight: 800.0,
+        );
+        var f = await image!.readAsBytes();
+        setState(() {
+          picMileageEndWeb = f;
+          saveFileToDataBase(f);
+        });
+      } else {
+        var object = await ImagePicker().pickImage(
+          source: source,
+          imageQuality: 50,
+          maxWidth: 800.0,
+          maxHeight: 800.0,
+        );
 
-      setState(() {
-        picMileageEnd = File(object!.path);
-      });
+        setState(() {
+          picMileageEnd = File(object!.path);
+        });
+      }
     } catch (e) {}
+  }
+
+  Future<void> saveFileToDataBase(Uint8List bytesimage) async {
+    String apiSaveHistory = '${MyConstant().domain}/carpool/savePic.php';
+
+    Map<String, dynamic> map = {
+      'file': MultipartFile.fromBytes(bytesimage, filename: '${hisID}_end.jpg'),
+    };
+
+    FormData data = FormData.fromMap(map);
+
+    await Dio().post(apiSaveHistory, data: data);
   }
 
   Future<Null> showPicture() async {
@@ -366,20 +500,33 @@ class _ReturnCarState extends State<ReturnCar> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Color.fromARGB(0, 255, 255, 255),
-                  image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: FileImage(
-                        picMileageEnd! // Use a default image if picHood is null or not a File
+              kIsWeb
+                  ? Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Color.fromARGB(0, 255, 255, 255),
+                      ),
+                      child: Image.memory(
+                        picMileageEndWeb!,
+                        fit: BoxFit.contain,
+                      ),
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Color.fromARGB(0, 255, 255, 255),
+                        image: DecorationImage(
+                          fit: BoxFit.contain,
+                          image: FileImage(
+                              picMileageEnd! // Use a default image if picHood is null or not a File
+                              ),
                         ),
-                  ),
-                ),
-                width: MediaQuery.of(context).size.width * 1,
-                height: MediaQuery.of(context).size.height * 0.6,
-              ),
+                      ),
+                      width: MediaQuery.of(context).size.width * 1,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                    ),
               SizedBox(height: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -448,9 +595,11 @@ class _ReturnCarState extends State<ReturnCar> {
   }
 
   Future<Null> checkNullText() async {
-    if (picMileageEnd == null ||
-        inputTextLastmile == null ||
-        inputTextLastmile!.isEmpty) {
+    if (kIsWeb
+        ? picMileageEndWeb == null
+        : picMileageEnd == null ||
+            inputTextLastmile == null ||
+            inputTextLastmile!.isEmpty) {
       MyPopup().showError(context, 'กรุณากรอกข้อมูลให้ครบถ้วน');
     } else {
       if (inputTextComment == null || inputTextComment!.isEmpty) {
@@ -458,6 +607,7 @@ class _ReturnCarState extends State<ReturnCar> {
           inputTextComment = '-';
         });
       }
+
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -470,8 +620,13 @@ class _ReturnCarState extends State<ReturnCar> {
                     MyStyle().showSizeTextSC(context, 'ปิด', 20, Colors.red)),
             TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
-                  updateToDatabase();
+                  if (kIsWeb) {
+                    Navigator.pop(context);
+                    updateToDatabaseWeb();
+                  } else {
+                    Navigator.pop(context);
+                    updateToDatabase();
+                  }
                 },
                 child: MyStyle().showSizeTextSC(
                     context, 'คืนรถ', 20, Color.fromARGB(255, 54, 130, 244))),
@@ -556,6 +711,72 @@ class _ReturnCarState extends State<ReturnCar> {
       loaddata = 'no';
       Navigator.pop(context);
       MyPopup().showToast(context, 'คืนรถยนต์สำเร็จ');
+      MyApi().insertLogEvent('ทำการคืนรถ ทะเบียน $carNumber');
+    });
+  }
+
+  Future<void> updateToDatabaseWeb() async {
+    setState(() {
+      loaddata = 'yes';
+    });
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String accID = preferences.getString('Acc_ID')!;
+    var url1 = Uri.parse(
+        '${MyConstant().domain}/carpool/history/getHistoryByAccIDAndStatus.php');
+
+    // ส่งค่า accCode และ inputPassword ไปยัง PHP
+    var response = await http.post(
+      url1,
+      body: {'Acc_ID': accID, 'H_Status': 'driving'},
+    );
+    var data1 = json.decode(response.body);
+
+    var timenow = DateTime.now();
+    var timeend = DateFormat('HH:mm').format(timenow);
+    var dateend = DateFormat('yyyyMMdd').format(timenow);
+
+    var url4 = Uri.parse(
+        '${MyConstant().domain}/carpool/reserve/updateStatusReserve.php');
+
+    var response4 = await http.post(
+      url4,
+      body: {
+        'Res_StartDate': '${data1[0]['H_StartDate']}',
+        'Res_EndDate': '${data1[0]['H_EndDate']}',
+      },
+    );
+
+    var url3 =
+        Uri.parse('${MyConstant().domain}/carpool/car/updateMileCar.php');
+
+    var response3 = await http.post(
+      url3,
+      body: {
+        'Car_ID': '${data1[0]['Car_ID']}',
+        'Car_Mileage': '$inputTextLastmile',
+      },
+    );
+    var url = Uri.parse(
+        '${MyConstant().domain}/carpool/history/updateHistoryEnd.php');
+
+    var response2 = await http.post(
+      url,
+      body: {
+        'H_ID': '${data1[0]['H_ID']}',
+        'H_EndDate': '$dateend',
+        'H_EndTime': '$timeend',
+        'H_MileageEnd': '$inputTextLastmile',
+        'H_PicMileageEnd': '/carpool/pic_history/${hisID}_end.jpg',
+        'H_Comment': '$inputTextComment',
+      },
+    );
+
+    setState(() {
+      loaddata = 'no';
+      Navigator.pop(context);
+      MyPopup().showToast(context, 'คืนรถยนต์สำเร็จ');
+      MyApi().insertLogEvent('ทำการคืนรถ ทะเบียน $carNumber');
     });
   }
 }

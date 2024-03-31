@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:carpool/models/reserve_car_model.dart';
-import 'package:carpool/screen/using_checkin.dart';
+import 'package:carpool/screen/using_checkin_mobile.dart';
+import 'package:carpool/screen/using_checkin_web.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -103,7 +105,9 @@ class _UsingWaitingState extends State<UsingWaiting> {
   @override
   Widget build(BuildContext context) {
     return h_status == 'yes'
-        ? UsingCheckIn()
+        ? kIsWeb
+            ? UsingCheckInWeb()
+            : UsingCheckInMobile()
         : Scaffold(
             body: Stack(
               children: [
@@ -118,8 +122,10 @@ class _UsingWaitingState extends State<UsingWaiting> {
                               height: MediaQuery.of(context).size.height * 1,
                               child: Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 60, left: 10, right: 10, bottom: 10),
+                                      top: 70, left: 10, right: 10, bottom: 10),
                                   child: Material(
+                                    color: const Color.fromARGB(
+                                        139, 255, 255, 255),
                                     borderRadius: BorderRadius.circular(15),
                                     child: nodata == 'yes'
                                         ? Center(
@@ -348,7 +354,7 @@ class _UsingWaitingState extends State<UsingWaiting> {
   Container showheadBar(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
-      height: 50,
+      height: 60,
       child: Row(
         children: [
           Expanded(

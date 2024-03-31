@@ -97,7 +97,7 @@ class _AccountVerifyState extends State<AccountVerify> {
                   height: MediaQuery.of(context).size.height * 1,
                   child: Padding(
                       padding: const EdgeInsets.only(
-                          top: 60, left: 10, right: 10, bottom: 10),
+                          top: 70, left: 10, right: 10, bottom: 10),
                       child: Column(
                         children: [
                           Expanded(
@@ -270,7 +270,7 @@ class _AccountVerifyState extends State<AccountVerify> {
   Container showheadBar(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
-      height: 50,
+      height: 60,
       child: Row(
         children: [
           Expanded(

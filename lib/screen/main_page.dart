@@ -7,18 +7,20 @@ import 'package:carpool/screen/account_list.dart';
 import 'package:carpool/screen/account_verify.dart';
 import 'package:carpool/screen/car_list.dart';
 import 'package:carpool/screen/reserve_chooseday.dart';
+import 'package:carpool/screen/reserve_showtable.dart';
 import 'package:carpool/screen/return_car.dart';
+import 'package:carpool/screen/savePic.dart';
 import 'package:carpool/screen/using_waiting.dart';
 import 'package:carpool/unity/my_api.dart';
 import 'package:carpool/unity/my_constant.dart';
 import 'package:carpool/unity/my_popup.dart';
 import 'package:carpool/unity/my_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -30,7 +32,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   void initState() {
-
     getData();
     super.initState();
   }
@@ -41,6 +42,7 @@ class _MainPageState extends State<MainPage> {
   String checkstatus = 'yes';
   String checkined = 'no';
   String showReturnCar = 'no';
+  String slideMenu = 'hide';
 
   Future<Null> getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -91,8 +93,8 @@ class _MainPageState extends State<MainPage> {
       body: {'Acc_ID': accID, 'H_Status': 'driving'},
     );
     var data = json.decode(response.body);
-    print(response.body);
-    print(response.body.length);
+    // print(response.body);
+    // print(response.body.length);
     if (response.body.length > 2) {
       setState(() {
         showReturnCar = 'yes';
@@ -115,146 +117,257 @@ class _MainPageState extends State<MainPage> {
           SafeArea(
             child: Stack(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 1,
-                  height: MediaQuery.of(context).size.height * 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 60, left: 25, right: 25, bottom: 10),
-                    child: Column(
-                      children: [
-                        Expanded(
-                            child: Column(
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 1,
-                              child: Material(
-                                color: Color.fromARGB(71, 255, 255, 255),
-                                borderRadius: BorderRadius.circular(10),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.pause_circle,
+                SingleChildScrollView(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 1,
+                    // height: MediaQuery.of(context).size.height * 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 70, left: 25, right: 25, bottom: 10),
+                      child: Column(
+                        children: [
+                          type == 'admin'
+                              ? Column(
+                                  children: [
+                                    Container(
+                                      width:
+                                          MediaQuery.of(context).size.width * 1,
+                                      child: Material(
                                         color:
-                                            Color.fromARGB(255, 224, 164, 74),
-                                        shadows: [BoxShadow(blurRadius: 2)],
+                                            Color.fromARGB(71, 255, 255, 255),
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.pause_circle,
+                                                color: Color.fromARGB(
+                                                    255, 224, 164, 74),
+                                                shadows: [
+                                                  BoxShadow(blurRadius: 2)
+                                                ],
+                                              ),
+                                              MyStyle().showSizeTextSC(
+                                                  context,
+                                                  ' กำลังใช้งาน ',
+                                                  22,
+                                                  MyStyle().color2),
+                                              MyStyle().showSizeTextSC(context,
+                                                  '5', 22, MyStyle().color2),
+                                              MyStyle().showSizeTextSC(context,
+                                                  ' คัน', 22, MyStyle().color2),
+                                              Spacer(),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    MyApi().NavigatorPushAnim(
+                                                        context,
+                                                        PageTransitionType.fade,
+                                                        SavePic());
+                                                  },
+                                                  icon: Icon(
+                                                    Icons
+                                                        .arrow_forward_ios_rounded,
+                                                    color: Colors.white,
+                                                  ))
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                      MyStyle().showSizeTextSC(
-                                          context,
-                                          ' กำลังใช้งาน ',
-                                          22,
-                                          MyStyle().color2),
-                                      MyStyle().showSizeTextSC(
-                                          context, '5', 22, MyStyle().color2),
-                                      MyStyle().showSizeTextSC(context, ' คัน',
-                                          22, MyStyle().color2),
-                                      Spacer(),
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.search))
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 1,
-                              child: Material(
-                                color: Color.fromARGB(71, 255, 255, 255),
-                                borderRadius: BorderRadius.circular(10),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.play_circle,
-                                        color: Color.fromARGB(255, 74, 224, 74),
-                                        shadows: [BoxShadow(blurRadius: 2)],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width:
+                                          MediaQuery.of(context).size.width * 1,
+                                      child: Material(
+                                        color:
+                                            Color.fromARGB(71, 255, 255, 255),
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.play_circle,
+                                                color: Color.fromARGB(
+                                                    255, 74, 224, 74),
+                                                shadows: [
+                                                  BoxShadow(blurRadius: 2)
+                                                ],
+                                              ),
+                                              MyStyle().showSizeTextSC(
+                                                  context,
+                                                  ' ว่างวันนี้ทั้งหมด ',
+                                                  22,
+                                                  MyStyle().color2),
+                                              MyStyle().showSizeTextSC(context,
+                                                  '5', 22, MyStyle().color2),
+                                              MyStyle().showSizeTextSC(context,
+                                                  ' คัน', 22, MyStyle().color2),
+                                              Spacer(),
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(
+                                                      Icons
+                                                          .arrow_forward_ios_rounded,
+                                                      color: Colors.white))
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                      MyStyle().showSizeTextSC(
-                                          context,
-                                          ' ว่างวันนี้ทั้งหมด ',
-                                          22,
-                                          MyStyle().color2),
-                                      MyStyle().showSizeTextSC(
-                                          context, '5', 22, MyStyle().color2),
-                                      MyStyle().showSizeTextSC(context, ' คัน',
-                                          22, MyStyle().color2),
-                                      Spacer(),
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.search))
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 1,
-                              child: Material(
-                                color: Color.fromARGB(71, 255, 255, 255),
-                                borderRadius: BorderRadius.circular(10),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.notification_important_sharp,
-                                        color: Color.fromARGB(255, 224, 84, 74),
-                                        shadows: [BoxShadow(blurRadius: 2)],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      width:
+                                          MediaQuery.of(context).size.width * 1,
+                                      child: Material(
+                                        color:
+                                            Color.fromARGB(71, 255, 255, 255),
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons
+                                                    .notification_important_sharp,
+                                                color: Color.fromARGB(
+                                                    255, 224, 84, 74),
+                                                shadows: [
+                                                  BoxShadow(blurRadius: 2)
+                                                ],
+                                              ),
+                                              MyStyle().showSizeTextSC(
+                                                  context,
+                                                  ' เกินกำหนดคืนรถ ',
+                                                  22,
+                                                  MyStyle().color2),
+                                              MyStyle().showSizeTextSC(context,
+                                                  '5', 22, MyStyle().color2),
+                                              MyStyle().showSizeTextSC(context,
+                                                  ' คัน', 22, MyStyle().color2),
+                                              Spacer(),
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(
+                                                      Icons
+                                                          .arrow_forward_ios_rounded,
+                                                      color: Colors.white))
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                      MyStyle().showSizeTextSC(
-                                          context,
-                                          ' เกินกำหนดคืนรถ ',
-                                          22,
-                                          MyStyle().color2),
-                                      MyStyle().showSizeTextSC(
-                                          context, '5', 22, MyStyle().color2),
-                                      MyStyle().showSizeTextSC(context, ' คัน',
-                                          22, MyStyle().color2),
-                                      Spacer(),
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.search))
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                        showReturnCar == 'no'
-                            ? Container()
-                            : Expanded(child: showReturnCarBTN(context)),
-                        Expanded(
-                          child: showMenu(context),
-                        ),
-
-                        // SizedBox(height: 10),
-                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                  ],
+                                )
+                              : Container(),
+                          showReturnCar == 'no'
+                              ? Container()
+                              : showReturnCarBTN(context),
+                          showMenu(context),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 showheadBar(context),
               ],
             ),
-          )
+          ),
+          slideMenu == 'hide' ? Container() : showSlideMenu(context)
         ],
       ),
+    );
+  }
+
+  Row showSlideMenu(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.4,
+          height: MediaQuery.of(context).size.height * 1,
+          color: Color.fromARGB(218, 131, 131, 131),
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          slideMenu = 'hide';
+                        });
+                      },
+                      icon: Icon(
+                        Icons.close_rounded,
+                        size: 30,
+                        color: Colors.white,
+                      )),
+                ],
+              ),
+              Divider(
+                height: 30,
+              ),
+              InkWell(
+                onTap: () {
+                  MyApi().NavigatorPushAnim(
+                      context,
+                      PageTransitionType.fade,
+                      AccountDetail(
+                        accID: accID!,
+                        formpage: 'Acclist',
+                      ));
+                  setState(() {
+                    slideMenu = 'hide';
+                  });
+                },
+                child: Row(
+                  children: [
+                    MyStyle().showSizeTextSC(
+                        context, ' ข้อมูลส่วนตัว', 22, Colors.white),
+                  ],
+                ),
+              ),
+              Divider(
+                height: 30,
+              ),
+              InkWell(
+                onTap: () {
+                  MyApi().askToLogout(context);
+                  setState(() {
+                    slideMenu = 'hide';
+                  });
+                },
+                child: Row(
+                  children: [
+                    MyStyle().showSizeTextSC(
+                        context, ' ออกจากระบบ', 22, Colors.white),
+                  ],
+                ),
+              ),
+              Divider(
+                height: 30,
+              ),
+            ],
+          ),
+        ),
+        Container(
+          color: Color.fromARGB(94, 51, 51, 51),
+          width: MediaQuery.of(context).size.width * 0.6,
+          height: MediaQuery.of(context).size.height * 1,
+        )
+      ],
     );
   }
 
   Container showMenu(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: MediaQuery.of(context).size.height * 1,
       child: type == 'user'
           ? GridView.count(
               primary: false,
@@ -264,8 +377,8 @@ class _MainPageState extends State<MainPage> {
               children: <Widget>[
                   btnReserveCar(context),
                   btnCheckIn(context),
+                  btnTable(context),
                   btnCarList(context),
-                  btnMyProfile(context),
                 ])
           : GridView.count(
               primary: false,
@@ -273,13 +386,13 @@ class _MainPageState extends State<MainPage> {
               mainAxisSpacing: 5,
               crossAxisCount: 3,
               children: <Widget>[
+                  btnTable(context),
                   btnReserveCar(context),
                   btnCheckIn(context),
                   btnAccountList(context),
                   btnCarList(context),
                   btnVerify(context),
                   btnTickedSpeed(context),
-                  btnMyProfile(context),
                 ]),
     );
   }
@@ -473,6 +586,33 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  InkWell btnTable(BuildContext context) {
+    return InkWell(
+      splashColor: Color.fromARGB(255, 69, 153, 48).withAlpha(30),
+      onTap: () {
+        MyApi().NavigatorPushAnim(
+            context, PageTransitionType.fade, ReserveShowTable());
+      },
+      child: Material(
+        color: Color.fromARGB(71, 255, 255, 255),
+        borderRadius: BorderRadius.circular(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.calendar_month_rounded,
+              size: type == 'admin' ? 30 : 45,
+              color: Colors.white,
+            ),
+            SizedBox(height: 10),
+            MyStyle().showSizeTextSC(
+                context, 'ดูตารางจอง', type == 'admin' ? 25 : 18, Colors.white)
+          ],
+        ),
+      ),
+    );
+  }
+
   InkWell btnAccountList(BuildContext context) {
     return InkWell(
       splashColor: Color.fromARGB(255, 69, 153, 48).withAlpha(30),
@@ -582,7 +722,7 @@ class _MainPageState extends State<MainPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.calendar_month_rounded,
+              Icons.car_crash_sharp,
               size: type == 'admin' ? 30 : 45,
               color: Colors.white,
             ),
@@ -598,10 +738,22 @@ class _MainPageState extends State<MainPage> {
   Container showheadBar(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
-      height: 50,
+      height: 60,
       child: Row(
         children: [
-          Expanded(flex: 1, child: Container()),
+          Expanded(
+              flex: 1,
+              child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      slideMenu = 'show';
+                    });
+                  },
+                  icon: Icon(
+                    Icons.menu,
+                    size: 30,
+                    color: Colors.white,
+                  ))),
           Expanded(
               flex: 3,
               child: Text(
@@ -612,17 +764,7 @@ class _MainPageState extends State<MainPage> {
                     fontSize: MediaQuery.of(context).size.width / 20,
                     fontWeight: FontWeight.bold),
               )),
-          Expanded(
-              flex: 1,
-              child: IconButton(
-                  onPressed: () {
-                    MyApi().askToLogout(context);
-                  },
-                  icon: Icon(
-                    Icons.power_settings_new_rounded,
-                    size: 30,
-                    color: Colors.red,
-                  ))),
+          Expanded(flex: 1, child: Container()),
         ],
       ),
     );

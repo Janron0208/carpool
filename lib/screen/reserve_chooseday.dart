@@ -199,7 +199,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
   SingleChildScrollView showResultSearch() {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.only(bottom: 10, left: 15, right: 15),
+        padding: EdgeInsets.only(bottom: 10, left: 15, right: 15, top: 10),
         child: ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -552,7 +552,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
   Container showheadBar(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
-      height: 50,
+      height: 60,
       child: Row(
         children: [
           Expanded(

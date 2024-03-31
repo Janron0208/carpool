@@ -47,7 +47,7 @@ class _CarAddState extends State<CarAdd> {
                             height: MediaQuery.of(context).size.height * 0.95,
                             child: Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 60, left: 10, right: 10, bottom: 10),
+                                    top: 70, left: 10, right: 10, bottom: 10),
                                 child: Material(
                                   borderRadius: BorderRadius.circular(20),
                                   elevation: 8,
@@ -274,7 +274,7 @@ class _CarAddState extends State<CarAdd> {
   Container showheadBar(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
-      height: 50,
+      height: 60,
       child: Row(
         children: [
           Expanded(

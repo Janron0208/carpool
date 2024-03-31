@@ -82,7 +82,7 @@ class _SpeedTickedState extends State<SpeedTicked> {
                         height: MediaQuery.of(context).size.height * 1,
                         child: Padding(
                             padding: const EdgeInsets.only(
-                                top: 60, left: 10, right: 10, bottom: 10),
+                                top: 70, left: 10, right: 10, bottom: 10),
                             child: SingleChildScrollView(
                               child: ListView.builder(
                                   physics: NeverScrollableScrollPhysics(),
@@ -336,7 +336,7 @@ class _SpeedTickedState extends State<SpeedTicked> {
   Container showheadBar(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
-      height: 50,
+      height: 60,
       child: Row(
         children: [
           Expanded(
