@@ -81,119 +81,81 @@ class _AccountListState extends State<AccountList> {
                         child: Padding(
                             padding: EdgeInsets.only(
                                 top: 60, left: 5, right: 5, bottom: 5),
-                            child: Material(
-                              borderRadius: BorderRadius.circular(10),
-                              elevation: 8,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                      flex: 2,
-                                      child: Material(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10)),
-                                        color:
-                                            Color.fromARGB(255, 119, 119, 119),
-                                        child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                  flex: 4,
-                                                  child: MyStyle()
-                                                      .showSizeTextSC(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                      itemCount: userModels.length,
+                                      itemBuilder: (context, index) {
+                                        return Column(
+                                          children: [
+                                            Material(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: index % 2 == 0
+                                                    ? const Color.fromARGB(
+                                                        150, 255, 255, 255)
+                                                    : Color.fromARGB(
+                                                        150, 219, 219, 219),
+                                                child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 5),
+                                                    child: Row(children: [
+                                                      MyStyle().showSizeTextSCW(
                                                           context,
-                                                          'ชื่อผู้ใช้',
-                                                          23,
-                                                          Colors.white)),
-                                              Expanded(
-                                                  flex: 2,
-                                                  child: MyStyle()
-                                                      .showSizeTextSC(
-                                                          context,
-                                                          'ประเภท',
-                                                          23,
-                                                          Colors.white)),
-                                              Expanded(
-                                                  flex: 1, child: Text(' ')),
-                                            ],
-                                          ),
-                                        ),
-                                      )),
-                                  Expanded(
-                                    flex: 35,
-                                    child: ListView.builder(
-                                        itemCount: userModels.length,
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                              color: index % 2 == 0
-                                                  ? const Color.fromARGB(
-                                                      255, 255, 255, 255)
-                                                  : Color.fromARGB(
-                                                      255, 219, 219, 219),
-                                              height: 60,
-                                              child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 10),
-                                                  child: Row(children: [
-                                                    Expanded(
-                                                        flex: 4,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  right: 19),
-                                                          child: MyStyle()
-                                                              .showSizeTextS(
-                                                                  context,
-                                                                  '${userModels[index].accFullname!} (${userModels[index].accNickname!})',
-                                                                  29),
-                                                        )),
-                                                    Expanded(
-                                                        flex: 2,
-                                                        child: MyStyle().showSizeTextSCW(
-                                                            context,
-                                                            '${userModels[index].accType!}',
-                                                            23,
-                                                            FontWeight.normal,
-                                                            userModels[index]
-                                                                        .accType ==
-                                                                    'admin'
-                                                                ? Colors.red
-                                                                : Colors
-                                                                    .green)),
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child: IconButton(
-                                                            onPressed: () {
-                                                              print(
-                                                                  '${userModels[index].accID!}');
-                                                              MaterialPageRoute
-                                                                  route =
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              AccountDetail(
-                                                                                accID: userModels[index].accID!,
-                                                                                formpage: formpage,
-                                                                              ));
-                                                              Navigator.push(
-                                                                      context,
-                                                                      route)
-                                                                  .then(
-                                                                      (value) {
-                                                                // carModels.clear();
-                                                                // loadAllCar();
-                                                              });
-                                                            },
-                                                            icon: Icon(Icons
-                                                                .search_outlined))),
-                                                  ])));
-                                        }),
-                                  ),
-                                ],
-                              ),
+                                                          '(${userModels[index].accType!})',
+                                                          30,
+                                                          FontWeight.normal,
+                                                          userModels[index]
+                                                                      .accType ==
+                                                                  'admin'
+                                                              ? Colors.red
+                                                              : Colors.green),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right: 19,
+                                                                left: 3),
+                                                        child: MyStyle()
+                                                            .showSizeTextS(
+                                                                context,
+                                                                '${userModels[index].accFullname!} (${userModels[index].accNickname!})',
+                                                                29),
+                                                      ),
+                                                      Spacer(),
+                                                      IconButton(
+                                                          onPressed: () {
+                                                            print(
+                                                                '${userModels[index].accID!}');
+                                                            MaterialPageRoute
+                                                                route =
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            AccountDetail(
+                                                                              accID: userModels[index].accID!,
+                                                                              formpage: formpage,
+                                                                            ));
+                                                            Navigator.push(
+                                                                    context,
+                                                                    route)
+                                                                .then((value) {
+                                                              // carModels.clear();
+                                                              // loadAllCar();
+                                                            });
+                                                          },
+                                                          icon: Icon(Icons
+                                                              .search_outlined)),
+                                                    ]))),
+                                            SizedBox(height: 10)
+                                          ],
+                                        );
+                                      }),
+                                ),
+                              ],
                             )),
                       ),
                 showheadBar(context),

@@ -193,18 +193,12 @@ class _ReserveShowTableState extends State<ReserveShowTable> {
                                                                       ),
                                                                       Row(
                                                                         children: [
+                                                                          MyStyle().showSizeTextSC(
+                                                                              context,
+                                                                              'โครงการ/สถานที่ :',
+                                                                              25,
+                                                                              Color.fromARGB(255, 102, 102, 102)),
                                                                           Expanded(
-                                                                            flex:
-                                                                                1,
-                                                                            child: MyStyle().showSizeTextSC(
-                                                                                context,
-                                                                                'โครงการ/สถานที่ :',
-                                                                                25,
-                                                                                Color.fromARGB(255, 102, 102, 102)),
-                                                                          ),
-                                                                          Expanded(
-                                                                            flex:
-                                                                                2,
                                                                             child: MyStyle().showSizeTextSC(
                                                                                 context,
                                                                                 ' ${reserveaccModels[index].resProject}',

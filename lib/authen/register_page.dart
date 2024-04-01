@@ -533,7 +533,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           Center(
                             child: MyStyle().showSizeTextSC(
                                 context,
-                                'เมื่อทำการลงทะเบียนแล้วกรุณารอทางแอดมินอนุมัติสิทธิการเข้าใช้งาน',
+                                'เมื่อทำการลงทะเบียนแล้วกรุณารอทางแอดมินอนุมัติสิทธิ์การเข้าใช้งาน',
                                 25,
                                 const Color.fromARGB(255, 66, 66, 66)),
                           ),

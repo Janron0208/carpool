@@ -47,86 +47,148 @@ class _CarAddState extends State<CarAdd> {
                             height: MediaQuery.of(context).size.height * 0.95,
                             child: Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 70, left: 10, right: 10, bottom: 10),
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(20),
-                                  elevation: 8,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text('ยี่ห้อรถยนต์',
-                                                style: TextStyle(fontSize: 20)),
-                                          ],
-                                        ),
-                                        SizedBox(height: 3),
-                                        buildBrand(),
-                                        SizedBox(height: 25),
-                                        Row(
-                                          children: [
-                                            Text('รุ่น/รหัสโมเดล',
-                                                style: TextStyle(fontSize: 20)),
-                                          ],
-                                        ),
-                                        SizedBox(height: 3),
-                                        buildModel(),
-                                        SizedBox(height: 25),
-                                        Row(
-                                          children: [
-                                            Text('ป้ายทะเบียน',
-                                                style: TextStyle(fontSize: 20)),
-                                          ],
-                                        ),
-                                        SizedBox(height: 3),
-                                        buildNumber(),
-                                        SizedBox(height: 25),
-                                        Row(
-                                          children: [
-                                            Text('เลขไมล์',
-                                                style: TextStyle(fontSize: 20)),
-                                          ],
-                                        ),
-                                        SizedBox(height: 3),
-                                        buildMile(),
-                                        Spacer(),
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              1,
-                                          height: 50,
-                                          child: ElevatedButton(
-                                            style: ButtonStyle(
-                                              foregroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(Colors.white),
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(MyStyle().color1),
-                                              shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
+                                    top: 50, left: 0, right: 0, bottom: 10),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
+                                    children: [
+                                      Material(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color:
+                                            Color.fromARGB(122, 218, 218, 218),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text('ยี่ห้อรถยนต์',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: MyStyle()
+                                                              .color1)),
+                                                ],
+                                              ),
+                                              SizedBox(height: 3),
+                                              Material(
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          20.0), // Adjust corner radius
-                                                ),
+                                                      BorderRadius.circular(10),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: buildBrand(),
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 15),
+                                      Material(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color:
+                                            Color.fromARGB(122, 218, 218, 218),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text('รุ่น/รหัสโมเดล',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: MyStyle()
+                                                              .color1)),
+                                                ],
+                                              ),
+                                              SizedBox(height: 3),
+                                              buildModel(),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 15),
+                                      Material(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color:
+                                            Color.fromARGB(122, 218, 218, 218),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text('ป้ายทะเบียน',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: MyStyle()
+                                                              .color1)),
+                                                ],
+                                              ),
+                                              SizedBox(height: 3),
+                                              buildNumber(),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 15),
+                                      Material(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color:
+                                            Color.fromARGB(122, 218, 218, 218),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text('เลขไมล์',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: MyStyle()
+                                                              .color1)),
+                                                ],
+                                              ),
+                                              SizedBox(height: 3),
+                                              buildMile(),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                1,
+                                        height: 50,
+                                        child: ElevatedButton(
+                                          style: ButtonStyle(
+                                            foregroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.white),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(MyStyle().color3),
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(
+                                                    20.0), // Adjust corner radius
                                               ),
                                             ),
-                                            onPressed: () {
-                                              checkNullText();
-                                            },
-                                            child: Text(
-                                              'บันทึก',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
-                                            ),
                                           ),
-                                        )
-                                      ],
-                                    ),
+                                          onPressed: () {
+                                            checkNullText();
+                                          },
+                                          child: Text(
+                                            'บันทึก',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 )),
                           ),
@@ -144,21 +206,27 @@ class _CarAddState extends State<CarAdd> {
   Row buildBrand() {
     return Row(
       children: [
+        SizedBox(width: 10),
         Container(
-          height: 50,
           child: DropdownMenu<String>(
-            initialSelection: items.first,
-            onSelected: (String? value) {
-              // This is called when the user selects an item.
-              setState(() {
-                carBrand = value!;
-              });
-            },
-            dropdownMenuEntries:
-                items.map<DropdownMenuEntry<String>>((String value) {
-              return DropdownMenuEntry<String>(value: value, label: value);
-            }).toList(),
-          ),
+              initialSelection: items.first,
+              onSelected: (String? value) {
+                // This is called when the user selects an item.
+                setState(() {
+                  carBrand = value!;
+                });
+              },
+              dropdownMenuEntries:
+                  items.map<DropdownMenuEntry<String>>((String value) {
+                return DropdownMenuEntry<String>(value: value, label: value);
+              }).toList(),
+              inputDecorationTheme: InputDecorationTheme(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Color.fromARGB(0, 146, 105, 105)), //<-- SEE HERE
+                ),
+                contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+              )),
         ),
       ],
     );

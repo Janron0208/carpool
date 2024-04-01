@@ -74,7 +74,7 @@ class _CarListState extends State<CarList> {
                         height: MediaQuery.of(context).size.height * 1,
                         child: Padding(
                             padding: const EdgeInsets.only(
-                                top: 70, left: 10, right: 10, bottom: 10),
+                                top: 55, left: 10, right: 10, bottom: 10),
                             child: SingleChildScrollView(
                               child: ListView.builder(
                                   physics: NeverScrollableScrollPhysics(),

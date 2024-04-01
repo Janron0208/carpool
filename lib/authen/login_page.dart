@@ -35,33 +35,33 @@ class _LoginPageState extends State<LoginPage> {
 
   Container showErrorScreenSize() {
     return Container(
-              color: Colors.black,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 150,
-                      height: 150,
-                      child: Image.asset('images/error.gif'),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'ขออภัย!',
-                      style: TextStyle(fontSize: 30, color: Colors.white),
-                    ),
-                    Text(
-                      'ขนาดหน้าจอนี้ยังไม่รองรับ',
-                      style: TextStyle(fontSize: 30, color: Colors.white),
-                    ),
-                    Text(
-                      '* โปรดใช้งานในโทรศัพท์ *',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            );
+      color: Colors.black,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 150,
+              height: 150,
+              child: Image.asset('images/error.gif'),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'ขออภัย!',
+              style: TextStyle(fontSize: 30, color: Colors.white),
+            ),
+            Text(
+              'ขนาดหน้าจอนี้ยังไม่รองรับ',
+              style: TextStyle(fontSize: 30, color: Colors.white),
+            ),
+            Text(
+              '* โปรดใช้งานในขนาดความกว้างไม่เกิน 700 Pixel *',
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   GestureDetector showWidgetLogin(BuildContext context) {

@@ -1207,9 +1207,9 @@ class _UsingCheckInWebState extends State<UsingCheckInWeb> {
     final ImagePicker _picker = ImagePicker();
     XFile? image = await _picker.pickImage(
       source: source,
-      imageQuality: 50,
-      maxWidth: 800.0,
-      maxHeight: 800.0,
+      imageQuality: 10,
+      maxWidth: 600,
+      maxHeight: 600,
     );
     if (image != null) {
       var f = await image.readAsBytes();

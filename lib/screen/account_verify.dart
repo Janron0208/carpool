@@ -97,7 +97,7 @@ class _AccountVerifyState extends State<AccountVerify> {
                   height: MediaQuery.of(context).size.height * 1,
                   child: Padding(
                       padding: const EdgeInsets.only(
-                          top: 70, left: 10, right: 10, bottom: 10),
+                          top: 50, left: 10, right: 10, bottom: 10),
                       child: Column(
                         children: [
                           Expanded(
@@ -172,80 +172,85 @@ class _AccountVerifyState extends State<AccountVerify> {
                           Expanded(
                             flex: 12,
                             child: Material(
-                              borderRadius: BorderRadius.circular(0),
-                              elevation: 8,
+                              color: const Color.fromARGB(131, 255, 255, 255),
+                              borderRadius: BorderRadius.circular(10),
+                              // elevation: 8,
                               child: loaddata == 'yes'
                                   ? showCircularProgressIndicator()
                                   : ListView.builder(
                                       itemCount: userModels.length,
                                       itemBuilder: (context, index) {
-                                        return Container(
-                                            color: index % 2 == 0
-                                                ? const Color.fromARGB(
-                                                    255, 255, 255, 255)
-                                                : Color.fromARGB(
-                                                    255, 219, 219, 219),
-                                            height: 60,
-                                            child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 10),
-                                                child: Row(children: [
-                                                  Expanded(
-                                                      flex: 4,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                right: 19),
-                                                        child: Text(
-                                                            '${userModels[index].accFullname!} (${userModels[index].accNickname!})'),
-                                                      )),
-                                                  Expanded(
-                                                      flex: 2,
-                                                      child: MyStyle().showSizeTextSCW(
-                                                          context,
-                                                          '${userModels[index].accType!}',
-                                                          18,
-                                                          FontWeight.normal,
-                                                          userModels[index]
-                                                                      .accType ==
-                                                                  'admin'
-                                                              ? Colors.red
-                                                              : Colors.green)),
-                                                  Expanded(
-                                                      flex: 1,
-                                                      child: IconButton(
-                                                          onPressed: () {
-                                                            print(
-                                                                '${userModels[index].accID!}');
-                                                            MaterialPageRoute
-                                                                route =
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            AccountDetail(
-                                                                              accID: userModels[index].accID!,
-                                                                              formpage: formpage,
-                                                                            ));
-                                                            Navigator.push(
-                                                                    context,
-                                                                    route)
-                                                                .then((value) {
-                                                              userModels
-                                                                  .clear();
-                                                              checkchooseType();
+                                        return Column(
+                                          children: [
+                                            SizedBox(height: 10),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8),
+                                              child: Material(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
+                                                      child: Row(children: [
+                                                        MyStyle().showSizeTextSCW(
+                                                            context,
+                                                            '(${userModels[index].accType!}) ',
+                                                            25,
+                                                            FontWeight.normal,
+                                                            userModels[index]
+                                                                        .accType ==
+                                                                    'admin'
+                                                                ? Colors.red
+                                                                : Colors.green),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 19),
+                                                          child: Text(
+                                                              '${userModels[index].accFullname!} (${userModels[index].accNickname!})'),
+                                                        ),
+                                                        Spacer(),
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              print(
+                                                                  '${userModels[index].accID!}');
+                                                              MaterialPageRoute
+                                                                  route =
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              AccountDetail(
+                                                                                accID: userModels[index].accID!,
+                                                                                formpage: formpage,
+                                                                              ));
+                                                              Navigator.push(
+                                                                      context,
+                                                                      route)
+                                                                  .then(
+                                                                      (value) {
+                                                                userModels
+                                                                    .clear();
+                                                                checkchooseType();
 
-                                                              setState(() {
-                                                                havedata = 'no';
-                                                                loaddata =
-                                                                    'yes';
+                                                                setState(() {
+                                                                  havedata =
+                                                                      'no';
+                                                                  loaddata =
+                                                                      'yes';
+                                                                });
                                                               });
-                                                            });
-                                                          },
-                                                          icon: Icon(Icons
-                                                              .search_outlined))),
-                                                ])));
+                                                            },
+                                                            icon: Icon(Icons
+                                                                .arrow_forward_ios)),
+                                                      ]))),
+                                            ),
+                                          ],
+                                        );
                                       }),
                             ),
                           ),
@@ -284,7 +289,7 @@ class _AccountVerifyState extends State<AccountVerify> {
           Expanded(
               flex: 3,
               child: Text(
-                'อนุมัติสิทธิ',
+                'อนุมัติสิทธิ์์',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,

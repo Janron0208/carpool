@@ -66,8 +66,9 @@ class _AccountDetailState extends State<AccountDetail> {
                             padding: const EdgeInsets.only(
                                 top: 70, left: 10, right: 10, bottom: 10),
                             child: Material(
+                              color: Color.fromARGB(110, 255, 255, 255),
                               borderRadius: BorderRadius.circular(20),
-                              elevation: 8,
+                              // elevation: 8,
                               child: Padding(
                                 padding: const EdgeInsets.all(15),
                                 child: Column(
@@ -87,7 +88,7 @@ class _AccountDetailState extends State<AccountDetail> {
                                                 MyStyle().color1)),
                                       ],
                                     ),
-                                    Divider(),
+                                    SizedBox(height: 10),
                                     Row(
                                       children: [
                                         Expanded(
@@ -105,7 +106,7 @@ class _AccountDetailState extends State<AccountDetail> {
                                                 MyStyle().color1)),
                                       ],
                                     ),
-                                    Divider(),
+                                    SizedBox(height: 10),
                                     Row(
                                       children: [
                                         Expanded(
@@ -121,7 +122,7 @@ class _AccountDetailState extends State<AccountDetail> {
                                                 MyStyle().color1)),
                                       ],
                                     ),
-                                    Divider(),
+                                    SizedBox(height: 10),
                                     Row(
                                       children: [
                                         Expanded(
@@ -139,7 +140,7 @@ class _AccountDetailState extends State<AccountDetail> {
                                                 MyStyle().color1)),
                                       ],
                                     ),
-                                    Divider(),
+                                    SizedBox(height: 10),
                                     Row(
                                       children: [
                                         Expanded(
@@ -155,7 +156,7 @@ class _AccountDetailState extends State<AccountDetail> {
                                                 MyStyle().color1)),
                                       ],
                                     ),
-                                    Divider(),
+                                    SizedBox(height: 10),
                                     widget.formpage != 'verify'
                                         ? Container()
                                         : Row(

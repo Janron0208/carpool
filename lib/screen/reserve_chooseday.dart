@@ -348,46 +348,7 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                                 ),
                               ),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: IconButton(
-                                      tooltip: 'ดูรายละเอียด',
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.manage_search,
-                                        size: 35,
-                                        color: MyStyle().color1,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    '${carModels[index].carID!}',
-                                    style: TextStyle(fontSize: 10),
-                                  )
-                                  // IconButton(
-                                  //     onPressed: () {
-                                  //       print(
-                                  //           '${carModels[index].carID!}');
-                                  //     },
-                                  //     icon: Icon(
-                                  //       Icons
-                                  //           .delete_forever,
-                                  //       color: Color
-                                  //           .fromARGB(
-                                  //               255,
-                                  //               218,
-                                  //               107,
-                                  //               99),
-                                  //       size: 35,
-                                  //     ))
-                                ],
-                              ),
-                            )
+                            Expanded(flex: 1, child: Container())
                           ],
                         ),
                       ),
