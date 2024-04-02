@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyConstant {
-  String domain = 'https://45e2-101-108-100-235.ngrok-free.app';
+  String domain = 'https://6e4e-182-52-17-138.ngrok-free.app';
 
   String keyId = 'Acc_ID';
   String keyCode = 'Acc_Code';

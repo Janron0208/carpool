@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:carpool/screen/account_changepass.dart';
+import 'package:carpool/screen/account_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:carpool/models/user_model.dart';
 import 'package:carpool/unity/my_constant.dart';
@@ -206,9 +208,8 @@ class _AccountDetailState extends State<AccountDetail> {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    // CheckNullText();
-
-                                                    // print('$code , $password');
+                                                    MyPopup().showToast(context,
+                                                        'ยังไม่เปิดใช้งาน');
                                                   },
                                                   child: Text(
                                                     'ประวัติการใช้รถยนต์',
@@ -247,9 +248,24 @@ class _AccountDetailState extends State<AccountDetail> {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    // CheckNullText();
-
-                                                    // print('$code , $password');
+                                                    MaterialPageRoute route =
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                AccountChangePass(
+                                                                  accID:
+                                                                      userModels[
+                                                                              0]
+                                                                          .accID!,
+                                                                ));
+                                                    Navigator.push(
+                                                            context, route)
+                                                        .then((value) {
+                                                      setState(() {
+                                                        loaddata = 'yes';
+                                                        userModels.clear();
+                                                        loadUserByAccID();
+                                                      });
+                                                    });
                                                   },
                                                   child: Text(
                                                     'เปลี่ยนรหัสผ่าน',
@@ -288,9 +304,39 @@ class _AccountDetailState extends State<AccountDetail> {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    // CheckNullText();
-
-                                                    // print('$code , $password');
+                                                    MaterialPageRoute route =
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    AccountEdit(
+                                                                      accID: userModels[
+                                                                              0]
+                                                                          .accID!,
+                                                                      accCode: userModels[
+                                                                              0]
+                                                                          .accCode!,
+                                                                      accFullname:
+                                                                          userModels[0]
+                                                                              .accFullname!,
+                                                                      accNickname:
+                                                                          userModels[0]
+                                                                              .accNickname!,
+                                                                      accTel: userModels[
+                                                                              0]
+                                                                          .accTel!,
+                                                                      accLine: userModels[
+                                                                              0]
+                                                                          .accLine!,
+                                                                    ));
+                                                    Navigator.push(
+                                                            context, route)
+                                                        .then((value) {
+                                                      setState(() {
+                                                        loaddata = 'yes';
+                                                        userModels.clear();
+                                                        loadUserByAccID();
+                                                      });
+                                                    });
                                                   },
                                                   child: Text(
                                                     'แก้ไขรายชื่อ',

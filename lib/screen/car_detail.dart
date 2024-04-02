@@ -327,7 +327,10 @@ class _CarDetailState extends State<CarDetail> {
                                               ),
                                             ),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            MyPopup().showToast(
+                                                context, 'ยังไม่เปิดใช้งาน');
+                                          },
                                           child: MyStyle().showSizeTextSC(
                                               context,
                                               'ตารางการตรวจเช็ตสภาพรถยนต์',
@@ -353,7 +356,10 @@ class _CarDetailState extends State<CarDetail> {
                                               ),
                                             ),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            MyPopup().showToast(
+                                                context, 'ยังไม่เปิดใช้งาน');
+                                          },
                                           child: MyStyle().showSizeTextSC(
                                               context,
                                               'ประวัติการถูกใช้งาน',

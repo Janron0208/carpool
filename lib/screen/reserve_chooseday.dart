@@ -319,6 +319,19 @@ class _ReserveChooseDayState extends State<ReserveChooseDay> {
                                                       255, 68, 68, 68))),
                                         ],
                                       ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          MyStyle().showTextNumberSC(
+                                              context,
+                                              '${carModels[index].carMileage!}',
+                                              25,
+                                              MyStyle().color1),
+                                          MyStyle().showSizeTextSC(context,
+                                              ' Km.', 25, MyStyle().color1),
+                                        ],
+                                      ),
                                       // Expanded(
                                       //   child: Row(
                                       //     children: [

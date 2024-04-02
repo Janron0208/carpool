@@ -853,8 +853,9 @@ class _MainPageState extends State<MainPage> {
       child: InkWell(
         onTap: () {
           MaterialPageRoute route = showReturnCar == 'yes'
-              ? MyPopup()
-                  .showError(context, 'กรุณากดคืนรถยนต์ที่กำลังใช้งานอยู่ก่อน')
+              ? MaterialPageRoute(builder: (context) {
+                  return Container();
+                })
               : MaterialPageRoute(builder: (context) => UsingWaiting());
           Navigator.push(context, route).then((value) {
             setState(() {
