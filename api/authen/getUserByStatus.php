@@ -8,7 +8,7 @@ if ($conn->connect_error) {
 $accStatus = $_GET['Acc_Status'];
 
 // ดึงข้อมูล
-$sql = "SELECT * FROM `account_tb` WHERE `Acc_Status` LIKE '$accStatus' ORDER BY `Acc_ID` DESC";
+$sql = "SELECT * FROM `account_tb` WHERE `Acc_Status` LIKE '$accStatus' ORDER BY `account_tb`.`Acc_Type` ASC";
 $result = $conn->query($sql);
 
 // แปลงข้อมูลเป็น JSON
